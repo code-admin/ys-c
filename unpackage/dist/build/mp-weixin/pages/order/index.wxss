@@ -1,0 +1,10 @@
+
+.order-code {
+	line-height: 28rpx;
+}
+
+
+page {
+	padding-top: 45px;
+}
+

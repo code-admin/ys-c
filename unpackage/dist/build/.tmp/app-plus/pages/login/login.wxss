@@ -1,0 +1,11 @@
+.page.data-v-4264f912 {
+  height: 100vh;
+}
+.page .h200.data-v-4264f912 {
+    height: 200rpx;
+}
+.page .logo image.data-v-4264f912 {
+    width: 200rpx;
+    height: 200rpx;
+}
+

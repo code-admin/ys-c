@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"max-width550 { width: ",[0,550],"; }\nbody { padding-top: 45px; }\n",],undefined,{path:"./pages/home/feedback/feedback.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/home/feedback/feedback.wxml') } }));

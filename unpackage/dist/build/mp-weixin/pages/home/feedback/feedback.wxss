@@ -1,0 +1,10 @@
+
+.max-width550 {
+	width: 550rpx;
+}
+
+
+page {
+		padding-top: 45px;
+}
+

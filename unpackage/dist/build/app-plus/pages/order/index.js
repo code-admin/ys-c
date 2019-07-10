@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"order-code { line-height: ",[0,28],"; }\nbody { padding-top: 45px; }\n",],undefined,{path:"./pages/order/index.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/order/index.wxml') } }));
