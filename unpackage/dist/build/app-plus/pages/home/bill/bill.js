@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"order-code { line-height: ",[0,28],"; }\n",],undefined,{path:"./pages/home/bill/bill.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/home/bill/bill.wxml') } }));

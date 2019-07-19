@@ -1,17 +1,20 @@
 <import src="/colorui/components/cu-custom.vue.wxml" />
 <import src="/pages/order/card.vue.wxml" />
+<import src="/pages/home/report/card.vue.wxml" />
+<import src="/pages/home/bill/card.vue.wxml" />
 <import src="/pages/home/product/goods.vue.wxml" />
 <import src="/pages/home/feedback/card.vue.wxml" />
+<import src="/pages/home/compute/compute1.vue.wxml" />
+<import src="/common/slots.wxml" />
 <import src="/pages/home/home.vue.wxml" />
 <import src="/pages/user/index.vue.wxml" />
-<import src="/common/slots.wxml" />
 <import src="/pages/home/banner.vue.wxml" />
 
-<template name="Mfc2c1372-default-fc2c1372-0"></template>
+<template name="data-v-3a2e77e0-default-8ff3bae4-0"></template>
 
-<template name="Mfc2c1372-backText-fc2c1372-0">返回</template>
+<template name="data-v-3a2e77e0-backText-8ff3bae4-0">返回</template>
 
-<template name="Mfc2c1372-content-fc2c1372-0">订单详情</template>
+<template name="data-v-3a2e77e0-content-8ff3bae4-0">登录</template>
 
 <template name="M6aa697c8-default-6aa697c8-0"></template>
 
@@ -19,39 +22,23 @@
 
 <template name="M6aa697c8-content-6aa697c8-0">订单</template>
 
-<template name="M6c4dfb42-default-6c4dfb42-0"></template>
+<template name="Mfc2c1372-default-fc2c1372-0"></template>
 
-<template name="M6c4dfb42-backText-6c4dfb42-0">返回</template>
+<template name="Mfc2c1372-backText-fc2c1372-0">返回</template>
 
-<template name="M6c4dfb42-content-6c4dfb42-0">账单</template>
+<template name="Mfc2c1372-content-fc2c1372-0">订单详情</template>
 
-<template name="Ma8596ca2-default-a8596ca2-0"></template>
+<template name="Mafd10cd8-default-afd10cd8-0"></template>
 
-<template name="Ma8596ca2-backText-a8596ca2-0">返回</template>
+<template name="Mafd10cd8-backText-afd10cd8-0">返回</template>
 
-<template name="Ma8596ca2-content-a8596ca2-0">报表</template>
+<template name="Mafd10cd8-content-afd10cd8-0">报表</template>
 
-<template name="M7401b9c8-default-7401b9c8-0"></template>
+<template name="M00c99a98-default-00c99a98-0"></template>
 
-<template name="M7401b9c8-backText-7401b9c8-0">返回</template>
+<template name="M00c99a98-backText-00c99a98-0">返回</template>
 
-<template name="M7401b9c8-content-7401b9c8-0">计算</template>
-
-<template name="data-v-4264f912-default-8ff3bae4-0"></template>
-
-<template name="data-v-4264f912-backText-8ff3bae4-0">返回</template>
-
-<template name="data-v-4264f912-content-8ff3bae4-0">登录</template>
-
-<template name="M4b4860f4-default-4b4860f4-0"></template>
-
-<template name="M4b4860f4-content-4b4860f4-0"><image src="/static/cjkz.png" mode="aspectFill" style="width: 240rpx;height: 60rpx;" class="_image M4b4860f4"></image></template>
-
-<template name="M62083800-default-62083800-0"></template>
-
-<template name="M62083800-backText-62083800-0">返回</template>
-
-<template name="M62083800-content-62083800-0">反馈详情</template>
+<template name="M00c99a98-content-00c99a98-0">账单</template>
 
 <template name="M171f5db4-default-171f5db4-0"></template>
 
@@ -64,4 +51,22 @@
 <template name="M9438f118-backText-9438f118-0">返回</template>
 
 <template name="M9438f118-content-9438f118-0">反馈</template>
+
+<template name="M34a70c44-default-34a70c44-0"></template>
+
+<template name="M34a70c44-backText-34a70c44-0">返回</template>
+
+<template name="M34a70c44-content-34a70c44-0">计算</template>
+
+<template name="M62083800-default-62083800-0"></template>
+
+<template name="M62083800-backText-62083800-0">返回</template>
+
+<template name="M62083800-content-62083800-0">反馈详情</template>
+
+<template name="data-v-7ac9d508-default-60fbc300-0"></template>
+
+<template name="data-v-7ac9d508-backText-60fbc300-0">返回</template>
+
+<template name="data-v-7ac9d508-content-60fbc300-0">个人信息</template>
 

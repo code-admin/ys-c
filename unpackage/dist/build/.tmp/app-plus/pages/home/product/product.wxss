@@ -1,11 +1,11 @@
-.photo image.data-v-4ef51503 {
+.photo image.data-v-5c3fa3d0 {
   width: 200rpx;
   height: 200rpx;
 }
-.h90.data-v-4ef51503 {
+.h90.data-v-5c3fa3d0 {
   height: 90rpx;
 }
-.price.data-v-4ef51503 {
+.price.data-v-5c3fa3d0 {
   padding: 20rpx 10rpx 30rpx;
 }
 

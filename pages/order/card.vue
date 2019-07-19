@@ -8,17 +8,16 @@
 						<view class="cu-tag light round bg-blue">创建</view>
 					</view>
 					<view class="padding">
-
-						<view class="flex justify-between">
+						<view class="flex justify-start">
+							<view class="padding-right-xs text-grey">下单人:</view>
+							<view class="text-center text-shadow">章细花</view>
+						</view>
+						<view class="flex justify-between margin-top">
 							<view>
 								<view class="flex justify-start align-center">
 									<view class="padding-right-xs text-grey">下单类型:</view>
 									<view class="padding-right-xl line-blue">按重量销售</view>
 									<view class="cu-tag light round bg-cyan sm">一级增白</view>
-								</view>
-								<view class="flex justify-start margin-top-xs">
-									<view class="padding-right-xs text-grey">下单人:</view>
-									<view class="text-center text-shadow">章细花</view>
 								</view>
 							</view>
 							<view>
@@ -30,20 +29,83 @@
 								</view>
 							</view>
 						</view>
-
 						<view class="flex align-center margin-top-xs">
-							<view class="padding-right-xs text-grey">宽度:</view>
-							<view class="padding-right-xs text-red">1.00</view>
-							<view class="padding-right-xs text-grey">克重:</view>
-							<view class="padding-right-xs text-red">1.00</view>
-							<view class="padding-right-xs text-grey">条数:</view>
-							<view class="padding-right-xs text-red">0.00</view>
-							<view class="padding-right-xs text-grey">长度:</view>
-							<view class="padding-right-xs text-red">1.00</view>
+							<view class="text-grey">长(cm):</view>
+							<view class="padding-right-lg text-red">120</view>
+							<view class="text-grey">宽(cm):</view>
+							<view class="padding-right-lg text-red">60</view>
+							<view class="text-grey">克重(g):</view>
+							<view class="padding-right-lg text-red">65</view>
+							<view class="text-grey">重量:</view>
+							<view class="text-red">1201</view>
 						</view>
 					</view>
+
+
+
+					<view class="padding">
+						<view class="flex justify-between">
+							<view>
+								<view class="flex justify-start align-center">
+									<view class="padding-right-xs text-grey">下单类型:</view>
+									<view class="padding-right-xl line-cyan">按条数销售</view>
+									<view class="cu-tag light round bg-cyan sm">增白</view>
+								</view>
+							</view>
+							<view>
+								<view class="text-price text-red text-right">
+									90.00
+								</view>
+								<view class="text-grey text-right">
+									x 1
+								</view>
+							</view>
+						</view>
+						<view class="flex align-center margin-top-xs">
+							<view class="text-grey">长(cm):</view>
+							<view class="padding-right-lg text-red">135</view>
+							<view class="text-grey">宽(cm):</view>
+							<view class="padding-right-lg text-red">70</view>
+							<view class="text-grey">克重(g):</view>
+							<view class="padding-right-lg text-red">67</view>
+							<view class="text-grey">条数:</view>
+							<view class="padding-right-xs text-red">1200</view>
+						</view>
+					</view>
+
+					<view class="padding">
+						<view class="flex justify-between">
+							<view>
+								<view class="flex justify-start align-center">
+									<view class="padding-right-xs text-grey">下单类型:</view>
+									<view class="padding-right-xl line-cyan">按条数销售</view>
+									<view class="cu-tag light round blue sm">一级增白</view>
+								</view>
+							</view>
+							<view>
+								<view class="text-price text-red text-right">
+									110.00
+								</view>
+								<view class="text-grey text-right">
+									x 1
+								</view>
+							</view>
+						</view>
+						<view class="flex align-center margin-top-xs">
+							<view class="text-grey">长(cm):</view>
+							<view class="padding-right-lg text-red">123</view>
+							<view class="text-grey">宽(cm):</view>
+							<view class="padding-right-lg text-red">68</view>
+							<view class="text-grey">克重(g):</view>
+							<view class="padding-right-lg text-red">66</view>
+							<view class="text-grey">条数:</view>
+							<view class="padding-right-xs text-red">1200</view>
+						</view>
+					</view>
+					
 					<view class="flex solid-top padding justify-between align-center">
-						<view class="text-cut lighttext-blue"><text class="cuIcon-countdown padding-right-xs text-orange"></text>2017-11-30 10:13:22</view>
+						<view class="text-cut lighttext-blue"><text class="cuIcon-countdown padding-right-xs text-orange"></text>2017-11-30
+							10:13:22</view>
 						<view class="text-cut lighttext-blue text-green">详情</view>
 					</view>
 				</view>

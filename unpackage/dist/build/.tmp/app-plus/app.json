@@ -3,13 +3,14 @@
     "pages/index/index",
     "pages/order/index",
     "pages/home/product/product",
-    "pages/home/report",
-    "pages/home/bill",
+    "pages/home/report/report",
+    "pages/home/bill/bill",
     "pages/home/feedback/feedback",
-    "pages/home/compute",
+    "pages/home/compute/compute",
     "pages/order/detail",
     "pages/home/feedback/detail",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/user/info/info"
   ],
   "subPackages": [],
   "window": {
@@ -25,5 +26,5 @@
     "autoclose": false
   },
   "appname": "易销助手",
-  "compilerVersion": "2.0.1"
+  "compilerVersion": "2.1.1"
 }

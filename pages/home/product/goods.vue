@@ -4,7 +4,7 @@
 			<view class="cu-item shadow padding">
 				<view class="flex justify-start">
 					<view class="photo margin-right">
-						<image src="http://6776615.s21i.faiusr.com/2/ABUIp86dAxACGAAg_IOQxQUo6b7e4QEw7gU47gU!200x200.jpg"></image>
+						<!-- <image src="http://6776615.s21i.faiusr.com/2/ABUIp86dAxACGAAg_IOQxQUo6b7e4QEw7gU47gU!200x200.jpg"></image> -->
 					</view>
 					<view class="content">
 						<view class="text-black text-bold text-grey h90">

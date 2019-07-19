@@ -7,7 +7,7 @@
   "id": "__UNI__8658D6F",
   "name": "易销助手",
   "version": {
-    "name": "ysyx_c",
+    "name": "ysyx_c_V1.0.00",
     "code": 0
   },
   "description": "",
@@ -108,7 +108,7 @@
     },
     "allowsInlineMediaPlayback": true,
     "uni-app": {
-      "compilerVersion": "2.0.1",
+      "compilerVersion": "2.1.1",
       "control": "webview",
       "nvueCompiler": "weex"
     }

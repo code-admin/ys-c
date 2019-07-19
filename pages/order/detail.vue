@@ -19,18 +19,6 @@
 				<input placeholder="请输入订单编号" name="input" value="wx20171210160722"></input>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">下单人员:</view>
-				<input placeholder="请输入下单人员" name="input" value="章细花"></input>
-			</view>
-			<view class="cu-form-group">
-				<view class="title">销售类型:</view>
-				<picker @change="PickerChange" :value="index" :range="picker">
-					<view class="picker">
-						{{index>-1?picker[index]:'按重量销售'}}
-					</view>
-				</picker>
-			</view>
-			<view class="cu-form-group">
 				<view class="title">下单时间:</view>
 				<picker mode="date" :value="order.createDate" start="2001-01-01" end="2030-12-31" @change="DateChange">
 					<view class="picker">
@@ -39,34 +27,49 @@
 				</picker>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">品种:</view>
-				<picker @change="PickerChange" :value="index" :range="picker">
-					<view class="picker">
-						{{index>-1?picker[index]:'增白'}}
-					</view>
-				</picker>
+				<view class="title">下单人员:</view>
+				<input placeholder="请输入下单人员" name="input" value="章细花"></input>
 			</view>
-			<view class="cu-form-group margin-top">
-				<view class="title">要求:</view>
-				<input placeholder="请输入要求" name="input" value=""></input>
-			</view>
-			<view class="cu-form-group">
-				<view class="title">单价:</view>
-				<input placeholder="请输入单价" name="input" value=""></input>
-				<view class="title">个数:</view>
-				<input placeholder="请输入个数" name="input" value=""></input>
-			</view>
-			<view class="cu-form-group">
-				<view class="title">宽度:</view>
-				<input placeholder="请输入宽度" name="input" value=""></input>
-				<view class="title">克重:</view>
-				<input placeholder="请输入克重" name="input" value=""></input>
-			</view>
-			<view class="cu-form-group">
-				<view class="title">条数:</view>
-				<input placeholder="请输入条数" name="input" value=""></input>
-				<view class="title">长度:</view>
-				<input placeholder="请输入长度" name="input" value=""></input>
+
+			<view class="detail-item" v-for="(goods,key) in order.goodsList" :key="key">
+				<view class="cu-form-group  margin-top">
+					<view class="title">销售类型:</view>
+					<picker @change="PickerChange" :value="index" :range="picker">
+						<view class="picker">
+							{{key === 0 ? '按重量销售': '按条数销售'}}
+						</view>
+					</picker>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">品种:</view>
+					<picker @change="PickerChange" :value="index" :range="picker">
+						<view class="picker">
+							{{index>-1?picker[index]:'增白'}}
+						</view>
+					</picker>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">要求:</view>
+					<input placeholder="请输入要求" name="input" value=""></input>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">单价:</view>
+					<input placeholder="请输入单价" name="input" value=""></input>
+					<view class="title">个数:</view>
+					<input placeholder="请输入个数" name="input" value=""></input>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">宽度:</view>
+					<input placeholder="请输入宽度" name="input" value=""></input>
+					<view class="title">克重:</view>
+					<input placeholder="请输入克重" name="input" value=""></input>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">条数:</view>
+					<input placeholder="请输入条数" name="input" value=""></input>
+					<view class="title">长度:</view>
+					<input placeholder="请输入长度" name="input" value=""></input>
+				</view>
 			</view>
 
 			<view class="cu-form-group margin-top">
@@ -148,14 +151,18 @@
 				numList: [{
 					name: '创建'
 				}, {
-					name: '审核'
+					name: '审核中'
 				}, {
-					name: '完成'
+					name: '出库'
 				}, {
 					name: '结束'
 				}, ],
 				order: {
 					createDate: '2018-12-25',
+					goodsList: [{},
+						{},
+						{}
+					]
 				},
 				region: ['浙江省', '温州市', '鹿城区'],
 			}

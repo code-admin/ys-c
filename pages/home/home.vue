@@ -36,7 +36,24 @@
 					</view>
 				</view>
 			</view>
-			<view class="cu-tabbar-height"></view>
+			<view class="cu-bar bg-white solid-bottom">
+				<view class="action">
+					<text class="cuIcon-titles text-green"></text> 个人中心
+				</view>
+			</view>
+			<view class="cu-card case no-card">
+				<view class="cu-item shadow pt30">
+					<view class="nav-list">
+						<view hover-class="none" class="nav-li" navigateTo :class="'bg-'+item.color" @click="NavChange" :style="[{animation: 'show ' + ((index+1)*0.2+1) + 's 1'}]"
+						 v-for="(item,index) in elements3" :key="index" :data-cur="item.page">
+							<view class="nav-title">{{item.title}}</view>
+							<view class="nav-name">{{item.name}}</view>
+							<text :class="'cuIcon-' + item.cuIcon"></text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- <view class="cu-tabbar-height"></view> -->
 		</scroll-view>
 	</view>
 </template>
@@ -77,7 +94,7 @@
 						name: '销售账单',
 						color: 'mauve',
 						cuIcon: 'refund',
-						page: '/pages/home/bill'
+						page: '/pages/home/bill/bill'
 					}
 				],
 				elements2: [{
@@ -92,16 +109,37 @@
 						name: '成品加工计算',
 						color: 'brown',
 						cuIcon: 'edit',
-						page: '/pages/home/compute'
+						page: '/pages/home/compute/compute'
+					}
+				],
+				elements3: [{
+						title: '我的',
+						name: '个人信息',
+						color: 'olive',
+						cuIcon: 'my',
+						page: '/pages/login/login'
+					},
+					{
+						title: '帮助',
+						name: '联系客服',
+						color: 'green',
+						cuIcon: 'service',
+						page: ''
 					}
 				]
 			}
 		},
 		methods: {
 			NavChange(e) {
-				uni.navigateTo({
-					url: e.currentTarget.dataset.cur
-				})
+				if (!e.currentTarget.dataset.cur) {
+					uni.makePhoneCall({
+						phoneNumber: '10086' //仅为示例
+					});
+				} else {
+					uni.navigateTo({
+						url: e.currentTarget.dataset.cur
+					})
+				}
 			}
 		}
 	}

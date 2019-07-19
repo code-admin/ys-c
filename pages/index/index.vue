@@ -12,7 +12,7 @@
 		<user v-if="PageCur==='user'"></user>
 
 		<!-- 底部导航栏 -->
-		<view class="cu-bar tabbar bg-white shadow foot">
+		<!-- <view class="cu-bar tabbar bg-white shadow foot">
 			<view class="action" @click="NavChange" data-cur="home">
 				<view :class="PageCur=='home'?'text-green':'text-gray'">
 					<view class="cuIcon-homefill"></view> 首页
@@ -24,7 +24,7 @@
 					<view class="cuIcon-myfill"></view>我的
 				</view>
 			</view>
-		</view>
+		</view> -->
 
 	</view>
 </template>
