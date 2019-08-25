@@ -2,12 +2,12 @@
 	<view>
 		<view class="cu-bar bg-white solid-bottom">
 			<view class="action">
-				<text class="cuIcon-title text-red"></text>产品外袋基本计价
+				<text class="cuIcon-title text-red"></text>计算单价
 			</view>
 		</view>
 		<form>
 			<view class="cu-form-group">
-				<view class="title">材质:</view>
+				<view class="title">品种:</view>
 				<picker @change="materialChange" :value="material" :range="materials">
 					<view class="picker">
 						{{materials[material]}}
@@ -15,10 +15,10 @@
 				</picker>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">片布长:</view>
-				<input type="digit" placeholder="片布长(cm)" name="input" v-model="length"></input>
-				<view class="title">片布宽:</view>
+				<view class="title">宽度:</view>
 				<input type="digit" placeholder="片布宽(cm)" name="input" v-model="width"></input>
+				<view class="title">长度:</view>
+				<input type="digit" placeholder="片布长(cm)" name="input" v-model="length"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">克重:</view>

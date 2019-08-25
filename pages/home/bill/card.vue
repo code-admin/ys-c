@@ -23,24 +23,24 @@
 						</view>
 					</view>
 					<view class="flex align-center margin-top-xs">
-						<view class="padding-right-xs text-grey">长(cm):</view>
-						<view class="padding-right-xl text-red">79</view>
-						<view class="padding-right-xs text-grey">宽(cm):</view>
-						<view class="padding-right-xl text-red">30</view>
-						<view class="padding-right-xs text-grey">克重(g):</view>
-						<view class="padding-right-xl text-red">65</view>
-						<view class="padding-right-xs text-grey">条数:</view>
-						<view class="padding-right-xs text-red">--</view>
+						<view class="text-grey">宽(cm):</view>
+						<view class="margin-right-lg text-red"> 30</view>
+						<view class="text-grey">长(cm):</view>
+						<view class="margin-right-lg text-red"> 79</view>
+						<view class="text-grey">克重(g):</view>
+						<view class="margin-right-lg text-red"> 65</view>
+						<view class="text-grey">条数:</view>
+						<view class="text-red">--</view>
 					</view>
 					<view class="flex align-center margin-top-xs">
 						<view class="padding-right-xs text-grey">重量:</view>
-						<view class="padding-right-xl text-red">96</view>
+						<view class="margin-right-lg text-red"> 96</view>
 						<view class="padding-right-xs text-grey">个数:</view>
-						<view class="padding-right-xs text-red">1</view>
+						<view class="padding-right-xs text-red"> 1</view>
 					</view>
 					<view class="flex align-center margin-top-xs">
 						<view class="padding-right-xs text-grey">要求:</view>
-						<view class="padding-right-xs text-red">--</view>
+						<view class="padding-right-xs text-red"> --</view>
 					</view>
 					<view class="flex align-center margin-top-xs">
 						<view class="padding-right-xs text-grey">备注:</view>

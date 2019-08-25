@@ -30,17 +30,17 @@
 				<view class="title">下单人员:</view>
 				<input placeholder="请输入下单人员" name="input" value="章细花"></input>
 			</view>
+			<view class="cu-form-group">
+				<view class="title">销售类型:</view>
+				<picker @change="PickerChange" :value="index" :range="picker">
+					<view class="picker">
+						{{'按重量'}}
+					</view>
+				</picker>
+			</view>
 
 			<view class="detail-item" v-for="(goods,key) in order.goodsList" :key="key">
-				<view class="cu-form-group  margin-top">
-					<view class="title">销售类型:</view>
-					<picker @change="PickerChange" :value="index" :range="picker">
-						<view class="picker">
-							{{key === 0 ? '按重量销售': '按条数销售'}}
-						</view>
-					</picker>
-				</view>
-				<view class="cu-form-group">
+				<view class="cu-form-group margin-top">
 					<view class="title">品种:</view>
 					<picker @change="PickerChange" :value="index" :range="picker">
 						<view class="picker">
@@ -53,24 +53,29 @@
 					<input placeholder="请输入要求" name="input" value=""></input>
 				</view>
 				<view class="cu-form-group">
-					<view class="title">单价:</view>
-					<input placeholder="请输入单价" name="input" value=""></input>
-					<view class="title">个数:</view>
-					<input placeholder="请输入个数" name="input" value=""></input>
-				</view>
-				<view class="cu-form-group">
 					<view class="title">宽度:</view>
 					<input placeholder="请输入宽度" name="input" value=""></input>
 					<view class="title">克重:</view>
 					<input placeholder="请输入克重" name="input" value=""></input>
 				</view>
 				<view class="cu-form-group">
-					<view class="title">条数:</view>
-					<input placeholder="请输入条数" name="input" value=""></input>
+					<view class="title">个数:</view>
+					<input placeholder="请输入个数" name="input" value=""></input>
+					<view class="title">单价:</view>
+					<input placeholder="请输入单价" name="input" value=""></input>
+				</view>
+				<!-- <view class="cu-form-group">
 					<view class="title">长度:</view>
 					<input placeholder="请输入长度" name="input" value=""></input>
-				</view>
+					<view class="title">数量:</view>
+					<input placeholder="请输入数量" name="input" value=""></input>
+				</view> -->
 			</view>
+			
+			
+			
+			
+			
 
 			<view class="cu-form-group margin-top">
 				<view class="title">发货方式:</view>

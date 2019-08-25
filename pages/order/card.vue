@@ -8,101 +8,56 @@
 						<view class="cu-tag light round bg-blue">创建</view>
 					</view>
 					<view class="padding">
-						<view class="flex justify-start">
-							<view class="padding-right-xs text-grey">下单人:</view>
-							<view class="text-center text-shadow">章细花</view>
-						</view>
-						<view class="flex justify-between margin-top">
-							<view>
-								<view class="flex justify-start align-center">
-									<view class="padding-right-xs text-grey">下单类型:</view>
-									<view class="padding-right-xl line-blue">按重量销售</view>
-									<view class="cu-tag light round bg-cyan sm">一级增白</view>
-								</view>
-							</view>
-							<view>
-								<view class="text-price text-red text-right">
-									80.00
-								</view>
-								<view class="text-grey text-right">
-									x 1
-								</view>
-							</view>
-						</view>
-						<view class="flex align-center margin-top-xs">
-							<view class="text-grey">长(cm):</view>
-							<view class="padding-right-lg text-red">120</view>
-							<view class="text-grey">宽(cm):</view>
-							<view class="padding-right-lg text-red">60</view>
-							<view class="text-grey">克重(g):</view>
-							<view class="padding-right-lg text-red">65</view>
-							<view class="text-grey">重量:</view>
-							<view class="text-red">1201</view>
-						</view>
-					</view>
-
-
-
-					<view class="padding">
 						<view class="flex justify-between">
-							<view>
+							<view class="flex justify-start">
+								<view class="padding-right-xs text-grey">下单人:</view>
+								<view class="text-center text-shadow">章细花</view>
+							</view>
+							<view class="line-blue">按重量</view>
+						</view>
+
+						<view class="">
+							<view class="margin-top">
 								<view class="flex justify-start align-center">
-									<view class="padding-right-xs text-grey">下单类型:</view>
-									<view class="padding-right-xl line-cyan">按条数销售</view>
-									<view class="cu-tag light round bg-cyan sm">增白</view>
+									<view class="padding-right-xs text-grey">品种:</view>
+									<view class="cu-tag light round bg-cyan sm margin-right-xl">增白</view>
+									<view class="padding-right-xs text-grey">要求:</view>
+									<view class="padding-right-lg text-red">密</view>
 								</view>
 							</view>
-							<view>
-								<view class="text-price text-red text-right">
-									90.00
-								</view>
-								<view class="text-grey text-right">
-									x 1
-								</view>
+							<view class="flex align-center margin-top-xs">
+								<view class="text-grey">宽度(cm):</view>
+								<view class="margin-right-lg text-red">50</view>
+								<view class="text-grey">克重(g):</view>
+								<view class="margin-right-lg text-red">80</view>
+								<view class="text-grey">个数:</view>
+								<view class="margin-right-lg text-red">8</view>
+								<view class="text-grey">单价:</view>
+								<view class="text-red"> 9900</view>
 							</view>
 						</view>
-						<view class="flex align-center margin-top-xs">
-							<view class="text-grey">长(cm):</view>
-							<view class="padding-right-lg text-red">135</view>
-							<view class="text-grey">宽(cm):</view>
-							<view class="padding-right-lg text-red">70</view>
-							<view class="text-grey">克重(g):</view>
-							<view class="padding-right-lg text-red">67</view>
-							<view class="text-grey">条数:</view>
-							<view class="padding-right-xs text-red">1200</view>
+						<view class="solid-dotted margin-top padding-top-xs">
+							<view class="margin-top-xs">
+								<view class="flex justify-start align-center">
+									<view class="padding-right-xs text-grey">品种:</view>
+									<view class="cu-tag light round bg-cyan sm margin-right-xl">一级白</view>
+									<view class="padding-right-xs text-grey">要求:</view>
+									<view class="padding-right-lg text-red">/</view>
+								</view>
+							</view>
+							<view class="flex align-center margin-top-xs">
+								<view class="text-grey">宽度(cm):</view>
+								<view class="margin-right-lg text-red"> 55</view>
+								<view class="text-grey">克重(g):</view>
+								<view class="margin-right-lg text-red"> 70</view>
+								<view class="text-grey">个数:</view>
+								<view class="margin-right-lg text-red"> 9</view>
+								<view class="text-grey">单价:</view>
+								<view class="text-red"> 9100</view>
+							</view>
 						</view>
 					</view>
 
-					<view class="padding">
-						<view class="flex justify-between">
-							<view>
-								<view class="flex justify-start align-center">
-									<view class="padding-right-xs text-grey">下单类型:</view>
-									<view class="padding-right-xl line-cyan">按条数销售</view>
-									<view class="cu-tag light round blue sm">一级增白</view>
-								</view>
-							</view>
-							<view>
-								<view class="text-price text-red text-right">
-									110.00
-								</view>
-								<view class="text-grey text-right">
-									x 1
-								</view>
-							</view>
-						</view>
-						<view class="flex align-center margin-top-xs">
-							<view class="text-grey">长(cm):</view>
-							<view class="padding-right-lg text-red">123</view>
-							<view class="text-grey">宽(cm):</view>
-							<view class="padding-right-lg text-red">68</view>
-							<view class="text-grey">克重(g):</view>
-							<view class="padding-right-lg text-red">66</view>
-							<view class="text-grey">条数:</view>
-							<view class="padding-right-xs text-red">1200</view>
-						</view>
-					</view>
-					
 					<view class="flex solid-top padding justify-between align-center">
 						<view class="text-cut lighttext-blue"><text class="cuIcon-countdown padding-right-xs text-orange"></text>2017-11-30
 							10:13:22</view>
@@ -131,5 +86,8 @@
 <style>
 	.order-code {
 		line-height: 28upx;
+	}
+	.solid-dotted{
+		border-top: 1upx dotted rgba(0, 0, 0, 0.1);
 	}
 </style>
