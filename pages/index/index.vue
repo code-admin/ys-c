@@ -66,7 +66,6 @@
 				    if (res.code) {
 					  console.log('获取临时的code:',res.code);
 					  // 获取通过 code openid & session_key
-					  // uni.request({})
 					  this.code2Session(res.code)
 				    } else {
 				      console.log('登录失败！' + res.errMsg)
@@ -75,19 +74,11 @@
 				})
 			},
 			code2Session(code){
-				// wx.request({
-				// 	url: `https://api.weixin.qq.com/sns/jscode2session?appid=wx597ea283da1328db&secret=e250c8c0c550975222149a1dd5cf0503&js_code=${code}&grant_type=authorization_code`,
-				// 	success: res =>{
-				// 		console.log('返回数据:',res.data);
-				// 	}
-				// })
-				
-				uni.request({
-					url: `https://api.weixin.qq.com/sns/jscode2session?appid=wx597ea283da1328db&secret=e250c8c0c550975222149a1dd5cf0503&js_code=${code}&grant_type=authorization_code`,
-					method: 'GET',
-					success:res =>{
-						console.log(res.data);
-					}
+				this.$request.get({
+					url: `v2/sso/code2Session?code=${code}`,
+					loadingTip: '接口请求中...'
+					}).then(res => {
+					console.log('返回的数据',res);
 				})
 			},
 			NavChange: function(e) {
