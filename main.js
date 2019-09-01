@@ -8,7 +8,7 @@ baseUrl = '/yase-miniprogram/'
 // #endif
 request.setConfig({   
 	baseUrl: baseUrl,
-	debug: false,
+	debug: true,
 })
 // 请求拦截
 request.interceptor.request = (config => {
@@ -18,7 +18,7 @@ request.interceptor.request = (config => {
 	}    
 	// 给header添加全局请求参数token    
 	if (!config.header.token) {
-		config.header.token = uni.getStorageSync("sessionKey");
+		config.header['YS-USER-TOKEN-ID'] = uni.getStorageSync("sessionKey");
 	}   
 	// 添加一个自定义的参数，默认异常请求都弹出一个toast提示    
 	if (config.toastError === undefined) {
@@ -35,7 +35,7 @@ request.interceptor.response = ((res, config) => {
 		// token失效，需要重新登录 
 		console.log('正在跳转注册页面……');
 		uni.navigateTo({
-			url: '/pages/login/login',
+			url: '/pages/login/register',
 		})
 	} 
 	return res;
