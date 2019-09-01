@@ -136,9 +136,13 @@
 						phoneNumber: '10086' //仅为示例
 					});
 				} else {
-					uni.navigateTo({
-						url: e.currentTarget.dataset.cur
-					})
+					if(uni.getStorageSync("registerFlag")){
+						this.PageCur = e.currentTarget.dataset.cur
+					}else{
+						uni.navigateTo({
+							url: '/pages/login/register',
+						})
+					}
 				}
 			}
 		}
