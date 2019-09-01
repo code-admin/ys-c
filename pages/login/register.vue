@@ -19,7 +19,7 @@
 				<view class="margin padding-sm solid line-green round flex justify-start align-center">
 					<text class="lg text-grey cuIcon-lock padding-right margin-right solid-right"></text>
 					<input type="password" placeholder="请输入验证码" maxlength="30" v-model="user.smsCode" />
-					<button class="cu-btn bg-green" @click="sendSms" :disabled="countdown < 15">{{smsCodeText}}</button>
+					<button class="cu-btn bg-green" @click="sendSms" :disabled="countdown < 60">{{smsCodeText}}</button>
 				</view>
 
 				<view class="margin-sm padding-sm">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-	let countdownSeconds = 15;
+	let countdownSeconds = 60;
 	var WXBizDataCrypt = require('../../lib/datacrypt/datacrypt');
 	export default {
 		data() {
@@ -97,11 +97,20 @@
 				}).then(res => {
 					console.log(res);
 					this.loding = !this.loding;
-					if(res.code === 10000){
-						uni.navigateTo({
-							url: '/pages/index/index',
-						})
-					}
+					uni.showToast({
+						duration: 3000, 
+						title: res.message,
+						icon: res.code === 10000 ? "success": "none",
+						success: ()=> {
+							setTimeout(() =>{
+								if(res.code === 10000){
+									uni.navigateTo({
+										url: '/pages/index/index',
+									})
+								}
+							}, 1000);
+						}
+					})
 				})
 			}
 		}
