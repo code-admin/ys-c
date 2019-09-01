@@ -41,6 +41,10 @@
             "path" : "pages/login/login",
             "style" : {}
         }
+		,{
+		    "path" : "pages/login/register",
+		    "style" : {}
+		}
         ,{
             "path" : "pages/user/info/info",
             "style" : {}

@@ -9,7 +9,7 @@
 			<view class="h200 margin-xl flex justify-center logo">
 				<image src="http://6776615.s21i.faiusr.com/4/ABUIABAEGAAgqMGPxQUozqiK3gUwsQ84rQ8.png" class="png" mode="widthFix"></image>
 			</view>
-
+			
 			<view class="login">
 				<view class="margin padding-sm solid line-green round flex justify-start align-center">
 					<text class="lg text-grey cuIcon-mobile padding-right margin-right solid-right"></text>
@@ -22,7 +22,7 @@
 				</view>
 
 				<view class="margin-sm padding-sm">
-					<button :disabled="loding" class="cu-btn block bg-gradual-green margin-tb-sm lg round" @click="doLogin">
+					<button :disabled="loding" class="cu-btn block bg-gradual-green margin-tb-sm lg round" @click="doRegister">
 						<text v-if="loding" class="cuIcon-loading2 cuIconfont-spin"></text>注 册
 					</button>
 				</view>
@@ -49,11 +49,11 @@
 			
 		},
 		methods: {
-			doLogin() {
+			doRegister() {
 				this.loding = !this.loding
 				this.$request.post({
 					url:'/login/bindUser',
-					data:this.user
+					data:this.user,
 				}).then(res => {
 					console.log(res);
 					this.loding = !this.loding
