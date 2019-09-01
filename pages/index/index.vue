@@ -1,6 +1,5 @@
 <template>
 	<view>
-
 		<!-- <cu-custom bgColor="bg-gradual-blue">
 			<block slot="content">浙江亚设</block>
 		</cu-custom> -->
@@ -25,7 +24,6 @@
 				</view>
 			</view>
 		</view> -->
-
 	</view>
 </template>
 
@@ -50,7 +48,7 @@
 			// 检查是否过期
 			checkSession(){
 				wx.checkSession({
-				  success () {
+				  success (res) {
 				    //session_key 未过期，并且在本生命周期一直有效
 					console.log('session_key 未过期，并且在本生命周期一直有效');
 				  },
@@ -60,12 +58,12 @@
 				  }
 				})
 			},
+			// 获取通过 code openid & session_key
 			login(){
 				wx.login({
 				  success:res => {
 				    if (res.code) {
 					  console.log('获取临时的code:',res.code);
-					  // 获取通过 code openid & session_key
 					  this.code2Session(res.code)
 				    } else {
 				      console.log('登录失败！' + res.errMsg)
@@ -73,17 +71,35 @@
 				  }
 				})
 			},
+			// 通过code 获取 openId & sessionKey
 			code2Session(code){
 				this.$request.get({
 					url: `v2/sso/code2Session?code=${code}`,
 					loadingTip: '接口请求中...'
 					}).then(res => {
 					console.log('返回的数据',res);
+					// 设置本地缓存
+					uni.setStorageSync('openId', res.openId);
+					uni.setStorageSync('sessionKey', res.sessionKey);
+					uni.setStorageSync('registerFlag', res.registerFlag);
+					uni.setStorageSync('user',res.user);
+				})
+			},
+			// 业务登录
+			doLogin(openId){
+				this.$request.post({
+					url: `/login/login2`,
+					data:{openId},
+					loadingTip: '正在验证身份...'
+					}).then(res => {
+					console.log('返回的数据',res).catch(err => {
+						console.log('?????',err);
+					});
 				})
 			},
 			NavChange: function(e) {
 				this.PageCur = e.currentTarget.dataset.cur
-			}
+			},
 		}
 	}
 </script>
