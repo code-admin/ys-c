@@ -14,11 +14,12 @@
 				<view class="margin padding-sm solid line-green round flex justify-start align-center">
 					<text class="lg text-grey cuIcon-mobile padding-right margin-right solid-right"></text>
 					<input type="text" placeholder="请输入手机号码" maxlength="30" v-model="user.phone" />
-					<button class="cu-btn bg-green">验 证 码</button>
+					<button class="cu-btn bg-green" open-type="getPhoneNumber" @getphonenumber="fillMobile">获取手机号</button>
 				</view>
 				<view class="margin padding-sm solid line-green round flex justify-start align-center">
 					<text class="lg text-grey cuIcon-lock padding-right margin-right solid-right"></text>
 					<input type="password" placeholder="请输入验证码" maxlength="30" v-model="user.smsCode" />
+					<button class="cu-btn bg-green" @click="sendSms" :disabled="countdown < 15">{{smsCodeText}}</button>
 				</view>
 
 				<view class="margin-sm padding-sm">
@@ -32,11 +33,13 @@
 </template>
 
 <script>
+	let countdownSeconds = 15;
+	var WXBizDataCrypt = require('../../lib/datacrypt/datacrypt');
 	export default {
 		data() {
 			return {
-				btt:'验 证 码',
-				checkCode:true,
+				countdown: countdownSeconds,
+				smsCodeText:'发送验证码',
 				user: {
 					openId:uni.getStorageSync('openId'),
 					phone:null,
@@ -45,21 +48,62 @@
 				loding: false
 			}
 		},
-		mounted(){
-			
-		},
 		methods: {
+			fillMobile(e){
+				var appId = 'wx597ea283da1328db';
+				let {encryptedData, iv} = e.detail;
+				let sessionKey = uni.getStorageSync('sessionKey');
+				var pc = new WXBizDataCrypt(appId, sessionKey);
+				var data = pc.decryptData(encryptedData , iv);
+				console.log('DataCrypt content: ', data);
+				if (data) {
+					this.user.phone = data.phoneNumber;
+				}
+			},
+			sendSms() {
+				if(this.user.phone == null){
+					uni.showToast({
+						mask: true,
+						icon: "none",
+						title: "请输入验证码"
+					})
+					return;
+				}
+				this.settingCodeText();
+				this.$request.post({
+					url: '/login/sendMessage/'+ this.user.phone
+				}).then(res => {
+					console.log(res);
+					uni.showToast({
+						icon: res.code === 10000 ? "success": "none",
+						title: res.message
+					})
+				})
+			},
+			settingCodeText(){
+				this.countdown--
+				if(this.countdown > 0){
+					setTimeout(this.settingCodeText,1000);
+				} else {
+					this.countdown = countdownSeconds;
+				}
+				this.smsCodeText = this.countdown == countdownSeconds ? "发送验证码" : this.countdown + " 秒后可用"
+			},
 			doRegister() {
 				this.loding = !this.loding
 				this.$request.post({
 					url:'/login/bindUser',
-					data:this.user,
+					data: this.user,
 				}).then(res => {
 					console.log(res);
-					this.loding = !this.loding
+					this.loding = !this.loding;
+					if(res.code === 10000){
+						uni.navigateTo({
+							url: '/pages/index/index',
+						})
+					}
 				})
 			}
-			
 		}
 	}
 </script>
