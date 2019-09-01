@@ -1,2 +1,0 @@
-setCssToHead([".",[1],"h300.",[1],"data-v-7ac9d508 { height: ",[0,300],"; }\n.",[1],"h80.",[1],"data-v-7ac9d508 { height: ",[0,80],"; }\n",],undefined,{path:"./pages/user/info/info.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/user/info/info.wxml') } }));

@@ -1,2 +1,0 @@
-setCssToHead([".",[1],"page.",[1],"data-v-3a2e77e0 { height: 100vh; }\n.",[1],"page .",[1],"h200.",[1],"data-v-3a2e77e0 { height: ",[0,200],"; }\n.",[1],"page .",[1],"logo wx-image.",[1],"data-v-3a2e77e0 { width: ",[0,200],"; height: ",[0,200],"; }\n",],undefined,{path:"./pages/login/login.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/login/login.wxml') } }));
