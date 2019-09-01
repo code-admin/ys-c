@@ -117,7 +117,7 @@
 						name: '个人信息',
 						color: 'olive',
 						cuIcon: 'my',
-						page: '/pages/login/login'
+						page: '/pages/user/info/info'
 					},
 					{
 						title: '帮助',
