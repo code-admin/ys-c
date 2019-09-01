@@ -65,7 +65,7 @@
 					uni.showToast({
 						mask: true,
 						icon: "none",
-						title: "请输入验证码"
+						title: "请输入手机号码"
 					})
 					return;
 				}
