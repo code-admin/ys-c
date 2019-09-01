@@ -71,13 +71,14 @@
 				}
 				this.settingCodeText();
 				this.$request.post({
-					url: '/login/sendMessage/'+ this.user.phone
-				}).then(res => {
-					console.log(res);
-					uni.showToast({
-						icon: res.code === 10000 ? "success": "none",
-						title: res.message
-					})
+					url: '/login/sendMessage/'+ this.user.phone,
+					success: res => {
+						console.log(res);
+						uni.showToast({
+							icon: res.code === 10000 ? "success": "none",
+							title: res.message
+						})
+					}
 				})
 			},
 			settingCodeText(){
@@ -94,24 +95,25 @@
 				this.$request.post({
 					url:'/login/bindUser',
 					data: this.user,
-				}).then(res => {
-					console.log(res);
-					this.loding = !this.loding;
-					uni.showToast({
-						duration: 3000, 
-						title: res.message,
-						icon: res.code === 10000 ? "success": "none",
-						success: ()=> {
-							setTimeout(() =>{
-								if(res.code === 10000){
-									uni.navigateTo({
-										url: '/pages/index/index',
-									})
-								}
-							}, 1000);
-						}
-					})
-				})
+					success: res => {
+						console.log(res);
+						this.loding = !this.loding;
+						uni.showToast({
+							duration: 3000, 
+							title: res.message,
+							icon: res.code === 10000 ? "success": "none",
+							success: ()=> {
+								setTimeout(() =>{
+									if(res.code === 10000){
+										uni.navigateTo({
+											url: '/pages/index/index',
+										})
+									}
+								}, 1000);
+							}
+						})
+					}
+				});
 			}
 		}
 	}
