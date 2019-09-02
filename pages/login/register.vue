@@ -18,7 +18,7 @@
 				</view>
 				<view class="margin padding-sm solid line-green round flex justify-start align-center">
 					<text class="lg text-grey cuIcon-lock padding-right margin-right solid-right"></text>
-					<input type="password" placeholder="请输入验证码" maxlength="30" v-model="user.smsCode" />
+					<input type="text" placeholder="请输入验证码" maxlength="30" v-model="user.smsCode" />
 					<button class="cu-btn bg-green" @click="sendSms" :disabled="countdown < 60">{{smsCodeText}}</button>
 				</view>
 
