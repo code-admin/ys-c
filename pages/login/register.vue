@@ -52,22 +52,19 @@
 			fillMobile(e){
 				var appId = 'wx597ea283da1328db';
 				let {encryptedData, iv} = e.detail;
-				let sessionKey = uni.getStorageSync('sessionKey');
-				var pc = new WXBizDataCrypt(appId, sessionKey);
-				var data = pc.decryptData(encryptedData , iv);
-				console.log('DataCrypt content: ', data);
-				if (data) {
-					this.user.phone = data.phoneNumber;
+				if(encryptedData) {
+					let sessionKey = uni.getStorageSync('sessionKey');
+					var pc = new WXBizDataCrypt(appId, sessionKey);
+					var data = pc.decryptData(encryptedData , iv);
+					console.log('DataCrypt content: ', data);
+					if (data) {
+						this.user.phone = data.phoneNumber;
+					}
 				}
 			},
 			sendSms() {
 				if(this.user.phone == null){
-					uni.showToast({
-						mask: true,
-						icon: "none",
-						title: "请输入手机号码"
-					})
-					return;
+					return uni.showToast({ icon: "none", title: "请输入手机号码" });
 				}
 				this.settingCodeText();
 				this.$request.post({
@@ -91,6 +88,9 @@
 				this.smsCodeText = this.countdown == countdownSeconds ? "发送验证码" : this.countdown + " 秒后可用"
 			},
 			doRegister() {
+				if(this.user.phone == null || this.user.smsCode == null) {
+					return uni.showToast({ icon: "none", title: "请填写完整信息" });
+				}
 				this.loding = !this.loding
 				this.$request.post({
 					url:'/login/bindUser',
