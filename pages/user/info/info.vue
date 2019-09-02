@@ -12,7 +12,7 @@
 			</view>
 			<view class="flex justify-center text-xl text-bold">{{userInfo.userName}}</view>
 			<view class="flex justify-center margin-top">{{userInfo.phone}}</view>
-			<button class="flex justify-center margin-top primary basis-xs syncinfo cu-btn" open-type="getUserInfo" @getuserinfo="getUserInfo">获取个人信息</button>
+			<button class="flex margin-top syncinfo cu-btn shadow bg-olive" open-type="getUserInfo" @getuserinfo="getUserInfo">获取个人信息</button>
 			<view class="h80"></view>
 		</view>
 
@@ -21,18 +21,18 @@
 				<text class="cuIcon-title text-orange"></text> 基本信息
 			</view>
 			<view class="action">
-				<button class="cu-btn bg-green shadow" @tap="showModal" data-target="menuModal">修改</button>
+				<navigator class="cu-btn bg-green shadow modifyNav" url="/pages/user/info/modify">修改</navigator>
 			</view>
 		</view>
 
 		<view class="cu-list menu card-menu margin-top margin-bottom-xl shadow-lg radius">
-			<view class="cu-item " @click="HandAuth">
+			<view class="cu-item ">
 				<view class="content">
 					<text class="text-green">真实姓名：</text>
 					<text class="text-grey">{{userInfo.userName}} </text>
 				</view>
 			</view>
-			<view class="cu-item " @click="HandAuth">
+			<view class="cu-item ">
 				<view class="content">
 					<text class="text-green">等&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：</text>
 					<text class="cuIcon-vip text-orange"></text>
@@ -49,9 +49,11 @@
 			<view class="cu-item">
 				<view class="content">
 					<text class="text-green">公司名称：</text>
-					<text class="text-cut text-grey padding-right-sl margin-right">{{userInfo.companyName || " -- "}}</text>
-					<text class="cu-tag line-green sm" v-if="userInfo.authStatus == 1">已认证</text>
-					<text class="cu-tag line-gray sm" v-else>未认证</text>
+					<text class="text-grey padding-right-sl">{{userInfo.companyName || ""}}</text>
+					<block v-if="userInfo.companyName">
+						<text class="cu-tag line-green sm margin-top-xs" v-if="userInfo.authStatus == 1">已认证</text>
+						<text class="cu-tag line-gray sm margin-top-xs" v-else>未认证</text>
+					</block>
 				</view>
 			</view>
 		</view>
@@ -88,6 +90,10 @@
 					data: this.userInfo,
 				}).then(res => {
 					console.log(res);
+					uni.showToast({
+						title: res.message,
+						icon: res.code === 10000 ? "" : "none"
+					})
 				})
 			}
 		},
@@ -116,7 +122,10 @@
 		
 		.text-green {
 			display: flex;
-			width: 75px;
+			min-width: 75px;
 		}
+	}
+	.modifyNav {
+		border-radius: 5px;
 	}
 </style>

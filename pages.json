@@ -49,6 +49,10 @@
             "path" : "pages/user/info/info",
             "style" : {}
         }
+        ,{
+            "path" : "pages/user/info/modify",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"mp-alipay": {
