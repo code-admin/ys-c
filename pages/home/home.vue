@@ -131,13 +131,16 @@
 		},
 		methods: {
 			NavChange(e) {
-				if (!e.currentTarget.dataset.cur) {
+				const url = e.currentTarget.dataset.cur
+				if (!url) {
 					uni.makePhoneCall({
 						phoneNumber: '10086' //仅为示例
 					});
 				} else {
 					if(uni.getStorageSync("registerFlag")){
-						this.PageCur = e.currentTarget.dataset.cur
+						console.log('正在跳转',url);
+						// this.PageCur = url
+						uni.navigateTo({url: url})
 					}else{
 						uni.navigateTo({
 							url: '/pages/login/register',
