@@ -6,10 +6,13 @@
 				<block slot="content">个人信息</block>
 			</cu-custom>
 			<view class="margin-xl flex justify-center">
-				<view class="cu-avatar xl round margin-left" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg);"></view>
+				<view class="cu-avatar xl round margin-left" v-if="userInfo == null || userInfo.avatar == null" 
+				style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg);"></view>
+				<view class="cu-avatar xl round margin-left" v-else :style="'background-image:url('+userInfo.avatar+');'"></view>
 			</view>
-			<view class="flex justify-center text-xl text-bold">卓钧</view>
-			<view class="flex justify-center margin-top">188 6210 8369</view>
+			<view class="flex justify-center text-xl text-bold">{{userInfo.userName}}</view>
+			<view class="flex justify-center margin-top">{{userInfo.phone}}</view>
+			<button class="flex justify-center margin-top primary basis-xs syncinfo cu-btn" open-type="getUserInfo" @getuserinfo="getUserInfo">获取个人信息</button>
 			<view class="h80"></view>
 		</view>
 
@@ -24,30 +27,32 @@
 
 		<view class="cu-list menu card-menu margin-top margin-bottom-xl shadow-lg radius">
 			<view class="cu-item " @click="HandAuth">
-				<view class="content" bindtap="CopyLink" data-link="https://github.com/weilanwl/ColorUI">
+				<view class="content">
 					<text class="text-green">真实姓名：</text>
-					<text class="text-grey">卓军</text>
+					<text class="text-grey">{{userInfo.userName}} </text>
 				</view>
 			</view>
 			<view class="cu-item " @click="HandAuth">
-				<view class="content" bindtap="CopyLink" data-link="https://github.com/weilanwl/ColorUI">
-					<text class="text-green">等级：</text>
+				<view class="content">
+					<text class="text-green">等&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：</text>
 					<text class="cuIcon-vip text-orange"></text>
-					<text class="cu-tag round line-orange">超级客户</text>
+					<text class="cu-tag round line-orange" v-if="id2corp">超级客户</text>
+					<text class="cu-tag round line-gray" v-else>VIP客户</text>
 				</view>
 			</view>
 			<view class="cu-item">
-				<navigator class="content" url="/pages/about/about/about" hover-class="none">
-					<text class="text-green">手机号：</text>
-					<text class="text-grey">18862108369</text>
-				</navigator>
+				<view class="content">
+					<text class="text-green">手机号码：</text>
+					<text class="text-grey">{{userInfo.phone}}</text>
+				</view>
 			</view>
 			<view class="cu-item">
-				<navigator class="content" url="/pages/about/log/log" hover-class="none">
+				<view class="content">
 					<text class="text-green">公司名称：</text>
-					<text class="text-cut text-grey padding-right-sl">上海契通物联网科技有限公司</text>
-					<text class="cu-tag line-green sm">已认证</text>
-				</navigator>
+					<text class="text-cut text-grey padding-right-sl margin-right">{{userInfo.companyName || " -- "}}</text>
+					<text class="cu-tag line-green sm" v-if="userInfo.authStatus == 1">已认证</text>
+					<text class="cu-tag line-gray sm" v-else>未认证</text>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -57,11 +62,39 @@
 	export default {
 		data() {
 			return {
-
+				userInfo: uni.getStorageSync("user")
 			}
 		},
+		created() {
+			this.$request.post({
+				url: "/user/getUserBySessionKey",
+			}).then(res => {
+				if(res.code === 10000){
+					this.userInfo = res.data;
+				}
+			})
+		},
 		methods: {
-
+			getUserInfo(e){
+				if(!e.detail) return;
+				let info = e.detail.userInfo;
+				this.userInfo.avatar = info.avatarUrl;
+				this.userInfo.userName = info.nickName;
+				this.userInfo.gender = info.gender;
+				console.log("e", e.detail);
+				console.log(this.userInfo)
+				this.$request.post({
+					url: "/user/saveUser",
+					data: this.userInfo,
+				}).then(res => {
+					console.log(res);
+				})
+			}
+		},
+		computed: {
+			id2corp() {
+				return (this.userInfo && this.userInfo.companyName && this.userInfo.identityCard);
+			}
 		}
 	}
 </script>
@@ -73,5 +106,17 @@
 
 	.h80 {
 		height: 80upx;
+	}
+	.syncinfo {
+		margin: 15px auto 2px;
+		width: 140px;
+	}
+	.content{
+		display: flex;
+		
+		.text-green {
+			display: flex;
+			width: 75px;
+		}
 	}
 </style>
