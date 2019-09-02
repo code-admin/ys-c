@@ -8,7 +8,7 @@ baseUrl = '/yase-miniprogram/'
 // #endif
 request.setConfig({   
 	baseUrl: baseUrl,
-	debug: true,
+	debug: false,
 })
 // 请求拦截
 request.interceptor.request = (config => {
