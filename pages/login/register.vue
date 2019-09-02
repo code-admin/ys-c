@@ -68,14 +68,18 @@
 				}
 				this.settingCodeText();
 				this.$request.post({
-					url: '/login/sendMessage/'+ this.user.phone,
-					success: res => {
-						console.log(res);
-						uni.showToast({
-							icon: res.code === 10000 ? "success": "none",
-							title: res.message
-						})
+					url: '/login/sendMessage',
+					data:{
+						appId: 'YS_562614a2053a4b9f9d3946c1e4632636',
+						secretKey:	'YS_e5f543dd8365489c9f3426d9f715a8ca',
+						phone:	this.user.phone
 					}
+				}).then(res => {
+					console.log(res);
+					uni.showToast({
+						icon: res.code === 10000 ? "success": "none",
+						title: res.message
+					})
 				})
 			},
 			settingCodeText(){
@@ -94,25 +98,23 @@
 				this.loding = !this.loding
 				this.$request.post({
 					url:'/login/bindUser',
-					data: this.user,
-					success: res => {
-						console.log(res);
-						this.loding = !this.loding;
-						uni.showToast({
-							duration: 3000, 
-							title: res.message,
-							icon: res.code === 10000 ? "success": "none",
-							success: ()=> {
-								setTimeout(() =>{
-									if(res.code === 10000){
-										uni.navigateTo({
-											url: '/pages/index/index',
-										})
-									}
-								}, 1000);
-							}
-						})
-					}
+					data: this.user
+				}).then(res => {
+					this.loding = !this.loding;
+					uni.showToast({
+						duration: 3000, 
+						title: res.message,
+						icon: res.code === 10000 ? "success": "none",
+						success: ()=> {
+							setTimeout(() =>{
+								if(res.code === 10000){
+									uni.navigateTo({
+										url: '/pages/index/index',
+									})
+								}
+							}, 1000);
+						}
+					})
 				});
 			}
 		}

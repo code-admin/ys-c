@@ -63,24 +63,11 @@
 					url: `v2/sso/code2Session?code=${code}`,
 					loadingTip: '接口请求中...'
 					}).then(res => {
-					console.log('返回的数据',res);
 					// 设置本地缓存
-					uni.setStorageSync('openId', res.openId);
-					uni.setStorageSync('sessionKey', res.sessionKey);
-					uni.setStorageSync('registerFlag', res.registerFlag);
-					uni.setStorageSync('user',res.user);
-				})
-			},
-			// 业务登录
-			doLogin(openId){
-				this.$request.post({
-					url: `/login/login2`,
-					data:{openId},
-					loadingTip: '正在验证身份...'
-					}).then(res => {
-					console.log('返回的数据',res).catch(err => {
-						console.log('?????',err);
-					});
+					uni.setStorageSync('openId', res.data.openId);
+					uni.setStorageSync('sessionKey', res.data.sessionKey);
+					uni.setStorageSync('registerFlag', res.data.registerFlag);
+					uni.setStorageSync('user',res.data.user);
 				})
 			},
 			NavChange: function(e) {
