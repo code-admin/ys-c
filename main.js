@@ -31,12 +31,17 @@ request.interceptor.request = (config => {
 request.interceptor.response = ((res, config) => {
     if (res.code === 10000) {
 		res.success = true;    
-	} else if (res.code === 10001) {
+	}else if(res.code === 10001){
+		res.success = false;
+		uni.showToast({ icon: "none", title: res.message, duration: 2000})
+	}else if (res.code === 50000) {
 		// token失效，需要重新登录 
 		console.log('正在跳转注册页面……');
-		uni.navigateTo({
-			url: '/pages/login/register',
-		})
+		res.success = false;
+		uni.showToast({ icon: "none", title: res.message, duration: 2000})
+		// uni.navigateTo({
+		// 	url: '/pages/login/register',
+		// })
 	} 
 	return res;
 })
