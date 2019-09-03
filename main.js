@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 
 import request from './lib/j-request/request.js'
-var baseUrl = 'https://backend-dev.legendfly.site/yase-miniprogram/'
+var baseUrl = 'https://mini.api.melender.cn/yase-miniprogram/'
 // #ifdef H5
 baseUrl = '/yase-miniprogram/'
 // #endif
@@ -30,18 +30,9 @@ request.interceptor.request = (config => {
 // 全局的业务拦截
 request.interceptor.response = ((res, config) => {
     if (res.code === 10000) {
-		res.success = true;    
+		res.success = true;
 	}else if(res.code === 10001){
-		res.success = false;
 		uni.showToast({ icon: "none", title: res.message, duration: 2000})
-	}else if (res.code === 50000) {
-		// token失效，需要重新登录 
-		console.log('正在跳转注册页面……');
-		res.success = false;
-		uni.showToast({ icon: "none", title: res.message, duration: 2000})
-		// uni.navigateTo({
-		// 	url: '/pages/login/register',
-		// })
 	} 
 	return res;
 })

@@ -41,20 +41,18 @@
 			};
 		},
 		mounted(){
-			this.login()
-			// this.checkSession();
+			this.checkSession();
 		},
 		methods: {
 			checkSession(){
 				wx.checkSession({
-				  success:res => {
+				  success:() => {
 				    //session_key 未过期，并且在本生命周期一直有效
-					console.log(res);
-					console.log('未过期！');
-					console.log(uni.getStorageSync('sessionKey'));
+					console.log(uni.getStorageSync("sessionKey"));
 				  },
-				  fail () {
+				  fail: err => {
 				    // session_key 已经失效，需要重新执行登录流程
+					console.log(err);
 				    this.login() //重新登录
 				  }
 				})
@@ -76,7 +74,7 @@
 			code2Session(code){
 				this.$request.get({
 					url: `v2/sso/code2Session?code=${code}`,
-					loadingTip: '接口请求中...'
+					loadingTip: '正在获取身份验证...'
 					}).then(res => {
 					// 设置本地缓存
 					uni.setStorageSync('openId', res.data.openId);

@@ -34,7 +34,7 @@
 
 <script>
 	let countdownSeconds = 60;
-	var WXBizDataCrypt = require('../../lib/datacrypt/datacrypt');
+	const WXBizDataCrypt = require('../../lib/datacrypt/datacrypt');
 	export default {
 		data() {
 			return {
