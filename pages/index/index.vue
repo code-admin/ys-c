@@ -48,7 +48,17 @@
 				wx.checkSession({
 				  success:() => {
 				    //session_key 未过期，并且在本生命周期一直有效
-					console.log(uni.getStorageSync("sessionKey"));
+					console.log("Session key not expired", uni.getStorageSync("sessionKey"));
+					// 通过sessionKey获取用户，若超时则自动登录
+					this.$request.post({
+						toastError: false,
+						url: "/user/getUserBySessionKey",
+						fail: res => {
+							if(res.code === 50000) {
+								this.login();
+							}
+						}
+					});
 				  },
 				  fail: err => {
 				    // session_key 已经失效，需要重新执行登录流程
@@ -75,8 +85,9 @@
 				this.$request.get({
 					url: `v2/sso/code2Session?code=${code}`,
 					loadingTip: '正在获取身份验证...'
-					}).then(res => {
+				}).then(res => {
 					// 设置本地缓存
+					console.log(res.code, res.message);
 					uni.setStorageSync('openId', res.data.openId);
 					uni.setStorageSync('sessionKey', res.data.sessionKey);
 					uni.setStorageSync('registerFlag', res.data.registerFlag);

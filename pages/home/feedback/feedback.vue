@@ -12,7 +12,7 @@
 			</view>
 		</scroll-view>
 
-		<feedback-card v-for="(item,index) in feedbackList" :key="index"></feedback-card>
+		<feedback-card v-for="(item,index) in feedbackList" :key="index" :card="item"></feedback-card>
 	</view>
 </template>
 
@@ -34,9 +34,25 @@
 				feedbackList: [{}, {}, {}, {}]
 			}
 		},
+		created() {
+			this.getFeedbackList();
+		},
 		methods: {
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
+			},
+			getFeedbackList(){
+				this.$request.post({
+					url: "/feedback/getFeedBackList"
+				}).then(res => {
+					let feedbackList = res.data || [];
+					this.feedbackList = feedbackList.map(feed => {
+						if(feed.productDate != null) {
+							feed.productDate = feed.productDate.substr(0,10);
+						}
+						return feed;
+					});
+				})
 			}
 		}
 	}
@@ -45,5 +61,5 @@
 <style>
 page {
 		padding-top: 45px;
-	}
+}
 </style>

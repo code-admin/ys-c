@@ -42,7 +42,7 @@ request.interceptor.fail = ((res, config) => {
 	let ret = res;    let msg = ''
 	if (res.statusCode === 200) { 
 		// 业务错误 
-		msg = res.data.msg 
+		msg = res.data.message
 		ret = res.data
 	} else if (res.statusCode > 0) { 
 		// HTTP错误 
