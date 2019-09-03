@@ -5,16 +5,18 @@
 				<view class="cu-item shadow">
 					<view class="flex solid-bottom padding justify-between align-center">
 						<view class="text-cut text-black text-bold text-grey">{{card.questionName}}</view>
-						<view class="cu-tag light bg-orange">质量问题</view>
+						<view class="cu-tag light bg-orange">{{card.questionTypeName}}</view>
 					</view>
 					<view class="padding">
 
-						<view class="flex justify-between">
+						<view class="content flex justify-between">
 							<view>
 								<view class="flex justify-start align-center">
-									<view class="padding-right-xs text-grey">客户名称:</view>
-									<view class="padding-right-xl">{{card.customerName}}</view>
-									<view class=""><text class="cuIcon-dianhua padding-right-xs text-orange"></text>{{card.createBy}}</view>
+									<view class="padding-right-xs text-grey">客户名称</view>
+									<view class="padding-right-xs text-cut">{{card.customerName}}</view>
+									<view class="padding-right-xs">
+										<text class="cuIcon-dianhua padding-right-xs padding-left-xs text-orange"></text>{{card.createBy}}
+									</view>
 								</view>
 							</view>
 							<view>
@@ -23,21 +25,21 @@
 
 
 						<view class="flex align-center margin-top-xs">
-							<view class="padding-right-xs text-grey">机台号:</view>
+							<view class="padding-right-xs text-grey">机&nbsp;&nbsp;台&nbsp;&nbsp;号</view>
 							<view class="padding-right-xl text-red">{{card.deviceNo}}</view>
-							<view class="padding-right-xs text-grey">生产日期:</view>
-							<view class="padding-right-xl">{{card.productDate}}</view>
-							<view class="cu-tag light round bg-blue sm">一级增白</view>
+							<view class="padding-right-xs text-grey">生产日期</view>
+							<view>{{card.productDate}}</view>
+							<!-- <view class="cu-tag light round bg-blue sm">{{card.productTypeName}}</view> -->
 						</view>
 
 						<view class="flex align-center margin-top-xs">
-							<view class="padding-right-xs text-grey">宽度:</view>
+							<view class="padding-right-xs text-grey">宽&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度</view>
 							<view class="padding-right-xl text-red">{{card.width}}</view>
-							<view class="padding-right-xs text-grey">克重:</view>
+							<view class="padding-right-xs text-grey">克&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重</view>
 							<view class="padding-right-xs text-red">{{card.weight}}</view>
 						</view>
 						<view class="flex align-center margin-top-xs">
-							<view class="padding-right-xs text-grey">备注:</view>
+							<view class="padding-right-xs text-grey">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</view>
 							<view class="text-cut max-width550">{{card.remark}}</view>
 						</view>
 					</view>
@@ -73,9 +75,22 @@
 	.max-width550 {
 		width: 550upx;
 	}
+	view.flex.content{
+		display: flex;
+		&>view{
+			flex: 1;
+			flex-basis: 25%;
+		}
+	}
 	.cu-item {
 		.text-grey {
-			white-space: nowrap;
+			display: flex;
+			flex-basis: 65px;
+			white-space: nowrap;			
+			justify-content: space-between;
+			&+.padding-right-xl,&+.padding-right-xs{
+				min-width: 75px;
+			}
 		}
 	}
 </style>

@@ -6,13 +6,14 @@
 		</cu-custom>
 
 		<scroll-view scroll-x class="bg-white nav text-center fixed" :style="[{top:CustomBar + 'px'}]">
-			<view class="cu-item" :class="index==TabCur?'text-red cur':''" v-for="(item,index) in tabs" :key="index" @tap="tabSelect"
-			 :data-id="index">
+			<view class="cu-item" :class="index==TabCur?'text-red cur':''" v-for="(item,index) in tabs" 
+			:key="index" @tap="tabSelect" :data-id="index">
 				{{tabs[index]}}
 			</view>
 		</scroll-view>
 
 		<feedback-card v-for="(item,index) in feedbackList" :key="index" :card="item"></feedback-card>
+		<view class="no-feedback-data margin text-center text-gray" v-if="feedbackList.length == 0">暂无反馈信息</view>
 	</view>
 </template>
 
@@ -31,7 +32,11 @@
 					'待反馈',
 					'已反馈'
 				],
-				feedbackList: [{}, {}, {}, {}]
+				queryParams: {
+					pageIndex: 1,
+					status: null,
+				},
+				feedbackList: []
 			}
 		},
 		created() {
@@ -40,26 +45,24 @@
 		methods: {
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
+				
 			},
 			getFeedbackList(){
 				this.$request.post({
+					data: this.queryParams,
+					loadingTip: '正在获取数据...',
 					url: "/feedback/getFeedBackList"
 				}).then(res => {
-					let feedbackList = res.data || [];
-					this.feedbackList = feedbackList.map(feed => {
-						if(feed.productDate != null) {
-							feed.productDate = feed.productDate.substr(0,10);
-						}
-						return feed;
-					});
+					this.feedbackList = res.data || [];
 				})
 			}
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
 page {
 		padding-top: 45px;
 }
+
 </style>
