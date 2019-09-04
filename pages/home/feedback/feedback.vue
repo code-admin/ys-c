@@ -27,11 +27,7 @@
 			return {
 				TabCur: 0,
 				CustomBar: this.CustomBar,
-				tabs: [
-					'全部',
-					'待反馈',
-					'已反馈'
-				],
+				tabs: [ '全部', '待反馈', '已反馈' ],
 				queryParams: {
 					pageIndex: 1,
 					status: null,
@@ -45,16 +41,22 @@
 		methods: {
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
-				
+				this.queryParams.status = this.TabCur === 0 ? null : this.TabCur;
 			},
 			getFeedbackList(){
 				this.$request.post({
 					data: this.queryParams,
-					loadingTip: '正在获取数据...',
+					loadingTip: '加载中...',
 					url: "/feedback/getFeedBackList"
 				}).then(res => {
 					this.feedbackList = res.data || [];
 				})
+			}
+		},
+		watch: {
+			queryParams: {
+				deep: true,
+				handler: 'getFeedbackList'
 			}
 		}
 	}
