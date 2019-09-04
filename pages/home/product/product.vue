@@ -4,19 +4,21 @@
 			<block slot="backText">返回</block>
 			<block slot="content">产品</block>
 		</cu-custom>
-
-		<view class="cu-bar bg-white search">
-			<view class="search-form radius">
-				<text class="cuIcon-search"></text>
-				<input v-model="filter.keywords" @blur="initData" :adjust-position="false" type="text" placeholder="产品编号、名称、要求、宽度、克重"
-				 confirm-type="search"></input>
-			</view>
-			<view class="action" >
-				<view class="margin-tb-sm text-center">
-					<button class="cu-btn round bg-cyan shadow" @click="initData">搜索</button>
+		
+		<scroll-view scroll-x class="bg-white nav fixed" :style="[{top:CustomBar + 'px'}]">
+			<view class="cu-bar bg-white search">
+				<view class="search-form radius">
+					<text class="cuIcon-search"></text>
+					<input v-model="filter.keywords" @blur="initData" :adjust-position="false" type="text" placeholder="产品编号、名称、要求、宽度、克重"
+					 confirm-type="search"></input>
+				</view>
+				<view class="action" >
+					<view class="margin-tb-sm text-center">
+						<button class="cu-btn round bg-cyan shadow" @click="initData">搜索</button>
+					</view>
 				</view>
 			</view>
-		</view>
+		</scroll-view>
 		<view class="uni-padding-wrap uni-common-mt">
 			<goods v-for="(goods,index) in data" :key="index" :option="goods"></goods>
 			<view class="text-center padding" v-if="showLoadMore">{{loadMoreText}}</view>
@@ -32,6 +34,7 @@
 		},
 		data() {
 			return {
+				CustomBar: this.CustomBar,
 				filter:{
 					keywords:null,
 					status:1,
@@ -69,11 +72,13 @@
 		},
 		methods: {
 			initData(){
+				this.data = []
 				this.filter.pageIndex = 1;
 				this.loadMoreText = "加载更多";
 				this.showLoadMore = false;
 				this.$request.post({
 					url:'/product/getProductList',
+					loadingTip: '正在加载数据...',
 					data:this.filter
 				}).then(res => {
 					this.total = res.total;
@@ -107,5 +112,7 @@
 </script>
 
 <style>
-	
+	page {
+		padding-top: 45px;
+	}
 </style>

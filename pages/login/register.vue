@@ -106,6 +106,7 @@
 						title: res.message,
 						icon: res.code === 10000 ? "success": "none",
 						success: ()=> {
+							uni.setStorageSync('registerFlag', true);
 							setTimeout(() =>{
 								if(res.code === 10000){
 									uni.navigateTo({
