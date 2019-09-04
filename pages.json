@@ -25,6 +25,10 @@
             "path" : "pages/home/feedback/feedback",
             "style" : {}
         }
+		,{
+		    "path" : "pages/home/feedback/create",
+		    "style" : {}
+		}
         ,{
             "path" : "pages/home/compute/compute",
             "style" : {}

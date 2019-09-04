@@ -10,8 +10,11 @@
 			:key="index" @tap="tabSelect" :data-id="index">
 				{{tabs[index]}}
 			</view>
+			<navigator class="cu-btn shadow bg-orange radius sm margin-left-lg" url="/pages/home/feedback/create">
+				<text class="cuIcon-add lg margin-right-xs"></text>问题反馈
+			</navigator>
 		</scroll-view>
-
+		
 		<feedback-card v-for="(item,index) in feedbackList" :key="index" :card="item"></feedback-card>
 		<view class="no-feedback-data margin text-center text-gray" v-if="feedbackList.length == 0">暂无反馈信息</view>
 	</view>
