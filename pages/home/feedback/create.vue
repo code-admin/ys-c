@@ -11,58 +11,64 @@
 			</view>
 		</view>
 	
-		<form>
+		<form @submit="formSubmit" report-submit report-submit-timeout="10000">
 			<view class="cu-form-group ">
 				<view class="title text-grey">问题类型</view>
-				<picker @change="pickerType" :range="questionTypeList" range-key="questionName">
-					<view class="picker">{{questionName}}</view>
+				<picker name="questionType" @change="pickerType" :range="questionTypeList" range-key="questionName">
+					<view class="picker">{{questionTypeName}}</view>
 				</picker>
+			</view>
+			<view class="cu-form-group">
+				<view class="title text-grey">问题描述</view>
+				<input name="questionName" placeholder="请输入问题描述" v-model="question.questionName"></input>
 			</view>
 			<view class="cu-form-group align-start">
 				<view class="title text-grey">具体说明</view>
-				<textarea class="padding-0" v-model="question.remark" maxlength="-1" auto-height></textarea>
+				<textarea name="remark" class="padding-0" v-model="question.remark" maxlength="-1" auto-height></textarea>
 			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">客户名称</view>
-				<input placeholder="请输入客户名称" v-model="question.customerName"></input>
+				<input name="customerName" placeholder="请输入客户名称" v-model="question.customerName"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">联系电话</view>
-				<input placeholder="请输入联系电话" v-model="question.createBy"></input>
+				<input name="phone" placeholder="请输入联系电话" v-model="question.phone"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">要&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;求</view>
-				<input placeholder="附加要求" v-model="question.requirement"></input>
+				<input name="requirement" placeholder="附加要求" v-model="question.requirement"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">订单编号</view>
-				<input placeholder="请输入订单编号" v-model="question.orderId"></input>
+				<input name="orderId" placeholder="请输入订单编号" v-model="question.orderId"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">机&nbsp;&nbsp;台&nbsp;&nbsp;号</view>
-				<input placeholder="机台号" v-model="question.deviceNo"></input>
+				<input name="deviceNo" placeholder="机台号" v-model="question.deviceNo"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种</view>
-				<picker class="product-type" @change="pickerProductType" :range="productTypeList" range-key="name">
+				<picker name="productType" class="product-type" @change="pickerProductType" :range="productTypeList" range-key="name">
 					<view class="picker">{{productName}}</view>
 				</picker>
 				<view class="title text-grey">生产日期</view>
-				<picker mode="date" @change="pickerDate" v-model="question.productDate">
+				<picker name="productDate" mode="date" @change="pickerDate" v-model="question.productDate">
 					<view class="picker">{{question.productDate || '生产日期'}}</view>
 				</picker>
 			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">宽&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度</view>
-				<input placeholder="宽度" v-model="question.width"></input>
-				<view class="title text-grey">克&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重</view>
-				<input placeholder="克重" v-model="question.weight"></input>
+				<input name="width" type="number" placeholder="宽度" v-model="question.width"></input>
+				<view class="title text-grey">长&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度</view>
+				<input name="length" type="number" placeholder="长度" v-model="question.length"></input>
 			</view>
 			<view class="cu-form-group">
+				<view class="title text-grey">克&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重</view>
+				<input name="weight" type="number" placeholder="克重" v-model="question.weight"></input>
 				<view class="title text-grey">个&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数</view>
-				<input placeholder="个数" value="1" v-model="question.number"></input>
+				<input name="number" type="number" placeholder="个数" value="1" v-model="question.number"></input>
 			</view>
-			<button class="cu-btn margin block shadow bg-gradual-green lg" form-type="submit">提交</button>
+			<button class="cu-btn margin block shadow bg-gradual-green lg" form-type="submit" :disabled="submitting">提交</button>
 		</form>
 	
 	</view>
@@ -72,10 +78,12 @@
 	export default {
 		data() {
 			return {
+				submitting: false,
 				questionTypeList: [],
 				productTypeList: [],
 				question: {
 					formId: null,
+					questionName: "",
 					questionType : null,
 					productDate: null,
 					productType: null,
@@ -84,7 +92,7 @@
 					customerName: "",
 					createBy: "",
 					deviceNo: "",
-					orderId: "",
+					orderId: 1,
 					weight: "",
 					width: "",
 					number: "",
@@ -112,6 +120,33 @@
 					this.productTypeList = res.data
 				})
 			},
+			formSubmit(e){
+				let formId = e.detail.formId;
+				console.log("formId: ", formId);
+				if(formId === "requestFormId:fail timeout"){
+					return uni.showToast({ title: '请求超时，请再次尝试提交' });
+				}
+				this.question.formId = formId;
+				this.submitting = true;
+				this.$request.post({
+					data: this.question,
+					loadingTip: "提交信息中...",
+					url: '/feedback/createFeedback',
+					fail: () => {
+						this.submitting = false;
+					},
+					success: res => {
+						uni.showToast({
+							duration: 3000,
+							title: res.message,
+							complete: () => {
+								this.submitting = false;
+								setTimeout(()=>uni.navigateTo({ url: "/pages/home/feedback/feedback" }), 2500);
+							}
+						});
+					}
+				})
+			},
 			pickerType(e){
 				this.question.questionType = this.questionTypeList[e.detail.value].id;
 			},
@@ -124,7 +159,7 @@
 			
 		},
 		computed:{
-			questionName(){
+			questionTypeName(){
 				let questionType = this.question.questionType;
 				let questionTypeList = this.questionTypeList || [];
 				if(questionTypeList.some(type => type.id === questionType)) {
