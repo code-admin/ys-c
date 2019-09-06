@@ -14,8 +14,8 @@
 								<view class="flex justify-start align-center">
 									<view class="padding-right-xs text-grey">客户名称</view>
 									<view class="padding-right-xs text-cut">{{card.customerName}}</view>
-									<view class="padding-right-xs">
-										<text class="cuIcon-dianhua padding-right-xs padding-left-xs text-orange"></text>{{card.createBy}}
+									<view class="padding-right-xs" v-if="card.phone">
+										<text class="cuIcon-dianhua padding-right-xs padding-left-xs text-orange"></text>{{card.phone}}
 									</view>
 								</view>
 							</view>
@@ -28,7 +28,7 @@
 							<view class="padding-right-xs text-grey">机&nbsp;&nbsp;台&nbsp;&nbsp;号</view>
 							<view class="padding-right-xl text-red">{{card.deviceNo}}</view>
 							<view class="padding-right-xs text-grey">生产日期</view>
-							<view>{{card.productDate}}</view>
+							<view>{{card.productDate || ''}}</view>
 							<!-- <view class="cu-tag light round bg-blue sm">{{card.productTypeName}}</view> -->
 						</view>
 

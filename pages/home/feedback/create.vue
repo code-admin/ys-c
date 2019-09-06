@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-green" :isBack="true">
+		<cu-custom bgColor="bg-gradual-orange" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">问题反馈</block>
 		</cu-custom>
@@ -11,7 +11,7 @@
 			</view>
 		</view>
 	
-		<form @submit="formSubmit" report-submit report-submit-timeout="10000">
+		<form @submit="formSubmit" report-submit>
 			<view class="cu-form-group ">
 				<view class="title text-grey">问题类型</view>
 				<picker name="questionType" @change="pickerType" :range="questionTypeList" range-key="questionName">
@@ -68,7 +68,7 @@
 				<view class="title text-grey">个&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数</view>
 				<input name="number" type="number" placeholder="个数" value="1" v-model="question.number"></input>
 			</view>
-			<button class="cu-btn margin block shadow bg-gradual-green lg" form-type="submit" :disabled="submitting">提交</button>
+			<button class="cu-btn margin block shadow bg-orange lg" form-type="submit" :disabled="submitting">提交</button>
 		</form>
 	
 	</view>
@@ -125,6 +125,15 @@
 				console.log("formId: ", formId);
 				if(formId === "requestFormId:fail timeout"){
 					return uni.showToast({ title: '请求超时，请再次尝试提交' });
+				}
+				if(this.question.questionType == null){
+					return uni.showToast({ icon: 'none' ,title: '请选择反馈的问题类型' });
+				}
+				if(this.question.questionName.trim() == ""){
+					return uni.showToast({ icon: 'none' ,title: '请输入问题描述' });
+				}
+				if(this.question.remark.trim() == ""){
+					return uni.showToast({ icon: 'none' ,title: '请输入具体说明' });
 				}
 				this.question.formId = formId;
 				this.submitting = true;
