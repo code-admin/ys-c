@@ -43,7 +43,7 @@
 		methods: {
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
-				this.queryParams.status = this.TabCur === 0 ? null : this.TabCur;
+				this.queryParams.status = this.TabCur === 0 ? null : this.TabCur - 1;
 			},
 			getFeedbackList(){
 				this.$request.post({

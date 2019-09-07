@@ -5,13 +5,13 @@
 			<block slot="content">问题反馈</block>
 		</cu-custom>
 	
-		<view class="cu-bar bg-white solid-bottom margin-top-sm">
-			<view class="action">
-				<text class="cuIcon-titles text-orange"></text> 反馈信息
-			</view>
-		</view>
-	
 		<form @submit="formSubmit" report-submit>
+			
+			<view class="cu-bar bg-white solid-bottom margin-top-sm">
+				<view class="action">
+					<text class="cuIcon-titles text-orange"></text> 反馈信息
+				</view>
+			</view>
 			<view class="cu-form-group ">
 				<view class="title text-grey">问题类型</view>
 				<picker name="questionType" @change="pickerType" :range="questionTypeList" range-key="questionName">
@@ -26,6 +26,12 @@
 				<view class="title text-grey">具体说明</view>
 				<textarea name="remark" class="padding-0" v-model="question.remark" maxlength="-1" auto-height></textarea>
 			</view>
+			
+			<view class="cu-bar bg-white solid-bottom margin-top-sm">
+				<view class="action">
+					<text class="cuIcon-titles text-orange"></text> 客户信息
+				</view>
+			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">客户名称</view>
 				<input name="customerName" placeholder="请输入客户名称" v-model="question.customerName"></input>
@@ -34,40 +40,51 @@
 				<view class="title text-grey">联系电话</view>
 				<input name="phone" placeholder="请输入联系电话" v-model="question.phone"></input>
 			</view>
-			<view class="cu-form-group">
-				<view class="title text-grey">要&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;求</view>
-				<input name="requirement" placeholder="附加要求" v-model="question.requirement"></input>
+			
+			<view class="cu-bar bg-white solid-bottom margin-top-sm">
+				<view class="action">
+					<text class="cuIcon-titles text-orange"></text> 订单信息
+				</view>
 			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">订单编号</view>
-				<input name="orderId" placeholder="请输入订单编号" v-model="question.orderId"></input>
+				<!-- <input name="orderId" placeholder="请输入订单编号" v-model="question.orderId"></input> -->
+				<picker name="orderId" class="product-type" @change="pickerOrder" :range="orderList" range-key="orderNo">
+					<view class="picker">{{orderName}}</view>
+				</picker>
+			</view>
+			<view class="cu-form-group">
+				<view class="title text-grey">产品名称</view>
+				<picker name="productType" class="product-type" @change="pickerProductType" :range="productTypeList" range-key="name">
+					<view class="picker">{{productName}}</view>
+				</picker>
+			</view>
+			<view class="cu-form-group">
+				<view class="title text-grey">要&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;求</view>
+				<input name="requirement" placeholder="要求" v-model="question.requirement"></input>
+			</view>
+
+			<view class="cu-form-group">
+				<view class="title text-grey">宽&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度</view>
+				<input name="width" type="number" placeholder="宽度(cm)" v-model="question.width"></input>
+				<view class="title text-grey">克&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重</view>
+				<input name="weight" type="number" placeholder="克重(g)" v-model="question.weight"></input>
+				<!-- <view class="title text-grey">长&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度</view>
+				<input name="length" type="number" placeholder="长度" v-model="question.length"></input> -->
+			</view>
+			<view class="cu-form-group">
+				<view class="title text-grey">个&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数</view>
+				<input name="number" type="number" placeholder="个数" value="1" v-model="question.number"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title text-grey">机&nbsp;&nbsp;台&nbsp;&nbsp;号</view>
 				<input name="deviceNo" placeholder="机台号" v-model="question.deviceNo"></input>
-			</view>
-			<view class="cu-form-group">
-				<view class="title text-grey">品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种</view>
-				<picker name="productType" class="product-type" @change="pickerProductType" :range="productTypeList" range-key="name">
-					<view class="picker">{{productName}}</view>
-				</picker>
 				<view class="title text-grey">生产日期</view>
 				<picker name="productDate" mode="date" @change="pickerDate" v-model="question.productDate">
 					<view class="picker">{{question.productDate || '生产日期'}}</view>
 				</picker>
 			</view>
-			<view class="cu-form-group">
-				<view class="title text-grey">宽&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度</view>
-				<input name="width" type="number" placeholder="宽度" v-model="question.width"></input>
-				<view class="title text-grey">长&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度</view>
-				<input name="length" type="number" placeholder="长度" v-model="question.length"></input>
-			</view>
-			<view class="cu-form-group">
-				<view class="title text-grey">克&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重</view>
-				<input name="weight" type="number" placeholder="克重" v-model="question.weight"></input>
-				<view class="title text-grey">个&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数</view>
-				<input name="number" type="number" placeholder="个数" value="1" v-model="question.number"></input>
-			</view>
+
 			<button class="cu-btn margin block shadow bg-orange lg" form-type="submit" :disabled="submitting">提交</button>
 		</form>
 	
@@ -78,6 +95,7 @@
 	export default {
 		data() {
 			return {
+				orderList: [],
 				submitting: false,
 				questionTypeList: [],
 				productTypeList: [],
@@ -103,6 +121,7 @@
 		},
 		created() {
 			this.queryTypeList();
+			this.queryOrderList();
 			this.queryProductTypeList();
 		},
 		methods: {
@@ -119,6 +138,13 @@
 				}).then(res =>{
 					this.productTypeList = res.data
 				})
+			},
+			queryOrderList(){
+				this.$request.post({
+					url: "/order/getOwnOrderList"
+				}).then(res => {
+					this.orderList = res.data
+				});
 			},
 			formSubmit(e){
 				let formId = e.detail.formId;
@@ -156,6 +182,9 @@
 					}
 				})
 			},
+			pickerOrder(e){
+				this.question.orderId = this.orderList[e.detail.value].id;
+			},
 			pickerType(e){
 				this.question.questionType = this.questionTypeList[e.detail.value].id;
 			},
@@ -168,6 +197,14 @@
 			
 		},
 		computed:{
+			orderName(){
+				let orderId = this.question.orderId;
+				let orderList = this.orderList || [];
+				if(orderList.some(o => o.id === orderId)) {
+					return orderList.find(o => o.id === orderId).orderNo;
+				}
+				return "请选择订单编号";
+			},
 			questionTypeName(){
 				let questionType = this.question.questionType;
 				let questionTypeList = this.questionTypeList || [];

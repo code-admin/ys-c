@@ -1,15 +1,19 @@
 <template>
 	<view>
-		<navigator url="/pages/home/feedback/detail?feedbackId=iw2389276172s3l23231a" hover-class="navigator-hover">
+		<navigator :url="'/pages/home/feedback/detail?feedbackId=' + card.id" hover-class="navigator-hover">
 			<view class="cu-card case">
 				<view class="cu-item shadow">
 					<view class="flex solid-bottom padding justify-between align-center">
-						<view class="text-cut text-black text-bold text-grey">{{card.questionName}}</view>
+						<view class="text-cut text-black text-bold">{{card.remark}}</view>
 						<view class="cu-tag light bg-orange">{{card.questionTypeName}}</view>
 					</view>
 					<view class="padding">
 
-						<view class="content flex justify-between">
+						<view class="flex align-center">
+							<view class="padding-right-xs text-grey">订单编号</view>
+							<view class="padding-right-xl text-red">{{card.orderNo}}</view>
+						</view>
+						<view class="content flex justify-between margin-top-xs">
 							<view>
 								<view class="flex justify-start align-center">
 									<view class="padding-right-xs text-grey">客户名称</view>
@@ -22,7 +26,6 @@
 							<view>
 							</view>
 						</view>
-
 
 						<view class="flex align-center margin-top-xs">
 							<view class="padding-right-xs text-grey">机&nbsp;&nbsp;台&nbsp;&nbsp;号</view>
@@ -38,10 +41,10 @@
 							<view class="padding-right-xs text-grey">克&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重</view>
 							<view class="padding-right-xs text-red">{{card.weight}}</view>
 						</view>
-						<view class="flex align-center margin-top-xs">
+						<!-- <view class="flex align-center margin-top-xs">
 							<view class="padding-right-xs text-grey">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</view>
 							<view class="text-cut max-width550">{{card.remark}}</view>
-						</view>
+						</view> -->
 					</view>
 					<view class="flex solid-top padding justify-between align-center">
 						<view class="text-cut lighttext-blue">
