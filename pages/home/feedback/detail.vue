@@ -87,7 +87,7 @@
 				<view class="title text-grey padding-sm">个&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数：</view>
 				<view class="padding-sm">{{feedback.number || ''}}</view>
 			</view>
-			<view class="cu-item flex">
+			<view class="cu-item flex padding-bottom-xl">
 				<view class="title text-grey padding-sm">机&nbsp;&nbsp;台&nbsp;&nbsp;号：</view>
 				<view class="padding-sm">{{feedback.deviceNo || ''}}</view>
 				<view class="title text-grey padding-sm">生产日期：</view>
