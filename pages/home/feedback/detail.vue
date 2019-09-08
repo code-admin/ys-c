@@ -5,24 +5,25 @@
 			<block slot="content">反馈详情</block>
 		</cu-custom>
 
-		<view class="fb-content margin-bottom-xl" v-if="feedback.historyList && feedback.historyList.length == 0" >
+		<view class="fb-content margin-bottom-xl" v-if="feedback.historyList && feedback.historyList.length > 0" >
 			<view class="cu-bar bg-white solid-bottom margin-top-sm">
 				<view class="action">
 					<text class="cuIcon-titles text-orange"></text> 回馈信息
 				</view>
 			</view>
-			<form class="margin-bottom-xl">
-				<view class="cu-item flex align-center">
-					<view class="title text-grey padding-sm">回&nbsp;&nbsp;馈&nbsp;&nbsp;人：</view>
-					<view class="padding-sm">{{feedback.customerName || ''}}</view>
-					<view class="title text-grey padding-sm">回馈时间：</view>
-					<view class="padding-sm">{{feedback.productDate || ''}}</view>
+			<view class="bg-white margin-top">
+				<view class="cu-timeline">
+					<view :class="{ 'cu-item': true, 'text-blue': index == 0 }" :key="index" v-for="(history, index) in feedback.historyList">
+						<view class="content">
+							<view class="cu-capsule radius">
+								<view :class="['cu-tag', index == 0 ? 'bg-cyan':'bg-grey']">{{history.createBy}}</view>
+								<view :class="['cu-tag', index == 0 ? 'line-cyan':'line-grey']">{{history.createTime}}</view>
+							</view>
+							<view class="margin-top">{{history.description}}</view>
+						</view>
+					</view>
 				</view>
-				<view class="cu-item flex align-start">
-					<view class="title text-grey padding-sm">回馈内容：</view>
-					<view class="padding-sm">{{feedback.remark || ''}}</view>
-				</view>
-			</form>
+			</view>
 		</view>
 		
 		<view class="fb-content margin-bottom-xl">

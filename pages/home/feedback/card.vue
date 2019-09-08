@@ -11,7 +11,7 @@
 
 						<view class="flex align-center">
 							<view class="padding-right-xs text-grey">订单编号</view>
-							<view class="padding-right-xl text-red">{{card.orderNo}}</view>
+							<view class="padding-right-xl text-red">{{card.orderNo || ''}}</view>
 						</view>
 						<view class="content flex justify-between margin-top-xs">
 							<view>
