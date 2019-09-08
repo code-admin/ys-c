@@ -32,7 +32,7 @@
 				tabs: [ '全部', '待反馈', '已反馈' ],
 				queryParams: {
 					pageIndex: 1,
-					pageSize: 3,
+					pageSize: 5,
 					status: null,
 				},
 				total:0,
