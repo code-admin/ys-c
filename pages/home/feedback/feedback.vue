@@ -15,7 +15,7 @@
 			<text class="cuIcon-add"></text>
 		</navigator>
 		<feedback-card v-for="(item,index) in feedbackList" :key="index" :card="item"></feedback-card>
-		<view class="no-feedback-data margin text-center text-gray" v-if="feedbackList.length == 0">暂无反馈信息</view>
+		<view class="text-center text-gray padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>
 
@@ -32,18 +32,50 @@
 				tabs: [ '全部', '待反馈', '已反馈' ],
 				queryParams: {
 					pageIndex: 1,
+					pageSize: 3,
 					status: null,
 				},
-				feedbackList: []
+				total:0,
+				loadedNumber: 0,
+				showLoadMore: false,
+				loadMoreText: "加载中...",
+				feedbackList: [],
 			}
 		},
 		created() {
 			this.getFeedbackList();
 		},
+		onUnload() {
+			this.max = 0,
+			this.feedbackList = [],
+			this.loadMoreText = "加载更多...",
+			this.showLoadMore = false;
+		},
+		onReachBottom() {
+			console.log("onReachBottom", this.loadedNumber);
+			if (this.loadedNumber >= this.total) {
+				this.loadMoreText = "没有更多数据了!"
+				return;
+			}
+			this.showLoadMore = true;
+			setTimeout(() => {
+				this.queryParams.pageIndex ++;
+				this.getFeedbackList();
+			}, 300);
+		},
 		methods: {
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
 				this.queryParams.status = this.TabCur === 0 ? null : this.TabCur - 1;
+				this.initData();
+			},
+			initData(){
+				this.loadedNumber = 0;
+				this.feedbackList = [];
+				this.queryParams.pageIndex = 1;
+				this.loadMoreText = "加载更多...";
+				this.showLoadMore = false;
+				this.getFeedbackList();
 			},
 			getFeedbackList(){
 				this.$request.post({
@@ -51,14 +83,11 @@
 					loadingTip: '加载中...',
 					url: "/feedback/getFeedBackList"
 				}).then(res => {
-					this.feedbackList = res.data || [];
+					this.total = res.total;
+					this.loadedNumber += this.queryParams.pageSize;
+					this.feedbackList = this.feedbackList.concat(res.data) ;
+					uni.stopPullDownRefresh();
 				})
-			}
-		},
-		watch: {
-			queryParams: {
-				deep: true,
-				handler: 'getFeedbackList'
 			}
 		}
 	}
