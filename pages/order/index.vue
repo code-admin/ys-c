@@ -16,6 +16,7 @@
 		</navigator>
 		
 		<order-card v-for="(item,index) in orderList" :key="index" :card="item"></order-card>
+		<view class="text-center text-gray padding-xl" v-if="orderList && orderList.length == 0">暂无数据</view>
 		<view class="text-center text-gray padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>

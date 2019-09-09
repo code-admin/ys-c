@@ -15,6 +15,7 @@
 			<text class="cuIcon-add"></text>
 		</navigator>
 		<feedback-card v-for="(item,index) in feedbackList" :key="index" :card="item"></feedback-card>
+		<view class="text-center text-gray padding-xl" v-if="feedbackList && feedbackList.length == 0">暂无数据</view>
 		<view class="text-center text-gray padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>
