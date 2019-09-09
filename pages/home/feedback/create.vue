@@ -5,7 +5,7 @@
 			<block slot="content">问题反馈</block>
 		</cu-custom>
 	
-		<form @submit="formSubmit" report-submit>
+		<form @submit="formSubmit" report-submit class="block padding-bottom-xl">
 			
 			<view class="cu-bar bg-white solid-bottom margin-top-sm">
 				<view class="action">
