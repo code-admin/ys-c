@@ -52,9 +52,11 @@
 		},
 		methods: {
 			BackPage() {
-				uni.navigateBack({
-					delta: 1
-				});
+				if(getCurrentPages().length == 1){
+					uni.redirectTo({ url: '/pages/index/index' });
+				} else {
+					uni.navigateBack({ delta: 1 });
+				}
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<cu-custom bgColor="bg-gradual-red" :isBack="true">
-			<block slot="backText">返回</block>
+			<block slot="backText">{{directJump ? '首页' : '返回'}}</block>
 			<block slot="content">反馈详情</block>
 		</cu-custom>
 
@@ -102,11 +102,13 @@
 	export default {
 		data() {
 			return {
+				feedback: {},
 				feedbackId: null,
-				feedback: {}
+				directJump: false,
 			}
 		},
 		onLoad(options) {
+			this.directJump = getCurrentPages().length == 1;
 			this.feedbackId = options.feedbackId;
 			this.queryFeedback();
 		},

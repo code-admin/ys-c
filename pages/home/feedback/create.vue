@@ -241,4 +241,7 @@
 			padding-right: 18px;
 		}
 	}
+	button[form-type=submit]{
+		margin-bottom: 100rpx;
+	}
 </style>
