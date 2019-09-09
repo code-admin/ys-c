@@ -11,7 +11,7 @@
 				{{tabs[index]}}
 			</view>
 		</scroll-view>
-		<navigator class="nav-position cu-btn shadow bg-gradual-blue radius text-sl" url="/pages/order/edit">
+		<navigator class="nav-position cu-btn shadow bg-gradual-blue radius text-sl" url="/pages/order/edit/edit">
 			<text class="cuIcon-add"></text>
 		</navigator>
 		
