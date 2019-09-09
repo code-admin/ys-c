@@ -3,7 +3,7 @@
 		<view class="cu-item shadow">
 			<view class="flex solid-bottom padding justify-between align-center">
 				<view class="text-black text-bold text-grey">{{product.productName + '/' + product.productNo }}</view>
-				<view class="cu-tag light round bg-red sm">删除</view>
+				<view class="cu-tag light round bg-red sm" @tap="remove" >删除</view>
 			</view>
 			
 			<view class="padding">
@@ -52,6 +52,11 @@
 			orderType: Number,
 			product:Object
 		},
+		methods:{
+			remove(){
+				this.$emit('remove')
+			}
+		}
 	}
 </script>
 

@@ -33,8 +33,17 @@
 			</view>
 			
 			<view v-if="!!orderInfo.orderExts">
-				<product-item v-for="(goods,index) in orderInfo.orderExts" :key="index" :product="goods" :orderType="orderInfo.orderType"></product-item>
+				<product-item v-for="(goods,index) in orderInfo.orderExts"  :key="index"  :product="goods"  :orderType="orderInfo.orderType" @remove="removeGoods(index)" ></product-item>
 			</view>
+			
+			<view v-if="orderInfo.orderExts.length ===0">
+				<view class="cu-card">
+					<view class="cu-item shadow text-center padding text-sm text-gray">
+						您还没有添加产品哦～
+					</view>
+				</view>
+			</view>
+			
 			<view class="cu-bar bg-white solid-bottom margin-top-sm">
 				<view class="action">
 					<text class="cuIcon-titles text-blue"></text> 收货信息
@@ -87,32 +96,32 @@
 						</view>
 						<view class="cu-form-group ">
 							<view class="title text-grey">要求</view>
-							<input name="requirement" type="text" placeholder="请输入要求" v-model="goods.requirement"></input>
+							<input class="text-left" name="requirement" type="text" placeholder="请输入要求" v-model="goods.requirement"></input>
 						</view>
 						<view class="cu-form-group ">
 							<view class="title text-grey">宽度</view>
-							<input name="width" type="number" placeholder="宽度(cm)" v-model="goods.width"></input>
+							<input class="text-left" name="width" type="number" placeholder="宽度(cm)" v-model="goods.width"></input>
 							<view class="title text-grey">克重</view>
-							<input name="weight" type="number" placeholder="克重(g)" v-model="goods.weight"></input>
+							<input class="text-left" name="weight" type="number" placeholder="克重(g)" v-model="goods.weight"></input>
 						</view>
 						
 						<view v-if="orderInfo.orderType === 1" class="cu-form-group ">
 							<view class="title text-grey">长度</view>
-							<input name="goodsLength" type="number" placeholder="长度(cm)/条" v-model="goods.goodsLength"></input>
+							<input class="text-left" name="goodsLength" type="number" placeholder="长度(cm)/条" v-model="goods.goodsLength"></input>
 							<view class="title text-grey">条数</view>
-							<input name="goodsNumber" type="number" placeholder="请输入条数" v-model="goods.goodsNumber"></input>
+							<input class="text-left" name="goodsNumber" type="number" placeholder="请输入条数" v-model="goods.goodsNumber"></input>
 						</view>
 						
 						<view v-else class="cu-form-group ">
 							<view class="title text-grey">米数</view>
-							<input name="length" type="number" placeholder="米数(M)/筒" v-model="goods.length"></input>
+							<input class="text-left" name="length" type="number" placeholder="米数(M)/筒" v-model="goods.length"></input>
 							<view class="title text-grey">个数</view>
-							<input name="goodsNumber" type="number" placeholder="下单数量" v-model="goods.goodsNumber"></input>
+							<input class="text-left"  name="goodsNumber" type="number" placeholder="下单数量" v-model="goods.goodsNumber"></input>
 						</view>
 						
 						<view class="cu-form-group ">
 							<view class="title text-grey">单价</view>
-							<input name="price" type="number" placeholder="单价(元)" v-model="goods.price"></input>
+							<input class="text-left" name="price" type="number" placeholder="单价(元)" v-model="goods.price"></input>
 						</view>
 					</form>
 				</view>
@@ -184,10 +193,11 @@
 					price:product.price ||  null, // 单价
 				};
 			},
-			// 选择问题类型
+			// 选择订单类型
 			changeOrderType(e){
 				this.orderInfo.orderType = this.orderTypeList[e.detail.value].id;
 				this.orderTypeName = this.orderTypeList[e.detail.value].name;
+				this.orderInfo.orderExts = []; // 清空产品
 			},
 			// 显示添加产品的modal
 			showAddProductModal(e){
@@ -199,7 +209,10 @@
 			pushGoods(e){
 				this.orderInfo.orderExts.push(this.goods)
 				this.showBottomModal = !this.showBottomModal;
-				console.log(this.orderInfo);
+			},
+			// 删除产品
+			removeGoods(index){
+				this.orderInfo.orderExts.splice(index, 1)
 			}
 		}
 	}
