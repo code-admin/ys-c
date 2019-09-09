@@ -15,7 +15,8 @@
 			<text class="cuIcon-add"></text>
 		</navigator>
 		
-		<order-card v-for="(item,index) in orderList" :key="index"></order-card>
+		<order-card v-for="(item,index) in orderList" :key="index" :card="item"></order-card>
+		<view class="text-center text-gray padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>
 
@@ -29,24 +30,65 @@
 			return {
 				TabCur: 0,
 				CustomBar: this.CustomBar,
-				tabs: [ '全部', '创建', '审核', '出库','确认','完成', ],
-				orderList: [{},
-					{},
-					{},
-					{},
-					{},
-					{},
-					{},
-					{},
-					{},
-					{},
-					{}
-				]
+				tabs: [ '全部', '创建', '审核', '出库','签收','确认','完成'],
+				queryParams: {
+					pageIndex: 1,
+					pageSize: 5,
+					status: null,
+				},
+				total:0,
+				loadedNumber: 0,
+				showLoadMore: false,
+				loadMoreText: "加载中...",
+				orderList: []
 			}
+		},
+		created() {
+			this.initData();
+		},
+		onUnload() {
+			this.max = 0,
+			this.orderList = [],
+			this.loadMoreText = "加载更多...",
+			this.showLoadMore = false;
+		},
+		onReachBottom() {
+			console.log("onReachBottom", this.loadedNumber);
+			if (this.loadedNumber >= this.total) {
+				this.loadMoreText = "没有更多数据了!"
+				return;
+			}
+			this.showLoadMore = true;
+			setTimeout(() => {
+				this.queryParams.pageIndex ++;
+				this.getDataList();
+			}, 300);
 		},
 		methods: {
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
+				this.queryParams.status = this.TabCur === 0 ? null : this.TabCur - 1;
+				this.initData();
+			},
+			initData(){
+				this.loadedNumber = 0;
+				this.orderList = [];
+				this.queryParams.pageIndex = 1;
+				this.loadMoreText = "加载更多...";
+				this.showLoadMore = false;
+				this.getDataList();
+			},
+			getDataList(){
+				this.$request.post({
+					data: this.queryParams,
+					loadingTip: '加载中...',
+					url: "/order/getOrderList"
+				}).then(res => {
+					this.total = res.total;
+					this.loadedNumber += this.queryParams.pageSize;
+					this.orderList = this.orderList.concat(res.data);
+					uni.stopPullDownRefresh();
+				})
 			}
 		}
 	}

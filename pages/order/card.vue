@@ -4,16 +4,16 @@
 			<view class="cu-card case">
 				<view class="cu-item shadow">
 					<view class="flex solid-bottom padding justify-between align-center">
-						<view class="text-black text-bold text-grey">wx20171130003151</view>
-						<view class="cu-tag light round bg-blue">创建</view>
+						<view class="text-black text-bold text-grey">{{card.orderNo}}</view>
+						<view class="cu-tag light round bg-blue">{{card.statusName}}</view>
 					</view>
 					<view class="padding">
 						<view class="flex justify-between">
 							<view class="flex justify-start">
 								<view class="padding-right-xs text-grey">下单人:</view>
-								<view class="text-center text-shadow">章细花</view>
+								<view class="text-center text-shadow">{{card.customerName}}</view>
 							</view>
-							<view class="line-blue">按重量</view>
+							<view class="line-blue">{{card.orderTypeName}}</view>
 						</view>
 
 						<view class="">
@@ -59,8 +59,9 @@
 					</view>
 
 					<view class="flex solid-top padding justify-between align-center">
-						<view class="text-cut lighttext-blue"><text class="cuIcon-countdown padding-right-xs text-orange"></text>2017-11-30
-							10:13:22</view>
+						<view class="text-cut lighttext-blue">
+							<text class="cuIcon-countdown padding-right-xs text-orange"></text>{{card.orderTime}}
+						</view>
 						<view class="text-cut lighttext-blue text-green">详情</view>
 					</view>
 				</view>
@@ -72,6 +73,9 @@
 <script>
 	export default {
 		name: 'OrderCard',
+		props: {
+			card: Object
+		},
 		data() {
 			return {
 
