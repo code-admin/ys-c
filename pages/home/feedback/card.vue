@@ -4,7 +4,7 @@
 			<view class="cu-card case">
 				<view class="cu-item shadow">
 					<view class="flex solid-bottom padding justify-between align-center">
-						<view class="text-cut text-black text-bold">{{card.remark}}</view>
+						<view class="text-cut text-black text-bold">{{card.description}}</view>
 						<view class="cu-tag light bg-orange">{{card.questionTypeName}}</view>
 					</view>
 					<view class="padding">

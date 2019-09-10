@@ -5,7 +5,7 @@
 			<block slot="content">问题反馈</block>
 		</cu-custom>
 	
-		<form @submit="formSubmit" report-submit class="block padding-bottom-xl">
+		<form @submit="preSumit" report-submit class="block padding-bottom-xl">
 			
 			<view class="cu-bar bg-white solid-bottom margin-top-sm">
 				<view class="action">
@@ -18,13 +18,35 @@
 					<view class="picker">{{questionTypeName}}</view>
 				</picker>
 			</view>
-			<view class="cu-form-group">
-				<view class="title text-grey">问题描述</view>
-				<input name="questionName" placeholder="请输入问题描述" v-model="question.questionName"></input>
-			</view>
+			<!-- <view class="cu-form-group">
+				<view class="title text-grey">问题标题</view>
+				<input name="questionName" placeholder="请输入问题标题" v-model="question.questionName"></input>
+			</view> -->
+
 			<view class="cu-form-group align-start">
-				<view class="title text-grey">具体说明</view>
-				<textarea name="remark" class="padding-0" v-model="question.remark" maxlength="-1" auto-height></textarea>
+				<view class="title text-grey">问题描述</view>
+				<textarea name="description" class="padding-0" v-model="question.description" maxlength="-1" auto-height></textarea>
+			</view>
+			<view class="cu-bar bg-white" style="margin-top: 1px;">
+				<view class="action text-grey">
+					图片上传
+				</view>
+				<view class="action">
+					{{imgList.length}}/{{maxImgCount}}
+				</view>
+			</view>
+			<view class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="viewImage" :data-url="imgList[index]">
+					 <image :src="imgList[index]" mode="aspectFill"></image>
+						<view class="cu-tag bg-red" @tap.stop="delImg" :data-index="index">
+							<text class='cuIcon-close'></text>
+						</view>
+					</view>
+					<view class="solids" @tap="chooseImage" v-if="imgList.length<4">
+						<text class='cuIcon-cameraadd'></text>
+					</view>
+				</view>
 			</view>
 			
 			<view class="cu-bar bg-white solid-bottom margin-top-sm">
@@ -47,7 +69,7 @@
 				</view>
 			</view>
 			<view class="cu-form-group">
-				<view class="title text-grey">订单编号</view>
+				<view class="title text-grey">关联订单</view>
 				<!-- <input name="orderId" placeholder="请输入订单编号" v-model="question.orderId"></input> -->
 				<picker name="orderId" class="product-type" @change="pickerOrder" :range="orderList" range-key="orderNo">
 					<view class="picker">{{orderName}}</view>
@@ -84,7 +106,11 @@
 					<view class="picker">{{question.productDate || '生产日期'}}</view>
 				</picker>
 			</view>
-
+			
+			<view class="cu-load load-modal bg-video" v-if="showUploadProgress">
+				<view class="text-white">{{percentText}}</view>
+			</view>
+					
 			<button class="cu-btn margin block shadow bg-orange lg" form-type="submit" :disabled="submitting">提交</button>
 		</form>
 	
@@ -95,7 +121,12 @@
 	export default {
 		data() {
 			return {
+				maxImgCount: 4,
+				imgList: [],
+				percent: 0,
+				serverFile: [],
 				orderList: [],
+				showUploadProgress: false,
 				submitting: false,
 				questionTypeList: [],
 				productTypeList: [],
@@ -105,12 +136,13 @@
 					questionType : null,
 					productDate: null,
 					productType: null,
-					remark: "",
+					description: "",
+					files: [],
 					requirement: "",
 					customerName: "",
 					createBy: "",
 					deviceNo: "",
-					orderId: 1,
+					orderId: null,
 					weight: "",
 					width: "",
 					number: "",
@@ -146,7 +178,7 @@
 					this.orderList = res.data
 				});
 			},
-			formSubmit(e){
+			preSumit(e){
 				let formId = e.detail.formId;
 				console.log("formId: ", formId);
 				if(formId === "requestFormId:fail timeout"){
@@ -155,13 +187,62 @@
 				if(this.question.questionType == null){
 					return uni.showToast({ icon: 'none' ,title: '请选择反馈的问题类型' });
 				}
-				if(this.question.questionName.trim() == ""){
+				if(this.question.description.trim() == ""){
 					return uni.showToast({ icon: 'none' ,title: '请输入问题描述' });
 				}
-				if(this.question.remark.trim() == ""){
-					return uni.showToast({ icon: 'none' ,title: '请输入具体说明' });
+				if(this.question.orderId == null){
+					return uni.showToast({ icon: 'none' ,title: '请选择关联订单' });
 				}
-				this.question.formId = formId;
+				this.submitting = true;
+				this.serverFile = [], this.question.files = [];
+				let imgCount = this.imgList.length;
+				if(imgCount > 0){
+					let baseUrl = this.$request.config.baseUrl;
+					let progress = new Array(imgCount).fill(0);
+					this.showUploadProgress = true;
+					for(let i = 0; i < imgCount; i++) {
+						let uploadTask = uni.uploadFile({
+							name: 'file',
+							filePath: this.imgList[i],
+							url: baseUrl + '/common/uploadImage',
+							success: res => {
+								console.log(res);
+								if(res.statusCode === 200){
+									let result  = JSON.parse(res.data);
+									this.serverFile[i] = result.data.url;
+									if(this.serverFile.length == imgCount){
+										this.question.files = this.serverFile;
+										this.showUploadProgress = false;
+										this.formSubmit();
+									}
+								} else {
+									this.submitting = false;
+									this.showUploadProgress = false;
+									uploadTask.abort();
+									let msg = res.statusCode === 413 ? "图片过大" : res.errMsg;
+									uni.showToast({
+										icon: "none",
+										title: msg
+									});
+								}
+							},
+							fail: (res) => {
+								this.showUploadProgress = false;
+								this.submitting = false;
+							}
+						});
+						uploadTask.onProgressUpdate(res => {
+							progress[i] = res.progress;
+							let sum  = progress.reduce((x,y)=> x+y);
+							this.percent = parseInt(sum / imgCount);
+							this.$forceUpdate();
+						})
+					}
+				} else {
+					this.formSubmit();
+				}
+			},
+			formSubmit(){
 				this.submitting = true;
 				this.$request.post({
 					data: this.question,
@@ -194,16 +275,49 @@
 			pickerProductType(e){
 				this.question.productType = this.productTypeList[e.detail.value].id;
 			},
-			
+			chooseImage() {
+				uni.chooseImage({
+					count: this.maxImgCount - this.imgList.length, //默认9
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'], //从相册选择或拍照
+					success: (res) => {
+						if (this.imgList.length != 0) {
+							this.imgList = this.imgList.concat(res.tempFilePaths)
+						} else {
+							this.imgList = res.tempFilePaths
+						}
+						console.log(this.imgList);
+					}
+				});
+			},
+			viewImage(e) {
+				uni.previewImage({
+					urls: this.imgList,
+					current: e.currentTarget.dataset.url
+				});
+			},
+			delImg(e) {
+				uni.showModal({
+					content: '确定要删除当前照片吗？',
+					success: res => {
+						if (res.confirm) {
+							this.imgList.splice(e.currentTarget.dataset.index, 1)
+						}
+					}
+				})
+			},
 		},
 		computed:{
+			percentText(){
+				return "上传中("+ this.percent + "%)";
+			},
 			orderName(){
 				let orderId = this.question.orderId;
 				let orderList = this.orderList || [];
 				if(orderList.some(o => o.id === orderId)) {
 					return orderList.find(o => o.id === orderId).orderNo;
 				}
-				return "请选择订单编号";
+				return "请选择关联订单";
 			},
 			questionTypeName(){
 				let questionType = this.question.questionType;
@@ -243,5 +357,14 @@
 	}
 	button[form-type=submit]{
 		margin-bottom: 100rpx;
+	}
+	.cu-load.load-modal{
+		bottom: 0upx;
+		background-color: rgba(0,0,0, .65);
+		// box-shadow: 0 0 0upx 2000upx rgba(0, 0, 0, 0.5);
+		box-shadow: none;
+		&:after{
+			background-color: transparent;
+		}
 	}
 </style>

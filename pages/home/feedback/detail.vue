@@ -36,13 +36,25 @@
 				<view class="title text-grey padding-sm">问题类型：</view>
 				<view class="cu-tag light bg-orange radius padding-sm">{{feedback.questionTypeName || ''}}</view>
 			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">问题描述：</view>
+			<!-- <view class="cu-item flex">
+				<view class="title text-grey padding-sm">问题标题：</view>
 				<view class="padding-sm">{{feedback.questionName || ''}}</view>
-			</view>
+			</view> -->
 			<view class="cu-item flex align-start">
-				<view class="title text-grey padding-sm">具体说明：</view>
-				<view class="padding-sm">{{feedback.remark || ''}}</view>
+				<view class="title text-grey padding-sm">问题描述：</view>
+				<view class="padding-sm">{{feedback.description || ''}}</view>
+			</view>
+			
+			
+			<view class="cu-item flex align-start">
+				<view class="title text-grey padding-sm">图片预览：</view>
+			</view>
+			<view class="cu-item flex align-start padding-sm">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" v-for="(item,index) in feedback.files" :key="index" @tap="viewImage" :data-url="item">
+					 <image :src="item" mode="aspectFill"></image>
+					</view>
+				</view>
 			</view>
 			
 			<view class="cu-bar bg-white solid-bottom margin-top-sm">
@@ -65,7 +77,7 @@
 				</view>
 			</view>
 			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">订单编号：</view>
+				<view class="title text-grey padding-sm">关联订单：</view>
 				<view class="padding-sm">{{feedback.orderNo || ''}}</view>
 			</view>
 			<view class="cu-item flex">
@@ -118,6 +130,12 @@
 					url: "/feedback/getFeedbackById/" + this.feedbackId
 				}).then(res =>{
 					this.feedback = res.data
+				});
+			},
+			viewImage(e) {
+				uni.previewImage({
+					urls: this.feedback.files,
+					current: e.currentTarget.dataset.url
 				});
 			},
 		}
