@@ -197,33 +197,30 @@
 				this.serverFile = [], this.question.files = [];
 				let imgCount = this.imgList.length;
 				if(imgCount > 0){
+					this.showUploadProgress = true;
 					let baseUrl = this.$request.config.baseUrl;
 					let progress = new Array(imgCount).fill(0);
-					this.showUploadProgress = true;
 					for(let i = 0; i < imgCount; i++) {
 						let uploadTask = uni.uploadFile({
 							name: 'file',
 							filePath: this.imgList[i],
 							url: baseUrl + '/common/uploadImage',
 							success: res => {
-								console.log(res);
+								console.log(this.serverFile);
 								if(res.statusCode === 200){
 									let result  = JSON.parse(res.data);
 									this.serverFile[i] = result.data.url;
-									if(this.serverFile.length == imgCount){
+									if(this.serverFile.filter(f => true).length == imgCount){
 										this.question.files = this.serverFile;
 										this.showUploadProgress = false;
 										this.formSubmit();
 									}
 								} else {
+									uploadTask.abort();
 									this.submitting = false;
 									this.showUploadProgress = false;
-									uploadTask.abort();
 									let msg = res.statusCode === 413 ? "图片过大" : res.errMsg;
-									uni.showToast({
-										icon: "none",
-										title: msg
-									});
+									uni.showToast({ icon: "none", title: msg });
 								}
 							},
 							fail: (res) => {
@@ -235,7 +232,7 @@
 							progress[i] = res.progress;
 							let sum  = progress.reduce((x,y)=> x+y);
 							this.percent = parseInt(sum / imgCount);
-							this.$forceUpdate();
+							
 						})
 					}
 				} else {
@@ -243,6 +240,7 @@
 				}
 			},
 			formSubmit(){
+				if(this.submitting && this.showUploadProgress) return;
 				this.submitting = true;
 				this.$request.post({
 					data: this.question,
@@ -252,12 +250,13 @@
 						this.submitting = false;
 					},
 					success: res => {
+						this.submitting = false;
 						uni.showToast({
-							duration: 3000,
+							mask: true,
+							duration: 2000,
 							title: res.message,
 							complete: () => {
-								this.submitting = false;
-								setTimeout(()=>uni.navigateTo({ url: "/pages/home/feedback/feedback" }), 2500);
+								setTimeout(()=>uni.navigateTo({ url: "/pages/home/feedback/feedback" }), 1500);
 							}
 						});
 					}
