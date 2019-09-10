@@ -56,7 +56,7 @@
 			<view class="cu-form-group ">
 				<view class="title text-grey">收货地址</view>
 				<input name="address" type="text" placeholder="请输入收货地址" v-model="orderInfo.address"></input>
-				<text class='cuIcon-locationfill text-orange'></text>
+				<text class='cuIcon-locationfill text-orange' @tap="getLocation"></text>
 			</view>
 			<view class="cu-form-group ">
 				<view class="title text-grey">收货人</view>
@@ -66,8 +66,7 @@
 				<view class="title text-grey">收货人电话</view>
 				<input name="phone" type="number" placeholder="请输入收货人电话" v-model="orderInfo.phone"></input>
 			</view>
-			<view class="cu-form-group ">
-				<!-- <view class="title text-grey">备注</view> -->
+			<view class="cu-form-group margin-top">
 				<textarea name="remark" class="padding-0" v-model="orderInfo.remark" :rows="2" placeholder="请输入备注" maxlength="-1" auto-height></textarea>
 			</view>
 			<view class="flex">
@@ -171,10 +170,26 @@
 				productList:[],
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			options.orderId && this.getOrderInfoById(options.orderId);
 			this.getProductList();
 		},
 		methods: {
+			// 获取订单详情
+			getOrderInfoById(orderId){
+				this.$request.post({
+					url: `/order/getOrderById/${orderId}`,
+					loadingTip: '正在加载订单数据...',
+				}).then(res => {
+					this.orderInfo = res.data;
+				}).catch(err =>{
+					uni.showToast({
+						duration: 3000,
+						title: err.message,
+						icon: "none",
+					})
+				})
+			},
 			// 获取可用产品列表
 			getProductList(){
 				this.$request.post({url:'/product/getValidateProducts'}).then(res => {
@@ -233,6 +248,8 @@
 			// 保存
 			saveOrderInfo(){
 				if(!this.validate()) {
+					// 调手机震动
+					uni.vibrateLong({});
 					return 
 				}
 				this.submitting = !this.submitting 
@@ -247,11 +264,9 @@
 						title: res.message,
 						icon: res.code === 10000 ? "success": "none",
 						success: ()=> {
-							setTimeout(() =>{
-								if(res.code === 10000){
-									uni.navigateBack({})
-								}
-							}, 1000);
+							if(res.code === 10000){
+								uni.navigateBack({});
+							}
 						}
 					})
 				}).catch(err => {
@@ -266,6 +281,8 @@
 			// 保存并提交
 			saveOrSubmmit(e){
 				if(!this.validate()) {
+					// 调手机震动
+					uni.vibrateLong({});
 					return 
 				}
 				this.submitting = !this.submitting 
@@ -280,11 +297,9 @@
 						title: res.message,
 						icon: res.code === 10000 ? "success": "none",
 						success: ()=> {
-							setTimeout(() =>{
-								if(res.code === 10000){
-									uni.navigateBack({});
-								}
-							}, 1000);
+							if(res.code === 10000){
+								uni.navigateBack({});
+							}
 						}
 					})
 				}).catch(err => {
@@ -328,6 +343,12 @@
 					return false;
 				}
 				return true
+			},
+			// 获取地理位置
+			getLocation(){
+				uni.chooseLocation().then(res => {
+					this.orderInfo.address = res.address
+				})
 			}
 		}
 	}
