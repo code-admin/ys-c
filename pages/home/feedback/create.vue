@@ -193,6 +193,13 @@
 				if(this.question.orderId == null){
 					return uni.showToast({ icon: 'none' ,title: '请选择关联订单' });
 				}
+				if(this.question.deviceNo.trim() == ""){
+					return uni.showToast({ icon: 'none' ,title: '请填写机台号' });
+				}
+				if(this.question.productDate.trim() == ""){
+					return uni.showToast({ icon: 'none' ,title: '请选择生产日期' });
+				}
+				
 				this.submitting = true;
 				this.question.formId = formId;
 				this.serverFile = [], this.question.files = [];
