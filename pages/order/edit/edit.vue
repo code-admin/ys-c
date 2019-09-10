@@ -5,7 +5,7 @@
 			<block slot="content">编辑订单</block>
 		</cu-custom>
 		
-		<form report-submit>
+		<form @submit="saveOrSubmmit" report-submit class="block padding-bottom-xl">
 			<view class="cu-bar bg-white solid-bottom margin-top-sm">
 				<view class="action">
 					<text class="cuIcon-titles text-blue"></text> 基本信息
@@ -56,6 +56,7 @@
 			<view class="cu-form-group ">
 				<view class="title text-grey">收货地址</view>
 				<input name="address" type="text" placeholder="请输入收货地址" v-model="orderInfo.address"></input>
+				<text class='cuIcon-locationfill text-orange'></text>
 			</view>
 			<view class="cu-form-group ">
 				<view class="title text-grey">收货人</view>
@@ -71,14 +72,17 @@
 			</view>
 			<view class="flex">
 				<view class="flex-sub ">
-					<button class="cu-btn margin-sm block shadow bg-blue lg" form-type="submit" :disabled="submitting">保存</button>
+					<button class="cu-btn margin-sm block shadow bg-blue lg" :disabled="submitting" @tap="saveOrderInfo">
+						<text v-if="submitting" class="cuIcon-loading2 cuIconfont-spin"></text>保存
+					</button>
 				</view>
 				<view class="flex-sub ">
-					<button class="cu-btn margin-sm block shadow bg-blue lg" form-type="submit" :disabled="submitting">保存并提交</button>
+					<button class="cu-btn margin-sm block shadow bg-blue lg" form-type="submit" :disabled="submitting">
+						<text v-if="submitting" class="cuIcon-loading2 cuIconfont-spin"></text>保存并提交
+					</button>
 				</view>
 			</view>
 		</form>
-		
 		<view class="cu-modal bottom-modal" :class="showBottomModal ? 'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white">
@@ -121,7 +125,7 @@
 						
 						<view class="cu-form-group ">
 							<view class="title text-grey">单价</view>
-							<input class="text-left" name="price" type="number" placeholder="单价(元)" v-model="goods.price"></input>
+							<input class="text-left" name="price" type="number" disabled placeholder="单价(元)" v-model="goods.price"></input>
 						</view>
 					</form>
 				</view>
@@ -140,6 +144,7 @@
 			const user = uni.getStorageSync("user")
 			return {
 				showBottomModal:false,
+				submitting: false,
 				orderInfo:{
 					userName: user.userName,
 					orderUser: user.loginName,
@@ -179,7 +184,7 @@
 			// 选择产品
 			changeProduct(e){
 				const product = this.productList[e.detail.value]
-				this.productName = product.name;
+				this.productName = `${ product.name} / ${product.productNo}`;
 				this.goods = {
 					productName: product.name  || null, // 产品名称
 					productNo: product.productNo || null, // 产品编号
@@ -207,12 +212,122 @@
 			},
 			// 将产品追加到产品列表里面去
 			pushGoods(e){
+				if(!this.goods.productId){
+					// 调手机震动
+					uni.vibrateLong({});
+					// 弹出错误提示
+					uni.showToast({
+						title: '请选择产品',
+						icon: 'none',
+						duration: 2000,
+					})
+					return
+				}
 				this.orderInfo.orderExts.push(this.goods)
 				this.showBottomModal = !this.showBottomModal;
 			},
 			// 删除产品
 			removeGoods(index){
 				this.orderInfo.orderExts.splice(index, 1)
+			},
+			// 保存
+			saveOrderInfo(){
+				if(!this.validate()) {
+					return 
+				}
+				this.submitting = !this.submitting 
+				this.$request.post({
+					url:'/order/draftOrder',
+					loadingTip: '正在保存数据...',
+					data: this.orderInfo
+				}).then(res =>{
+					this.submitting = !this.submitting 
+					uni.showToast({
+						duration: 3000,
+						title: res.message,
+						icon: res.code === 10000 ? "success": "none",
+						success: ()=> {
+							setTimeout(() =>{
+								if(res.code === 10000){
+									uni.navigateBack({})
+								}
+							}, 1000);
+						}
+					})
+				}).catch(err => {
+					this.submitting = !this.submitting 
+					uni.showToast({
+						duration: 3000,
+						title: err.message,
+						icon: "none",
+					})
+				})
+			},
+			// 保存并提交
+			saveOrSubmmit(e){
+				if(!this.validate()) {
+					return 
+				}
+				this.submitting = !this.submitting 
+				this.$request.post({
+					url:'/order/createOrder',
+					loadingTip: '正在保存数据...',
+					data: { formId : e.detail.formId, ...this.orderInfo }
+				}).then(res =>{
+					this.submitting = !this.submitting 
+					uni.showToast({
+						duration: 3000,
+						title: res.message,
+						icon: res.code === 10000 ? "success": "none",
+						success: ()=> {
+							setTimeout(() =>{
+								if(res.code === 10000){
+									uni.navigateBack({});
+								}
+							}, 1000);
+						}
+					})
+				}).catch(err => {
+					this.submitting = !this.submitting 
+					uni.showToast({
+						duration: 3000,
+						title: err.message,
+						icon: "none",
+					})
+				})
+			},
+			// 验证数据
+			validate(){
+				if(!this.orderInfo.orderExts.length){
+					uni.showToast({
+						duration: 3000,
+						title: '请添加产品！',
+						icon: "none",
+					})
+					return false;
+				}else if(!this.orderInfo.address){
+					uni.showToast({
+						duration: 3000,
+						title: '请输入收货地址！',
+						icon: "none",
+					})
+					return false;
+				}else if(!this.orderInfo.customerName){
+					uni.showToast({
+						duration: 3000,
+						title: '请输入收货人！',
+						icon: "none",
+					})
+					return false;
+				}else if(!this.orderInfo.phone){
+					uni.showToast({
+						duration: 3000,
+						title: '请输入收货人电话！',
+						icon: "none",
+					})
+					return false;
+				}
+				return true
 			}
 		}
 	}
@@ -233,5 +348,8 @@
 			width: 40rpx;
 			padding-right: 18px;
 		}
+	}
+	button[form-type=submit]{
+		margin-bottom: 100rpx;
 	}
 </style>
