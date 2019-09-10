@@ -194,6 +194,7 @@
 					return uni.showToast({ icon: 'none' ,title: '请选择关联订单' });
 				}
 				this.submitting = true;
+				this.question.formId = formId;
 				this.serverFile = [], this.question.files = [];
 				let imgCount = this.imgList.length;
 				if(imgCount > 0){
