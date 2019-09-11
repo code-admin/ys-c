@@ -62,7 +62,7 @@
             "style" : {}
         }
         ,{
-            "path" : "pages/order/edit/edit",
+            "path" : "pages/order/edit",
             "style" : {}
         }
     ],

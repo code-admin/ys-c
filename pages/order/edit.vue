@@ -134,7 +134,7 @@
 </template>
 
 <script>
-	import ProductItem from './ProductItem'
+	import ProductItem from './common/ProductItem'
 	export default {
 		components:{
 			ProductItem

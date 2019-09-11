@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<navigator :url="card.status ? '/pages/order/detail?orderId='+ card.id : '/pages/order/edit/edit?orderId='+ card.id" hover-class="navigator-hover">
+		<navigator :url="card.status ? '/pages/order/detail?orderId='+ card.id : '/pages/order/edit?orderId='+ card.id" hover-class="navigator-hover">
 			<view class="cu-card case">
 				<view class="cu-item shadow">
 					<view class="flex solid-bottom padding justify-between align-center">

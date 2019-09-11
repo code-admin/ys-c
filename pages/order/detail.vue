@@ -53,6 +53,15 @@
 			</view>
 		</view>
 		
+		<view v-if="orderInfo.orderExpressList">
+			<view class="cu-bar bg-white solid-bottom margin-top-sm">
+				<view class="action">
+					<text class="cuIcon-titles text-blue"></text>出库记录
+				</view>
+			</view>
+			<express v-for="express in orderInfo.orderExpressList" :key ="express.id" :express="express" :orderType="orderInfo.orderType" :orderId="orderInfo.id"></express>
+		</view>
+		
 		<view class="bg-white">
 			<view class="cu-bar bg-white solid-bottom margin-top-sm">
 				<view class="action">
@@ -78,10 +87,12 @@
 </template>
 
 <script>
-	import ProductItem from './edit/ProductItem'
+	import ProductItem from './common/ProductItem'
+	import Express from './common/Express'
 	export default {
 		components:{
-			ProductItem
+			ProductItem,
+			Express
 		},
 		data() {
 			return {

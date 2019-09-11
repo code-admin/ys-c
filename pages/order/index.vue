@@ -11,7 +11,7 @@
 				{{tabs[index]}}
 			</view>
 		</scroll-view>
-		<navigator class="nav-position cu-btn shadow bg-gradual-blue radius text-sl" url="/pages/order/edit/edit">
+		<navigator class="nav-position cu-btn shadow bg-gradual-blue radius text-sl" url="/pages/order/edit">
 			<text class="cuIcon-add"></text>
 		</navigator>
 		
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-	import OrderCard from './card.vue'
+	import OrderCard from './common/card.vue'
 	export default {
 		components: {
 			OrderCard
