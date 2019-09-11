@@ -9,7 +9,7 @@
 			<view class="bg-white padding-bottom-xs" v-if="orderInfo.status">
 				<view class="cu-steps">
 					<view class="cu-item" :class="index > orderInfo.status ? '':'text-blue'" v-for="(item,index) in numList" :key="index">
-						<text class="num" :data-index="index + 1"></text> {{item}}
+						<text :class="orderInfo.status === index ? 'cuIcon-time' : 'num' " :data-index="index + 1"></text> {{item}}
 					</view>
 				</view>
 			</view>
