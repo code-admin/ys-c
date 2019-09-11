@@ -3,7 +3,7 @@
 		<view class="cu-item shadow">
 			<view class="flex solid-bottom padding justify-between align-center">
 				<view class="text-black text-bold text-grey">{{product.productName + '/' + product.productNo }}</view>
-				<view class="cu-tag light round bg-red sm" @tap="remove" >删除</view>
+				<view v-if="showDel" class="cu-tag light round bg-red sm" @tap="remove" >删除</view>
 			</view>
 			
 			<view class="padding">
@@ -50,7 +50,11 @@
 		},
 		props:{
 			orderType: Number,
-			product:Object
+			product:Object,
+			showDel:{
+				type:Boolean,
+				default:true
+			}
 		},
 		methods:{
 			remove(){
