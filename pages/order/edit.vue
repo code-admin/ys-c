@@ -28,7 +28,9 @@
 					<text class="cuIcon-titles text-blue"></text> 产品信息
 				</view>
 				<view class="action">
-					<button class="cu-btn round sm bg-blue shadow" @tap="showAddProductModal">添加产品</button>
+					<form class="h45" @submit="showAddProductModal" report-submit >
+						<button class="cu-btn round sm bg-blue shadow" form-type="submit">添加产品</button>
+					</form>
 				</view>
 			</view>
 			
@@ -84,50 +86,50 @@
 		</form>
 		<view class="cu-modal bottom-modal" :class="showBottomModal ? 'show':''">
 			<view class="cu-dialog">
-				<view class="cu-bar bg-white">
-					<view class="action text-grey" @tap="showBottomModal=!showBottomModal">取消</view>
-					<view class="action text-blue" @tap="pushGoods">确定</view>
-				</view>
-				
-				<view class="padding">
-					<form>
-						<view class="cu-form-group ">
-							<view class="title text-grey">产品名称</view>
-							<picker name="orderType" placeholder="请输选择订单类型" @change="changeProduct" :range="productList" range-key="name">
-								<view class="picker">{{productName}}</view>
-							</picker>
-						</view>
-						<view class="cu-form-group ">
-							<view class="title text-grey">要求</view>
-							<input class="text-left" name="requirement" type="text" placeholder="请输入要求" v-model="goods.requirement"></input>
-						</view>
-						<view class="cu-form-group ">
-							<view class="title text-grey">宽度</view>
-							<input class="text-left" name="width" type="number" placeholder="宽度(cm)" v-model="goods.width"></input>
-							<view class="title text-grey">克重</view>
-							<input class="text-left" name="weight" type="number" placeholder="克重(g)" v-model="goods.weight"></input>
-						</view>
-						
-						<view v-if="orderInfo.orderType === 1" class="cu-form-group ">
-							<view class="title text-grey">长度</view>
-							<input class="text-left" name="goodsLength" type="number" placeholder="长度(cm)/条" v-model="goods.goodsLength"></input>
-							<view class="title text-grey">条数</view>
-							<input class="text-left" name="goodsNumber" type="number" placeholder="请输入条数" v-model="goods.goodsNumber"></input>
-						</view>
-						
-						<view v-else class="cu-form-group ">
-							<view class="title text-grey">米数</view>
-							<input class="text-left" name="length" type="number" placeholder="米数(M)/筒" v-model="goods.length"></input>
-							<view class="title text-grey">个数</view>
-							<input class="text-left"  name="goodsNumber" type="number" placeholder="下单数量" v-model="goods.goodsNumber"></input>
-						</view>
-						
-						<view class="cu-form-group ">
-							<view class="title text-grey">单价</view>
-							<input class="text-left" name="price" type="number" disabled placeholder="单价(元)" v-model="goods.price"></input>
-						</view>
-					</form>
-				</view>
+				<form @submit="pushGoods" report-submit >
+					<view class="cu-bar bg-white">
+						<view class="action text-grey" @tap="showBottomModal=!showBottomModal">取消</view>
+						<button class="cu-btn block bg-white text-blue mb0" form-type="submit"> 确定 </button>
+					</view>
+					
+					<view class="padding">
+							<view class="cu-form-group ">
+								<view class="title text-grey">产品名称</view>
+								<picker name="orderType" placeholder="请输选择订单类型" @change="changeProduct" :range="productList" range-key="name">
+									<view class="picker">{{productName}}</view>
+								</picker>
+							</view>
+							<view class="cu-form-group ">
+								<view class="title text-grey">要求</view>
+								<input class="text-left" name="requirement" type="text" placeholder="请输入要求" v-model="goods.requirement"></input>
+							</view>
+							<view class="cu-form-group ">
+								<view class="title text-grey">宽度</view>
+								<input class="text-left" name="width" type="number" placeholder="宽度(cm)" v-model="goods.width"></input>
+								<view class="title text-grey">克重</view>
+								<input class="text-left" name="weight" type="number" placeholder="克重(g)" v-model="goods.weight"></input>
+							</view>
+							
+							<view v-if="orderInfo.orderType === 1" class="cu-form-group ">
+								<view class="title text-grey">长度</view>
+								<input class="text-left" name="goodsLength" type="number" placeholder="长度(cm)/条" v-model="goods.goodsLength"></input>
+								<view class="title text-grey">条数</view>
+								<input class="text-left" name="goodsNumber" type="number" placeholder="请输入条数" v-model="goods.goodsNumber"></input>
+							</view>
+							
+							<view v-else class="cu-form-group ">
+								<view class="title text-grey">米数</view>
+								<input class="text-left" name="length" type="number" placeholder="米数(M)/筒" v-model="goods.length"></input>
+								<view class="title text-grey">个数</view>
+								<input class="text-left"  name="goodsNumber" type="number" placeholder="下单数量" v-model="goods.goodsNumber"></input>
+							</view>
+							
+							<view class="cu-form-group ">
+								<view class="title text-grey">单价</view>
+								<input class="text-left" name="price" type="number" disabled placeholder="单价(元)" v-model="goods.price"></input>
+							</view>
+					</view>
+				</form>
 			</view>
 		</view>
 	</view>
@@ -221,12 +223,15 @@
 			},
 			// 显示添加产品的modal
 			showAddProductModal(e){
+				this.createFormId(e.detail.formId)
 				this.productName = '请选择产品';
 				this.goods = {};
 				this.showBottomModal = !this.showBottomModal;
 			},
 			// 将产品追加到产品列表里面去
 			pushGoods(e){
+				console.log(e);
+				this.createFormId(e.detail.formId)
 				if(!this.goods.productId){
 					// 调手机震动
 					uni.vibrateLong({});
@@ -351,12 +356,17 @@
 						this.orderInfo.address = res.address
 					}
 				})
+			},
+			// 创建formId
+			createFormId(formId){
+				this.$request.post({ url:`/common/generateFormId/${formId}`})
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	
 	textarea{
 		padding: 0!important;
 		min-height: 70px;
@@ -374,5 +384,12 @@
 	}
 	button[form-type=submit]{
 		margin-bottom: 100rpx;
+	}
+	.h45{
+		height: 45upx;
+		line-height: 45upx;
+	}
+	.mb0{
+		margin-bottom: 0upx!important;
 	}
 </style>

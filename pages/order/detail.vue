@@ -86,7 +86,7 @@
 		</view>
 		
 		<view class="padding flex flex-direction btn-position">
-			<button v-if="orderInfo.status === 4 " class="cu-btn bg-blue lg">确认完成</button>
+			<button v-if="orderInfo.status === 4 " class="cu-btn bg-blue lg" @tap="confirm=true">确认完成</button>
 		</view>
 		
 		<view class="cu-modal" :class="confirm ?'show':''">
@@ -94,7 +94,7 @@
 				<view class="cu-bar bg-white justify-end">
 					<view class="content">提示</view>
 					<view class="action" @tap="hideModal">
-						<text class="cuIcon-close text-red"></text>
+						<text class="cuIcon-close text-red" ></text>
 					</view>
 				</view>
 				<view class="padding-xl">
