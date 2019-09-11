@@ -49,10 +49,10 @@
 					
 					<view class="cu-list grid col-4">
 						<view class="cu-item">
-							<text>&nbsp;</text>
+							<text class="title">产品</text>
 						</view>
 						<view class="cu-item">
-							<text class="title">重量（kg）</text>
+							<text class="title">重量（千克）</text>
 						</view>
 						<view class="cu-item">
 							<text class="title">单价（元 / 吨）</text>
