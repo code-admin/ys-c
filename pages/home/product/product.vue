@@ -9,8 +9,8 @@
 			<view class="cu-bar bg-white search">
 				<view class="search-form radius">
 					<text class="cuIcon-search"></text>
-					<input v-model="filter.keywords" @blur="initData" :adjust-position="false" type="text" placeholder="产品编号、名称、要求、宽度、克重"
-					 confirm-type="search"></input>
+					<input v-model="filter.keywords" @confirm="initData" :adjust-position="false" type="text" 
+						placeholder="产品编号、名称、要求、宽度、克重" confirm-type="search"></input>
 				</view>
 				<view class="action" >
 					<view class="margin-tb-sm text-center">
@@ -19,10 +19,9 @@
 				</view>
 			</view>
 		</scroll-view>
-		<view class="uni-padding-wrap uni-common-mt">
-			<goods v-for="(goods,index) in data" :key="index" :option="goods"></goods>
-			<view class="text-center padding" v-if="showLoadMore">{{loadMoreText}}</view>
-		</view>
+		<goods v-for="(goods,index) in dataList" :key="index" :option="goods"></goods>
+		<view class="text-center text-gray padding-xl" v-if="!isLoading && dataList.length == 0">暂无数据</view>
+		<view class="text-center padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>
 
@@ -39,72 +38,61 @@
 					keywords:null,
 					status:1,
 					pageIndex:1,
-					pageSize:5
+					pageSize: 10
 				},
-				goodsList:[],
 				total:0,
-				data: [],
-				loadMoreText: "加载中...",
+				isLoading: false,
+				loadedNumber: 0,
 				showLoadMore: false,
-				max: 0
+				loadMoreText: "加载中...",
+				dataList: [],
 			}
 		},
 		onLoad() {
 			this.initData();
 		},
 		onUnload() {
-			this.max = 0,
-			this.data = [],
+			this.total = 0,
+			this.dataList = [],
 			this.loadMoreText = "加载更多",
 			this.showLoadMore = false;
 		},
+		onPullDownRefresh() {
+			this.initData();
+		},
 		onReachBottom() {
-			console.log("onReachBottom",this.max);
-			if (this.max > this.total) {
+			console.log("onReachBottom",this.loadedNumber);
+			if (this.loadedNumber >= this.total) {
 				this.loadMoreText = "没有更多数据了!"
 				return;
 			}
 			this.showLoadMore = true;
 			setTimeout(() => {
 				this.filter.pageIndex ++;
-				this.setDate();
+				this.getDataList();
 			}, 300);
 		},
 		methods: {
 			initData(){
-				this.data = []
+				this.loadedNumber = 0;
+				this.dataList = [];
 				this.filter.pageIndex = 1;
 				this.loadMoreText = "加载更多";
 				this.showLoadMore = false;
-				this.$request.post({
-					url:'/product/getProductList',
-					loadingTip: '正在加载数据...',
-					data:this.filter
-				}).then(res => {
-					this.total = res.total;
-					this.max = 0;
-					this.data = [];
-					let data = [];
-					this.max += this.filter.pageSize;
-					res.data.map(i => {
-						data.push(i)
-					})
-					this.data = this.data.concat(data);
-					uni.stopPullDownRefresh();
-				})
+				this.getDataList();
 			},
-			setDate() {
+			getDataList() {
+				this.isLoading = true;
 				this.$request.post({
+					data:this.filter,
+					loadingTip: '加载中...',
 					url:'/product/getProductList',
-					data:this.filter
 				}).then(res => {
+					this.isLoading = false
 					this.total = res.total;
-					let data = [];
-					this.max += this.filter.pageSize;
-					res.data.map(i => {
-						data.push(i)
-					})
-					this.data = this.data.concat(data);
+					this.loadedNumber += this.filter.pageSize;
+					this.dataList = this.dataList.concat(res.data) ;
+					uni.stopPullDownRefresh();
 				})
 			}
 		}

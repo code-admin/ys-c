@@ -13,7 +13,9 @@
         }
         ,{
             "path" : "pages/home/product/product",
-            "style" : {}
+            "style" : {
+				"enablePullDownRefresh": true
+			}
         }
         ,{
             "path" : "pages/home/report/report",
