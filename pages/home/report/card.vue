@@ -61,44 +61,20 @@
 							<text class="title">金额（元）</text>
 						</view>
 						
-						<view class="cu-item">
-							<text class="title">增白</text>
-						</view>
-						<view class="cu-item">
-							<text>{{reportData.zbWeight || '--' }}</text>
-						</view>
-						<view class="cu-item">
-							<text>{{reportData.zbPrice || '--' }}</text>
-						</view>
-						<view class="cu-item">
-							<text>{{reportData.zbAmount || '--' }}</text>
-						</view>
-						
-						<view class="cu-item">
-							<text class="title">一级白</text>
-						</view>
-						<view class="cu-item">
-							<text>{{reportData.yjzbWeight || '--' }}</text>
-						</view>
-						<view class="cu-item">
-							<text>{{reportData.yjzbPrice || '--' }}</text>
-						</view>
-						<view class="cu-item">
-							<text>{{reportData.yjzbAmount || '--' }}</text>
-						</view>
-						
-						<view class="cu-item">
-							<text class="title">半透</text>
-						</view>
-						<view class="cu-item">
-							<text>{{reportData.btWeight || '--' }}</text>
-						</view>
-						<view class="cu-item">
-							<text>{{reportData.btPrice || '--' }}</text>
-						</view>
-						<view class="cu-item">
-							<text>{{reportData.btAmount || '--' }}</text>
-						</view>
+						<block v-for="item in reportData.productReports" :key="item">
+							<view class="cu-item">
+								<text class="title text-cut">{{item.productName}}</text>
+							</view>
+							<view class="cu-item">
+								<text>{{item.weight || '--' }}</text>
+							</view>
+							<view class="cu-item">
+								<text>{{item.price || '--' }}</text>
+							</view>
+							<view class="cu-item">
+								<text>{{item.amount || '--' }}</text>
+							</view>
+						</block>
 					</view>
 
 				</view>
@@ -147,9 +123,9 @@
  }
  .cu-list.grid>.cu-item{
 	padding: 4rpx 0;
-	width: calc((100% - 120rpx) / 3);
+	width: calc((100% - 130rpx) / 3);
 	&:nth-of-type(1),&:nth-of-type(5),&:nth-of-type(9),&:nth-of-type(13){
-		width: 120rpx;
+		width: 130rpx;
 		text-align: right;
 		padding-right: 20rpx;
 	}
