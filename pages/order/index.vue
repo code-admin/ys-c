@@ -54,6 +54,9 @@
 			this.loadMoreText = "加载更多...",
 			this.showLoadMore = false;
 		},
+		onPullDownRefresh() {
+			this.initData();
+		},
 		onReachBottom() {
 			console.log("onReachBottom", this.loadedNumber);
 			if (this.loadedNumber >= this.total) {

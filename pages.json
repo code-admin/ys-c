@@ -7,7 +7,9 @@
 		}
 	    ,{
             "path" : "pages/order/index",
-            "style" : {}
+            "style" : {
+				"enablePullDownRefresh": true
+			}
         }
         ,{
             "path" : "pages/home/product/product",
