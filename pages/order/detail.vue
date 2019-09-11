@@ -85,6 +85,31 @@
 			</view>
 		</view>
 		
+		<view class="padding flex flex-direction btn-position">
+			<button v-if="orderInfo.status === 4 " class="cu-btn bg-blue lg">确认完成</button>
+		</view>
+		
+		<view class="cu-modal" :class="confirm ?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">提示</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					确定完成该产品的签收吗？
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<form @submit="finish" report-submit>
+						<view class="action">
+							<button class="cu-btn line-green text-green" @tap="hideModal">取消</button>
+							<button class="cu-btn bg-green margin-left" form-type="submit">确定</button>
+						</view>
+					</form>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -100,7 +125,8 @@
 			return {
 				numList: ['创建','待审核', '待出库','待签收','待确认','完成'],
 				loading:true,
-				orderInfo:{}
+				orderInfo:{},
+				confirm:false
 			}
 		},
 		onLoad(options) {
@@ -124,11 +150,44 @@
 						icon: "none",
 					})
 				})
+			},
+			showConfirm(id){
+				this.expressId = id
+				this.confirm = !this.confirm
+			},
+			hideModal(){
+				this.confirm = !this.confirm
+			},
+			finish(e){
+				this.$request.post({
+					url:'/order/confirmByCustomer',
+					loadingTip:'正在提交数据...',
+					data:{ formId:e.detail.formId, orderId:this.orderInfo.id }
+				}).then(res => {
+					this.getOrderInfoById(this.orderInfo.id)
+					uni.showToast({
+						duration: 3000,
+						title: res.message,
+						icon: "success",
+					})
+				}).catch(err =>{
+					uni.showToast({
+						duration: 3000,
+						title: err.message,
+						icon: "none",
+					})
+				})
+				this.confirm = !this.confirm
 			}
 		}
 	}
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.btn-position{
+	width: 100%;
+	position: fixed;
+	bottom: 65upx;
+	z-index: 10;
+}
 </style>

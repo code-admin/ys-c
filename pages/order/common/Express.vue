@@ -96,12 +96,13 @@
 				if(this.expressId){
 					this.$request.post({
 						url:'/order/signOrder',
+						loadingTip:'正在提交数据...',
 						data:{formId:e.detail.formId, orderId: this.orderId , orderExpressId: this.expressId }
 					}).then(res =>{
 						this.express.status= 2;
 						uni.showToast({
 							duration: 3000,
-							title: err.message,
+							title: res.message,
 							icon: "success",
 						})
 					}).catch(err =>{
