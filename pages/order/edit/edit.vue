@@ -346,8 +346,10 @@
 			},
 			// 获取地理位置
 			getLocation(){
-				uni.chooseLocation().then(res => {
-					this.orderInfo.address = res.address
+				uni.chooseLocation({
+					success: res => {
+						this.orderInfo.address = res.address
+					}
 				})
 			}
 		}
