@@ -15,7 +15,7 @@
 			<text class="cuIcon-add"></text>
 		</navigator>
 		<feedback-card v-for="(item,index) in feedbackList" :key="index" :card="item"></feedback-card>
-		<view class="text-center text-gray padding-xl" v-if="feedbackList && feedbackList.length == 0">暂无数据</view>
+		<view class="text-center text-gray padding-xl" v-if="!isLoading && feedbackList.length == 0">暂无数据</view>
 		<view class="text-center text-gray padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>
@@ -36,7 +36,8 @@
 					pageSize: 5,
 					status: null,
 				},
-				total:0,
+				total: 0,
+				isLoading: false,
 				loadedNumber: 0,
 				showLoadMore: false,
 				loadMoreText: "加载中...",
@@ -47,7 +48,7 @@
 			this.getFeedbackList();
 		},
 		onUnload() {
-			this.max = 0,
+			this.total = 0,
 			this.feedbackList = [],
 			this.loadMoreText = "加载更多...",
 			this.showLoadMore = false;
@@ -79,11 +80,13 @@
 				this.getFeedbackList();
 			},
 			getFeedbackList(){
+				this.isLoading = true;
 				this.$request.post({
 					data: this.queryParams,
 					loadingTip: '加载中...',
 					url: "/feedback/getFeedBackList"
 				}).then(res => {
+					this.isLoading = false;
 					this.total = res.total;
 					this.loadedNumber += this.queryParams.pageSize;
 					this.feedbackList = this.feedbackList.concat(res.data) ;

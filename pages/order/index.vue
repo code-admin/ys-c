@@ -16,7 +16,7 @@
 		</navigator>
 		
 		<order-card v-for="(item,index) in orderList" :key="index" :card="item"></order-card>
-		<view class="text-center text-gray padding-xl" v-if="orderList && orderList.length == 0">暂无数据</view>
+		<view class="text-center text-gray padding-xl" v-if="!isLoading && orderList.length == 0">暂无数据</view>
 		<view class="text-center text-gray padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>
@@ -37,7 +37,8 @@
 					pageSize: 5,
 					status: null,
 				},
-				total:0,
+				total: 0,
+				isLoading: false,
 				loadedNumber: 0,
 				showLoadMore: false,
 				loadMoreText: "加载中...",
@@ -48,7 +49,7 @@
 			this.initData();
 		},
 		onUnload() {
-			this.max = 0,
+			this.total = 0,
 			this.orderList = [],
 			this.loadMoreText = "加载更多...",
 			this.showLoadMore = false;
@@ -80,11 +81,13 @@
 				this.getDataList();
 			},
 			getDataList(){
+				this.isLoading = true;
 				this.$request.post({
 					data: this.queryParams,
 					loadingTip: '加载中...',
 					url: "/order/getOrderList"
 				}).then(res => {
+					this.isLoading = false;
 					this.total = res.total;
 					this.loadedNumber += this.queryParams.pageSize;
 					this.orderList = this.orderList.concat(res.data);
