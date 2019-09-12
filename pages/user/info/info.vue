@@ -67,13 +67,12 @@
 				userInfo: uni.getStorageSync("user")
 			}
 		},
-		created() {
+		onShow() {
 			this.$request.post({
 				url: "/user/getUserBySessionKey",
 			}).then(res => {
-				if(res.code === 10000){
-					this.userInfo = res.data;
-				}
+				this.userInfo = res.data;
+				uni.setStorageSync('user',res.data);
 			})
 		},
 		methods: {

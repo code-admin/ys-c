@@ -53,6 +53,9 @@
 					this.$request.post({
 						toastError: false,
 						url: "/user/getUserBySessionKey",
+						success: res => {
+							uni.setStorageSync('user',res.data);
+						},
 						fail: res => {
 							if(res.code === 50000) {
 								this.login();

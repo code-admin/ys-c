@@ -53,6 +53,7 @@
 				console.log(res.data)
 				if(res.code === 10000){
 					this.userInfo = res.data;
+					uni.setStorageSync('user',res.data);
 				}
 			});
 		},
@@ -72,9 +73,10 @@
 					  	title: "修改成功",
 						complete: ()=>{
 							setTimeout(()=>{
-								uni.navigateTo({
-									url: "/pages/user/info/info"
-								})
+								// uni.navigateTo({
+								// 	url: "/pages/user/info/info"
+								// })
+								uni.navigateBack({});
 							}, 500);
 						}
 					  })
