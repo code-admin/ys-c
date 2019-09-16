@@ -116,7 +116,14 @@
 							}, 1000);
 						}
 					})
-				});
+				}).catch(err => {
+					this.loding = !this.loding;
+					uni.showToast({
+						duration: 3000,
+						title: err.message,
+						icon:"none",
+					})
+				})
 			}
 		}
 	}

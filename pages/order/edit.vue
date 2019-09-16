@@ -68,8 +68,10 @@
 				<view class="title text-grey">收货人电话</view>
 				<input name="phone" type="number" placeholder="请输入收货人电话" v-model="orderInfo.phone"></input>
 			</view>
-			<view class="cu-form-group margin-top">
-				<textarea name="remark" class="padding-0" v-model="orderInfo.remark" :rows="2" placeholder="请输入备注" maxlength="-1" auto-height></textarea>
+			<view class="cu-form-group">
+				<view class="title text-grey">备注</view>
+				<input name="remark" type="text" placeholder="请输入备注" v-model="orderInfo.remark"></input>
+				<!-- <textarea name="remark" v-model="orderInfo.remark" :rows="2" placeholder="请输入备注" maxlength="-1" auto-height></textarea> -->
 			</view>
 			<view class="flex">
 				<view class="flex-sub ">
@@ -84,6 +86,7 @@
 				</view>
 			</view>
 		</form>
+		
 		<view class="cu-modal bottom-modal" :class="showBottomModal ? 'show':''">
 			<view class="cu-dialog">
 				<form @submit="pushGoods" report-submit >
@@ -95,7 +98,7 @@
 					<view class="padding">
 							<view class="cu-form-group ">
 								<view class="title text-grey">产品名称</view>
-								<picker name="orderType" placeholder="请输选择订单类型" @change="changeProduct" :range="productList" range-key="name">
+								<picker name="orderType" placeholder="请输选择订单类型" @change="changeProduct" :range="productList" range-key="productDescription">
 									<view class="picker">{{productName}}</view>
 								</picker>
 							</view>
@@ -132,6 +135,7 @@
 				</form>
 			</view>
 		</view>
+		
 	</view>
 </template>
 
@@ -201,7 +205,7 @@
 			// 选择产品
 			changeProduct(e){
 				const product = this.productList[e.detail.value]
-				this.productName = `${ product.name} / ${product.productNo}`;
+				this.productName = `${product.productDescription}`;
 				this.goods = {
 					productName: product.name  || null, // 产品名称
 					productNo: product.productNo || null, // 产品编号
