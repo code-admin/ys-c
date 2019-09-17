@@ -54,7 +54,7 @@
 				</view>
 			</view>
 			
-			<view v-if="orderInfo.orderExpressList">
+			<view v-if="orderInfo.status > 1">
 				<view class="cu-bar bg-white solid-bottom margin-top-sm">
 					<view class="action">
 						<text class="cuIcon-titles text-blue"></text>出库记录

@@ -104,31 +104,31 @@
 							</view>
 							<view class="cu-form-group ">
 								<view class="title text-grey">要求</view>
-								<input class="text-left" name="requirement" type="text" placeholder="请输入要求" v-model="goods.requirement"></input>
+								<input class="text-left" name="requirement" type="text" disabled placeholder="请输入要求" v-model="goods.requirement"></input>
 							</view>
 							<view class="cu-form-group ">
-								<view class="title text-grey">宽度</view>
-								<input class="text-left" name="width" type="number" placeholder="宽度(cm)" v-model="goods.width"></input>
-								<view class="title text-grey">克重</view>
-								<input class="text-left" name="weight" type="number" placeholder="克重(g)" v-model="goods.weight"></input>
+								<view class="title text-grey">宽度(cm)</view>
+								<input class="text-left" name="width" type="number" disabled placeholder="宽度(cm)" v-model="goods.width"></input>
+								<view class="title text-grey">克重(g)</view>
+								<input class="text-left" name="weight" type="number" disabled placeholder="克重(g)" v-model="goods.weight"></input>
 							</view>
 							
 							<view v-if="orderInfo.orderType === 1" class="cu-form-group ">
-								<view class="title text-grey">长度</view>
-								<input class="text-left" name="goodsLength" type="number" placeholder="长度(cm)/条" v-model="goods.goodsLength"></input>
+								<view class="title text-grey">长度(cm)/条</view>
+								<input class="text-left" name="goodsLength" type="number" disabled placeholder="长度(cm)/条" v-model="goods.goodsLength"></input>
 								<view class="title text-grey">条数</view>
-								<input class="text-left" name="goodsNumber" type="number" placeholder="请输入条数" v-model="goods.goodsNumber"></input>
+								<input class="text-left" name="goodsNumber" type="number" disabled placeholder="请输入条数" v-model="goods.goodsNumber"></input>
 							</view>
 							
 							<view v-else class="cu-form-group ">
-								<view class="title text-grey">米数</view>
+								<view class="title text-grey">米数(米)</view>
 								<input class="text-left" name="length" type="number" placeholder="米数(M)/筒" v-model="goods.length"></input>
 								<view class="title text-grey">个数</view>
 								<input class="text-left"  name="goodsNumber" type="number" placeholder="下单数量" v-model="goods.goodsNumber"></input>
 							</view>
 							
 							<view class="cu-form-group ">
-								<view class="title text-grey">单价</view>
+								<view class="title text-grey">单价(元)</view>
 								<input class="text-left" name="price" type="number" disabled placeholder="单价(元)" v-model="goods.price"></input>
 							</view>
 					</view>
@@ -234,7 +234,6 @@
 			},
 			// 将产品追加到产品列表里面去
 			pushGoods(e){
-				console.log(e);
 				this.createFormId(e.detail.formId)
 				if(!this.goods.productId){
 					// 调手机震动
