@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view :style="{paddingTop: (TabCur == 0 ? 80 : 40) + 'px'}">
 		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">报表</block>
@@ -10,11 +10,42 @@
 				{{tabs[index]}}
 			</view>
 		</scroll-view>
-		<view class="report-calender bg-white text-center fixed text-lg padding-sm text-grey cuIcon-calendar" @tap="openCalender" :style="[{top:(CustomBar+45) + 'px'}]">
-			<text class="padding-left-xs">{{queryParams.beginDate}} ~ {{queryParams.endDate}}</text>
-		</view>
 		<uni-calendar ref="calendar" :range="true" @confirm="confirmDate" />
 		<block v-if="TabCur==0">
+			<view class="report-calender bg-white text-center fixed text-lg padding-sm text-grey cuIcon-calendar" @tap="openCalender" :style="[{top:(CustomBar+45) + 'px'}]">
+				<text class="padding-left-xs">{{queryParams.beginDate}} ~ {{queryParams.endDate}}</text>
+			</view>
+			<view class="bg-white padding">
+				<view class="text-lg flex justify-start margin-top-xs">
+					<view class="flex align-center justify-center flex-sub flex-direction main-block">
+						<view class="text-grey text-sm">总购买个数</view>
+						<view class="text-red text-bold text-olive">{{totalGoodsNumber}}</view>
+					</view>
+					<view class="flex align-center justify-center flex-sub flex-direction main-block">
+						<view class="text-grey text-sm">总重量</view>
+						<view class="text-red text-bold text-cyan">{{totalWeight}}</view>
+					</view>
+					<view class="flex align-center justify-center flex-sub flex-direction main-block">
+						<view class="text-grey text-sm">总计</view>
+						<view class="text-red text-bold text-orange text-price">{{totalAmount}}</view>
+					</view>
+				</view>
+				
+				<view class="text-lg flex justify-start margin-top-xs other-line padding-xs">
+					<view class="flex flex-sub align-center flex-direction">
+						<view class="text-red">{{totalReturnNumber}}</view>
+						<view class="text-grey text-xs">总退筒个数</view>
+					</view>
+					<view class="flex flex-sub align-center flex-direction">
+						<view class="text-red text-price">{{totalReturnFee}}</view>
+						<view class="text-grey text-xs">总退筒金额</view>
+					</view>
+					<view class="flex flex-sub align-center flex-direction">
+						<view class="text-red text-price">{{totalTotalAmount}}</view>
+						<view class="text-grey text-xs">总购买金额</view>
+					</view>
+				</view>
+			</view>
 			<product-card v-for="(data,index) in dataList" :key="index" :reportData="data"></product-card>
 		</block>
 		<block v-else>
@@ -37,7 +68,7 @@
 		},
 		data() {
 			return {
-				TabCur: 1,
+				TabCur: 0,
 				CustomBar: this.CustomBar,
 				tabs: ['产品报表', '月报表'],
 				queryParams: {
@@ -72,6 +103,7 @@
 			this.showLoadMore = false;
 		},
 		onReachBottom() {
+			if(this.TabCur == 0) return;
 			console.log("onReachBottom", this.loadedNumber);
 			if (this.loadedNumber >= this.total) {
 				this.loadMoreText = "没有更多数据了!"
@@ -135,18 +167,61 @@
 				}
 				
 			}
+		},
+		computed:{
+			totalAmount(){
+				// 总结余：单产品结余：totalAmount - returnAmount
+				return this.dataList.length && this.dataList.reduce((prev, cur) => (prev.totalAmount - prev.returnAmount) + (cur.totalAmount - cur.returnAmount));
+			},
+			totalGoodsNumber(){
+				// 总购买个数
+				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.goodsNumber + cur.goodsNumber);
+			},
+			totalWeight(){
+				// 总重量
+				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.goodsWeight + cur.goodsWeight);
+			},
+			totalPrice(){
+				// 总单价
+				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.totalAmount + cur.totalAmount);
+			},
+			totalTotalAmount(){
+				// 总购买金额
+				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.totalAmount + cur.totalAmount);
+			},
+			totalReturnNumber(){
+				// 总退筒个数
+				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.returnNumber + cur.returnNumber);
+			},
+			totalReturnFee(){
+				// 总退筒金额
+				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.returnAmount + cur.returnAmount);
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
-page {
-	padding-top: 80px;
-}
 .report-calender{
 	position: fixed;
 	width: 100%;
 	z-index: 1020;
 	box-shadow: 0 1upx 6upx rgba(0, 0, 0, 0.1);
 }
+
+.main-block {
+	margin: 4upx;
+	padding: 8upx 0;
+	min-height: 100upx;
+	border-radius: 10upx;
+	border-bottom: 2upx solid #fad0d1;
+	.text-bold {
+		font-size: 55upx;
+	}
+}
+ .other-line {
+	 margin-bottom: 15upx;
+	 border-radius: 12upx;
+	 background-color: #f1f7fe;
+ }
 </style>

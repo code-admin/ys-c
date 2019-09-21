@@ -17,39 +17,39 @@
 						
 						<view>
 							<view class="text-red text-price text-lg">{{reportData.paidAmount }}</view>
-							<view class="text-grey text-sm">收款（元）</view>
+							<view class="text-grey text-nr">收款（元）</view>
 						</view>
 						<view>
 							<view class="text-red text-price text-lg">{{reportData.balanceAmount }}</view>
-							<view class="text-grey text-sm">余款（元）</view>
+							<view class="text-grey text-nr">余款（元）</view>
 						</view>
 						<view>
 							<view :class="[(reportData.otherAmount <= 0 ? 'text-olive':'text-red'), 'text-price', 'text-lg']">{{reportData.otherAmount }}</view>
-							<view class="text-grey text-sm">其它款</view>
+							<view class="text-grey text-nr">其它款</view>
 						</view>
 						
 						<view>
-							<view class="text-grey text-xs">购买个数</view>
+							<view class="text-grey text-sm">购买个数</view>
 							<view class="text-red">{{reportData.goodsNumber }}</view>
 						</view>
 						<view>
-							<view class="text-grey text-xs">购买重量（kg）</view>
+							<view class="text-grey text-sm">购买重量（kg）</view>
 							<view class="text-red">{{reportData.goodsWeight }}</view>
 						</view>
 						<view>
-							<view class="text-grey text-xs ">购买均价（吨/元）</view>
+							<view class="text-grey text-sm">购买均价（吨/元）</view>
 							<view class="text-red">{{reportData.avgPrice }}</view>
 						</view>
 						<view>
-							<view class="text-grey text-xs">购买总金额（元）</view>
+							<view class="text-grey text-sm">购买总金额（元）</view>
 							<view class="text-red text-price">{{reportData.totalAmount }}</view>
 						</view>
 						<view>
-							<view class="text-grey text-xs">退筒个数</view>
+							<view class="text-grey text-sm">退筒个数</view>
 							<view class="text-red">{{reportData.returnNumber }}</view>
 						</view>
 						<view>
-							<view class="text-grey text-xs">退筒金额（元）</view>
+							<view class="text-grey text-sm">退筒金额（元）</view>
 							<view class="text-red text-price">{{reportData.returnAmount }}</view>
 						</view>
 						
@@ -83,7 +83,7 @@
 		display: flex;
 		flex-basis: 49%;
 		align-items: space-around;
-		background-color: #fafafa;
+		background-color: #fafaff;
 		margin: 2upx 2upx;
 		overflow: hidden;
 		padding: 6upx 12upx;
@@ -111,6 +111,9 @@
 				padding-right: 5upx;
 			}
 		}
+	}
+	.text-nr{
+		font-size: 26upx;
 	}
 }
 </style>

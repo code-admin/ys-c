@@ -4,79 +4,44 @@
 			<view class="cu-item shadow">
 				<view class="cu-bar bg-white solid-bottom">
 					<view class="action">
-						<text class="cuIcon-titles text-mauve"></text>月份：<view class="text-cut text-bold text-xl">{{reportData.reportDate}}</view>
+						<text class="cuIcon-titles text-mauve"></text><view class="text-cut text-xl">{{reportData.productName}}</view>
+					</view>
+					<view>
+						<text class="text-grey text-xs margin-right-xs">共计</text>
+						<text class="text-bold text-orange text-xl text-price margin-right">{{reportData.totalAmount - reportData.returnAmount}}</text>
 					</view>
 				</view>
 				<view class="padding">
-					<view class="text-lg flex justify-start margin-top-xs">
-						<view class="flex align-center justify-center flex-sub flex-direction main-block">
-							<view class="text-grey text-sm">总金额</view>
-							<view class="text-red text-bold text-price totalAmount">{{reportData.totalAmount || '--' }}</view>
+					<!-- 购买个数	购买重量（kg）	购买均价（吨/元）	购买总金额（元）	退筒个数	退筒金额（元）	其它款	已结款（元）	余款（元） -->
+					<view class="month-line">
+						
+						<view>
+							<view class="text-grey text-sm">购买个数</view>
+							<view class="text-red">{{reportData.goodsNumber }}</view>
 						</view>
-						<view class="flex align-center justify-center flex-sub flex-direction main-block">
-							<view class="text-grey text-sm">总收款</view>
-							<view class="text-red text-bold text-price">{{reportData.totalFee || '--' }}</view>
+						<view>
+							<view class="text-grey text-sm">购买重量（kg）</view>
+							<view class="text-red">{{reportData.goodsWeight }}</view>
 						</view>
-					</view>
-					
-					<view class="text-lg flex justify-start">
-						<view class="flex align-center justify-center flex-sub flex-direction main-block">
-							<view class="text-grey text-sm">总重量</view>
-							<view class="text-red text-bold totalWeight">{{reportData.totalWeight || '--' }}</view>
+						<view>
+							<view class="text-grey text-sm">购买均价（吨/元）</view>
+							<view class="text-red">{{reportData.avgPrice }}</view>
 						</view>
-						<view class="flex align-center justify-center flex-sub flex-direction main-block">
-							<view class="text-grey text-sm">总单价</view>
-							<view class="text-red text-bold text-price totalPrice">{{reportData.totalPrice || '--'}}</view>
+						<view>
+							<view class="text-grey text-sm">购买总金额（元）</view>
+							<view class="text-red text-price">{{reportData.totalAmount }}</view>
 						</view>
-					</view>
-					
-					
-					<view class="text-lg flex justify-start margin-top-xs other-line padding-xs">
-						<view class="flex flex-sub align-center flex-direction">
-							<view class="text-red text-bold text-price">{{reportData.totalOtherFee || '--' }}</view>
-							<view class="text-grey text-xs">总其它费用</view>
+						<view>
+							<view class="text-grey text-sm">退筒个数</view>
+							<view class="text-red">{{reportData.returnNumber }}</view>
 						</view>
-						<view class="flex flex-sub align-center flex-direction">
-							<view class="text-red text-bold">{{reportData.totalReturnWeight || '--' }}</view>
-							<view class="text-grey text-xs">总退筒重量</view>
-						</view>
-						<view class="flex flex-sub align-center flex-direction">
-							<view class="text-red text-bold text-price">{{reportData.totalReturnFee || '--' }}</view>
-							<view class="text-grey text-xs">总退筒金额</view>
-						</view>
-					</view>
-					
-					
-					<view class="cu-list grid col-4">
-						<view class="cu-item">
-							<text class="title">产品</text>
-						</view>
-						<view class="cu-item">
-							<text class="title">重量（千克）</text>
-						</view>
-						<view class="cu-item">
-							<text class="title">单价（元 / 吨）</text>
-						</view>
-						<view class="cu-item">
-							<text class="title">金额（元）</text>
+						<view>
+							<view class="text-grey text-sm">退筒金额（元）</view>
+							<view class="text-red text-price">{{reportData.returnAmount }}</view>
 						</view>
 						
-						<block v-for="item in reportData.productReports" :key="item">
-							<view class="cu-item">
-								<text class="title text-cut">{{item.productName}}</text>
-							</view>
-							<view class="cu-item">
-								<text>{{item.weight || '--' }}</text>
-							</view>
-							<view class="cu-item">
-								<text>{{item.price || '--' }}</text>
-							</view>
-							<view class="cu-item">
-								<text>{{item.amount || '--' }}</text>
-							</view>
-						</block>
 					</view>
-
+					
 				</view>
 			</view>
 			
@@ -97,40 +62,29 @@
 </script>
 
 <style lang="scss" scoped>
-.main-block {
-	margin: 4upx;
-	padding: 8upx 0;
-	min-height: 100upx;
-	border-radius: 10upx;
-	border-bottom: 2upx solid #fad0d1;
-	.text-bold {
-		font-size: 55upx;
-	}
-	.totalAmount{
-		color: #1dd98d;
-	}
-	.totalWeight{
-		color: #ff9600
-	}
-	.totalPrice{
-		color: pink;
+.month-line{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	&>view {
+		display: flex;
+		flex-basis: 49%;
+		align-items: space-around;
+		background-color: #fafaff;
+		margin: 2upx 2upx;
+		overflow: hidden;
+		padding: 6upx 12upx;
+		justify-content: space-between;
+		&>view{
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			align-content: space-around;
+			align-items: space-around;
+			&:last-of-type {
+				padding-right: 5upx;
+			}
+		}
 	}
 }
- .other-line {
-	 margin-bottom: 15upx;
-	 border-radius: 12upx;
-	 background-color: #f1f7fe;
- }
- .cu-list.grid>.cu-item{
-	padding: 4rpx 0;
-	width: calc((100% - 130rpx) / 3);
-	&:nth-of-type(1),&:nth-of-type(5),&:nth-of-type(9),&:nth-of-type(13){
-		width: 130rpx;
-		text-align: right;
-		padding-right: 20rpx;
-	}
-	.title{
-		color: #8799a3;
-	}
- }
 </style>
