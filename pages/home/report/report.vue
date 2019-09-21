@@ -18,8 +18,8 @@
 			<view class="bg-white padding">
 				<view class="text-lg flex justify-start margin-top-xs">
 					<view class="flex align-center justify-center flex-sub flex-direction main-block">
-						<view class="text-grey text-sm">总购买个数</view>
-						<view class="text-red text-bold text-olive">{{totalGoodsNumber}}</view>
+						<view class="text-grey text-sm">产品种数</view>
+						<view class="text-red text-bold text-olive">{{dataList.length}}</view>
 					</view>
 					<view class="flex align-center justify-center flex-sub flex-direction main-block">
 						<view class="text-grey text-sm">总重量</view>
@@ -32,6 +32,10 @@
 				</view>
 				
 				<view class="text-lg flex justify-start margin-top-xs other-line padding-xs">
+					<view class="flex flex-sub align-center flex-direction">
+						<view class="text-red">{{totalGoodsNumber}}</view>
+						<view class="text-grey text-xs">总购买个数</view>
+					</view>
 					<view class="flex flex-sub align-center flex-direction">
 						<view class="text-red">{{totalReturnNumber}}</view>
 						<view class="text-grey text-xs">总退筒个数</view>
