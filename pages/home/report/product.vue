@@ -4,7 +4,11 @@
 			<view class="cu-item shadow">
 				<view class="cu-bar bg-white solid-bottom">
 					<view class="action">
-						<text class="cuIcon-titles text-mauve"></text><view class="text-cut text-xl">{{reportData.productName}}</view>
+						<text class="cuIcon-titles text-mauve"></text>
+						<view class="text-cut text-xl">
+							{{reportData.productName}}
+							<text class="text-grey margin-left-xs text-sm">({{reportData.productNo}})</text>
+						</view>
 					</view>
 					<view>
 						<text class="text-grey text-xs margin-right-xs">共计</text>

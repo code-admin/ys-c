@@ -175,31 +175,31 @@
 		computed:{
 			totalAmount(){
 				// 总结余：单产品结余：totalAmount - returnAmount
-				return this.dataList.length && this.dataList.reduce((prev, cur) => (prev.totalAmount - prev.returnAmount) + (cur.totalAmount - cur.returnAmount));
+				return this.dataList.length && this.dataList.reduce((total, cur) => total + (cur.totalAmount - cur.returnAmount), 0);
 			},
 			totalGoodsNumber(){
 				// 总购买个数
-				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.goodsNumber + cur.goodsNumber);
+				return this.dataList.length && this.dataList.reduce((total, cur) => total + cur.goodsNumber, 0);
 			},
 			totalWeight(){
 				// 总重量
-				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.goodsWeight + cur.goodsWeight);
+				return this.dataList.length && this.dataList.reduce((total, cur) => total + cur.goodsWeight, 0);
 			},
 			totalPrice(){
 				// 总单价
-				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.totalAmount + cur.totalAmount);
+				return this.dataList.length && this.dataList.reduce((total, cur) => total + cur.totalAmount, 0);
 			},
 			totalTotalAmount(){
 				// 总购买金额
-				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.totalAmount + cur.totalAmount);
+				return this.dataList.length && this.dataList.reduce((total, cur) => total + cur.totalAmount, 0);
 			},
 			totalReturnNumber(){
 				// 总退筒个数
-				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.returnNumber + cur.returnNumber);
+				return this.dataList.length && this.dataList.reduce((total, cur) => total + cur.returnNumber, 0);
 			},
 			totalReturnFee(){
 				// 总退筒金额
-				return this.dataList.length && this.dataList.reduce((prev, cur) => prev.returnAmount + cur.returnAmount);
+				return this.dataList.length && this.dataList.reduce((total, cur) => total + cur.returnAmount, 0);
 			}
 		}
 	}
