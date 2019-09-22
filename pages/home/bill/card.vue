@@ -58,7 +58,11 @@
 						<view class="other-line text-lg flex flex-wrap justify-start margin-top-xs padding-xs" v-show="opend">
 							<view class="flex align-center">
 								<view class="text-grey text-sm">产品名称</view>
-								<view class="text-sm">{{bill.productName}}</view>
+								<view class="text-sm">{{bill.productName}}（{{bill.productNo}}）</view>
+							</view>
+							<view class="flex align-center">
+								<view class="text-grey text-sm">要求</view>
+								<view class="text-sm">{{bill.requirement}}</view>
 							</view>
 							<view class="flex align-center flex-direction">
 								<view class="text-grey text-xs">宽度</view>
@@ -91,11 +95,6 @@
 							<view class="flex align-center flex-direction">
 								<view class="text-grey text-xs">其它款</view>
 								<view class="text-red text-price">{{bill.otherAmount}}</view>
-							</view>
-							
-							<view class="flex align-center">
-								<view class="text-grey text-sm">要求</view>
-								<view class="text-sm">{{bill.requirement}}</view>
 							</view>
 						</view>
 					</view>
@@ -164,7 +163,7 @@
 		margin: 1upx;
 		padding: 4upx;
 		flex-basis: calc(25% - 4upx);
-		&:first-of-type, &:last-of-type {
+		&:first-of-type, &:nth-of-type(2) {
 			flex-basis: 100%;
 			min-height: 70upx;
 			flex-direction: row;
