@@ -123,7 +123,7 @@
 			let firstReport = this.dataList[0];
 			let title = firstReport ? firstReport.reportDate : "";
 			return {
-				title: title + " 月销售报表",
+				title: "产品及月销售报表",
 				path: '/pages/home/report/report'
 			}
 		},

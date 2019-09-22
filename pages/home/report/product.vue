@@ -6,8 +6,7 @@
 					<view class="action">
 						<text class="cuIcon-titles text-mauve"></text>
 						<view class="text-cut text-xl">
-							{{reportData.productName}}
-							<text class="text-grey margin-left-xs text-sm">({{reportData.productNo}})</text>
+							{{reportData.productName}}<text class="text-grey text-sm">（{{reportData.productNo}}）</text>
 						</view>
 					</view>
 					<view>
