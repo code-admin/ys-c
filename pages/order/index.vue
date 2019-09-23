@@ -2,7 +2,12 @@
 	<view>
 		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
 			<block slot="backText">返回</block>
-			<block slot="content">订单</block>
+			<block slot="content">
+				<view @tap="switchQueryType">
+					{{ orderQueryType === 0 ? '订购单': '退筒单'}} 
+					<text class="cuIcon-unfold margin-left-xs"></text>
+				</view>
+			</block>
 		</cu-custom>
 		
 		<scroll-view scroll-x class="bg-white nav text-center fixed" :style="[{top:CustomBar + 'px'}]">
@@ -30,6 +35,7 @@
 		data() {
 			return {
 				TabCur: 0,
+				orderQueryType: 0,
 				CustomBar: this.CustomBar,
 				tabs: [ '全部', '创建', '审核', '出库','签收','确认','完成'],
 				queryParams: {
@@ -70,6 +76,9 @@
 			}, 300);
 		},
 		methods: {
+			switchQueryType(){
+				console.log("in switch...");
+			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
 				this.queryParams.status = this.TabCur === 0 ? null : this.TabCur - 1;
