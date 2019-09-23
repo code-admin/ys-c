@@ -10,7 +10,7 @@
 				{{tabs[index]}}
 			</view>
 		</scroll-view>
-		<uni-calendar ref="calendar" :range="true" @confirm="confirmDate" />
+		<uni-calendar ref="calendar" lunar :range="true" @confirm="confirmDate" />
 		<block v-if="TabCur==0">
 			<view class="report-calender bg-white text-center fixed text-lg padding-sm text-grey cuIcon-calendar" @tap="openCalender" :style="[{top:(CustomBar+45) + 'px'}]">
 				<text class="padding-left-xs">{{queryParams.beginDate}} ~ {{queryParams.endDate}}</text>

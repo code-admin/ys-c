@@ -4,7 +4,7 @@
 			<block slot="backText">返回</block>
 			<block slot="content">账单</block>
 		</cu-custom>
-		<uni-calendar ref="calendar" :range="true" @confirm="confirmDate" />
+		<uni-calendar ref="calendar" lunar :range="true" @confirm="confirmDate" />
 		<view class="report-calender bg-white text-center fixed text-lg padding-sm text-grey cuIcon-calendar" @tap="openCalender" :style="[{top:(CustomBar) + 'px'}]">
 			<text class="padding-left-xs">{{filter.startTime}} ~ {{filter.endTime}}</text>
 		</view>
