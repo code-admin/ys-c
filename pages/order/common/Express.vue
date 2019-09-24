@@ -4,8 +4,8 @@
 			<view class="cu-item shadow">
 				<view class="flex solid-bottom padding justify-between align-center">
 					<view class="text-black text-bold text-grey">{{express.product.name + '/' + express.product.productNo }}</view>
-					<button class="cu-btn round sm bg-orange shadow" v-if="express.status === 1" @tap="showConfirm(express.id)" >签收</button>
-					<view v-if="express.status === 2" class="cu-tag light round bg-gray sm" >已签收</view>
+					<button v-if="makingType === 1 && express.status === 1" class="cu-btn round sm bg-orange shadow" @tap="showConfirm(express.id)" >签收</button>
+					<view v-if="makingType === 1 && express.status === 2" class="cu-tag light round bg-gray sm" >已签收</view>
 				</view>
 				
 				<view class="padding solid-bottom">
@@ -32,10 +32,11 @@
 						<view class="margin-right  padding-left-xs text-red text-price"> {{express.totalPrice}}</view>
 					</view>
 					<view class="flex align-center margin-top-xs">
-						<view class="text-grey">出库{{orderType === 2 ? '个':'条'}}数:</view>
+						<view v-if="makingType === 1" class="text-grey">出库{{orderType === 2 ? '个':'条'}}数:</view>
+						<view v-if="makingType === 2" class="text-grey">个数:</view>
 						<view class="margin-right padding-left-xs text-red"> {{express.number}}</view>
-						<view class="text-grey">司机/电话:</view>
-						<view class="margin-right padding-left-xs text-blue"> {{express.driverName}} / {{express.driverPhone}}</view>
+						<view v-if="makingType === 1" class="text-grey">司机/电话:</view>
+						<view v-if="makingType === 1" class="margin-right padding-left-xs text-blue"> {{express.driverName}} / {{express.driverPhone}}</view>
 					</view>
 				</view>
 				
@@ -82,7 +83,11 @@
 		props:{
 			orderId:Number,
 			orderType: Number,
-			express:Object
+			express:Object,
+			makingType:{
+				type:Number,
+				default:1
+			}
 		},
 		methods:{
 			showConfirm(id){
