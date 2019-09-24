@@ -3,8 +3,8 @@
 		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">
-				<view @tap="switchQueryType">
-					{{ orderQueryType === 0 ? '订购单': '退筒单'}} 
+				<view @tap="switchMakingType">
+					{{ queryParams.makingType === 1 ? '订购单': '退筒单'}} 
 					<text class="cuIcon-unfold margin-left-xs"></text>
 				</view>
 			</block>
@@ -19,26 +19,33 @@
 		<navigator class="nav-position cu-btn shadow bg-gradual-blue radius text-sl" url="/pages/order/edit">
 			<text class="cuIcon-add"></text>
 		</navigator>
-		
-		<order-card v-for="(item,index) in orderList" :key="index" :card="item"></order-card>
+		<view v-if="queryParams.makingType === 1">
+			<order-card v-for="(item,index) in orderList" :key="index" :card="item"></order-card>
+		</view>
+		<view v-if="queryParams.makingType === 2">
+			<return-card v-for="(item,index) in orderList" :key="index" :card="item"></return-card>
+		</view>
 		<view class="text-center text-gray padding-xl" v-if="!isLoading && orderList.length == 0">暂无数据</view>
 		<view class="text-center text-gray padding" v-if="showLoadMore">{{loadMoreText}}</view>
+		
 	</view>
 </template>
 
 <script>
 	import OrderCard from './common/card.vue'
+	import ReturnCard from './common/ReturnCard.vue'
 	export default {
 		components: {
-			OrderCard
+			OrderCard,
+			ReturnCard
 		},
 		data() {
 			return {
 				TabCur: 0,
-				orderQueryType: 0,
 				CustomBar: this.CustomBar,
-				tabs: [ '全部', '创建', '审核', '出库','签收','确认','完成'],
+				tabs: [ '全部', '创建', '待审核', '待出库','待签收','待确认','完成'],
 				queryParams: {
+					makingType:1,
 					pageIndex: 1,
 					pageSize: 5,
 					status: null,
@@ -76,13 +83,33 @@
 			}, 300);
 		},
 		methods: {
-			switchQueryType(){
-				console.log("in switch...");
+			switchMakingType(){
+				console.log(this.queryParams.makingType)
+				this.TabCur = 0;
+				if(this.queryParams.makingType === 1){
+					this.tabs = [ '全部', '待确认', '完成',];
+					this.queryParams.makingType = 2
+					this.queryParams.status = null;
+					this.initData();
+					return
+				}
+				if(this.queryParams.makingType === 2){
+					this.tabs = [ '全部', '创建', '待审核', '待出库','待签收','待确认','完成'];
+					this.queryParams.makingType = 1
+					this.queryParams.status = null;
+					this.initData();
+					return
+				}
 			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
-				this.queryParams.status = this.TabCur === 0 ? null : this.TabCur - 1;
+				if(this.queryParams.makingType ===1){
+					this.queryParams.status = this.TabCur === 0 ? null : this.TabCur - 1;
+				}else if(this.queryParams.makingType ===2){
+					this.queryParams.status = this.TabCur === 0 ? null : this.TabCur + 1;
+				}
 				this.initData();
+				
 			},
 			initData(){
 				this.loadedNumber = 0;
