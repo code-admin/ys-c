@@ -60,7 +60,10 @@
 						<text class="cuIcon-titles text-blue"></text>出库记录
 					</view>
 				</view>
-				<express v-for="express in orderInfo.orderExpressList" :key ="express.id" :express="express" :orderType="orderInfo.orderType" :orderId="orderInfo.id"></express>
+				<express v-for="express in orderInfo.orderExpressList" :key ="express.id" 
+				:express="express" 
+				:orderType="orderInfo.orderType" 
+				:orderId="orderInfo.id" ></express>
 			</view>
 			
 			<view class="bg-white">
@@ -86,7 +89,7 @@
 		</view>
 		
 		<view class="padding flex flex-direction btn-position">
-			<button v-if="orderInfo.status === 3 " class="cu-btn bg-blue lg" @tap="showConfirm=true">一键签收</button>
+			<button v-if="orderInfo.status === 3 && orderInfo.oneKeySign" class="cu-btn bg-blue lg" @tap="showConfirm=true">一键签收</button>
 		</view>
 		
 		<view class="padding flex flex-direction btn-position">
@@ -102,7 +105,7 @@
 					</view>
 				</view>
 				<view class="padding-xl">
-					确定一键签收所以产品吗？
+					确定一键签收所有产品吗？
 				</view>
 				<view class="cu-bar bg-white justify-end">
 					<form @submit="Signing" report-submit>
@@ -193,6 +196,7 @@
 						title: res.message,
 						icon: "success",
 					})
+					this.getOrderInfoById(this.orderInfo.id)
 				}).catch(err =>{
 					uni.showToast({
 						duration: 3000,
@@ -200,6 +204,7 @@
 						icon: "none",
 					})
 				})
+				this.showConfirm = !this.showConfirm;
 			},
 			finish(e){
 				this.$request.post({
