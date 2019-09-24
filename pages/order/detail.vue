@@ -86,7 +86,33 @@
 		</view>
 		
 		<view class="padding flex flex-direction btn-position">
+			<button v-if="orderInfo.status === 3 " class="cu-btn bg-blue lg" @tap="showConfirm=true">一键签收</button>
+		</view>
+		
+		<view class="padding flex flex-direction btn-position">
 			<button v-if="orderInfo.status === 4 " class="cu-btn bg-blue lg" @tap="confirm=true">确认完成</button>
+		</view>
+		
+		<view class="cu-modal" :class="showConfirm ?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">提示</view>
+					<view class="action" @tap="showConfirm=false">
+						<text class="cuIcon-close text-red" ></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					确定一键签收所以产品吗？
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<form @submit="Signing" report-submit>
+						<view class="action">
+							<button class="cu-btn line-green text-green" @tap="showConfirm=false">取消</button>
+							<button class="cu-btn bg-green margin-left" form-type="submit">确定</button>
+						</view>
+					</form>
+				</view>
+			</view>
 		</view>
 		
 		<view class="cu-modal" :class="confirm ?'show':''">
@@ -110,6 +136,7 @@
 				</view>
 			</view>
 		</view>
+		
 	</view>
 </template>
 
@@ -126,7 +153,8 @@
 				numList: ['创建','待审核', '待出库','待签收','待确认','完成'],
 				loading:true,
 				orderInfo:{},
-				confirm:false
+				confirm:false,
+				showConfirm: false
 			}
 		},
 		onLoad(options) {
@@ -151,12 +179,27 @@
 					})
 				})
 			},
-			showConfirm(id){
-				this.expressId = id
-				this.confirm = !this.confirm
-			},
 			hideModal(){
 				this.confirm = !this.confirm
+			},
+			Signing(e){
+				this.$request.post({
+					url:'/order/signOrder',
+					loadingTip:'正在提交数据...',
+					data:{formId:e.detail.formId, orderId: this.orderInfo.id }
+				}).then(res =>{
+					uni.showToast({
+						duration: 3000,
+						title: res.message,
+						icon: "success",
+					})
+				}).catch(err =>{
+					uni.showToast({
+						duration: 3000,
+						title: err.message,
+						icon: "none",
+					})
+				})
 			},
 			finish(e){
 				this.$request.post({
