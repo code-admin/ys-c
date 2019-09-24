@@ -20,7 +20,7 @@
 			</view>
 		</scroll-view>
 		<goods v-for="(goods,index) in dataList" :key="index" :option="goods"></goods>
-		<view class="text-center text-gray padding-xl" v-if="!isLoading && dataList.length == 0">暂无数据</view>
+		<view class="empty-data" v-if="!isLoading && dataList.length == 0">暂无数据</view>
 		<view class="text-center padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>

@@ -55,7 +55,7 @@
 		<block v-else>
 			<month-card v-for="(data,index) in dataList" :key="index" :reportData="data"></month-card>
 		</block>
-		<view class="text-center text-gray padding-xl" v-if="!isLoading && dataList && dataList.length == 0">暂无数据</view>
+		<view class="empty-data" v-if="!isLoading && dataList && dataList.length == 0">暂无数据</view>
 		<view class="text-center text-gray padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>

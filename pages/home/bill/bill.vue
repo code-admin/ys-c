@@ -9,7 +9,7 @@
 			<text class="padding-left-xs">{{filter.startTime}} ~ {{filter.endTime}}</text>
 		</view>
 		<bill-card v-for="(bill,index) in dataList" :key="index" :bill="bill"></bill-card>
-		<view class="text-center text-gray padding-xl" v-if="!isLoading && dataList.length == 0">暂无数据</view>
+		<view class="empty-data" v-if="!isLoading && dataList.length == 0">暂无数据</view>
 		<view class="text-center padding" v-if="showLoadMore">{{loadMoreText}}</view>
 	</view>
 </template>
