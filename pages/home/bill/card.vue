@@ -6,16 +6,16 @@
 					<view class="action">
 						<text class="cuIcon-titles text-mauve"></text>
 						<view class="text-cut text-xl">
-							{{bill.orderNo}}
+							{{bill.productName}}{{bill.productWidth}}{{bill.productWeight}}
 						</view>
 					</view>
 					<view>
-						<text class="text-grey margin-right text-sm">{{bill.finishTime}}</text>
+						<text class="text-grey margin-right text-sm">{{(bill.finishTime).substring(0,11)}}</text>
 					</view>
 				</view>
 				<view class="padding">
-					<!-- 订单号	日期	企业账号	客户		产品名称	要求	宽度	克重	长度	个数	退筒个数	退筒重量	退筒金额	其它款 重量 		单价 金额 销售余款 已结款 余款 -->
-					<view class="month-line">
+					
+					<!-- <view class="month-line">
 						
 						<view style="flex-basis: calc(100% - 8upx);">
 							<view class="text-grey">企业账号</view>
@@ -49,12 +49,11 @@
 							<view class="text-red text-price">{{bill.balanceAmount }}</view>
 						</view>
 						
-					</view>
+					</view> -->
 					
-					<view class="more-information">
+					<!--<view class="more-information">
 						<text :class="['text-center block padding-top-xs text-bold text-xxl', opend ? 'cuIcon-fold':'cuIcon-unfold']" @tap="showDetail"></text>
 						
-						<!-- 产品名称	要求	宽度	克重	长度	个数	退筒个数	退筒重量	退筒金额	其它款 重量 -->
 						<view class="other-line text-lg flex flex-wrap justify-start margin-top-xs padding-xs" v-show="opend">
 							<view class="flex align-center">
 								<view class="text-grey text-sm">产品名称</view>
@@ -97,7 +96,73 @@
 								<view class="text-red text-price">{{bill.otherAmount}}</view>
 							</view>
 						</view>
+					</view> -->
+					
+					<view class="more-information">
+						<view class="other-line text-lg flex flex-wrap justify-start margin-top-xs padding-xs">
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">长度</view>
+								<view class="text-red">{{bill.productLength}}</view>
+							</view>
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">个数</view>
+								<view class="text-red">{{bill.goodsNumber}}</view>
+							</view>
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">单价</view>
+								<view class="text-red text-price">{{bill.price}}</view>
+							</view>
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">重量</view>
+								<view class="text-red">{{bill.returnWeight}}</view>
+							</view>
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">金额</view>
+								<view class="text-red text-price">{{bill.returnAmount}}</view>
+							</view>
+							<!-- <view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">备注</view>
+								<view class="text-red text-price">{{bill.otherAmount}}</view>
+							</view> -->
+						</view>
+					</view> 
+					
+					<view class="more-information">
+						<text :class="['text-center block padding-top-xs text-bold text-xxl', opend ? 'cuIcon-fold':'cuIcon-unfold']" @tap="showDetail"></text>
+						<view class="other-line text-lg flex flex-wrap justify-start margin-top-xs padding-xs" v-show="opend">
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">退筒个数</view>
+								<view class="text-red">{{bill.returnNumber}}</view>
+							</view>
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">退筒重量</view>
+								<view class="text-red">{{bill.returnWeight}}</view>
+							</view>
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">退筒金额</view>
+								<view class="text-red text-price">{{bill.returnAmount}}</view>
+							</view>
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">其它款</view>
+								<view class="text-red text-price">{{bill.otherAmount}}</view>
+							</view>
+							
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">销售余款</view>
+								<view class="text-red">{{bill.salesBalance}}</view>
+							</view>
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">已结款</view>
+								<view class="text-red text-price">{{bill.paidAmount}}</view>
+							</view>
+							<view class="flex align-center flex-direction">
+								<view class="text-grey text-xs">余款</view>
+								<view class="text-red text-price">{{bill.balanceAmount}}</view>
+							</view>
+						</view>
 					</view>
+					
+					
 				</view>
 			</view>
 			
@@ -162,16 +227,16 @@
 	&>view {
 		margin: 1upx;
 		padding: 4upx;
-		flex-basis: calc(25% - 4upx);
-		&:first-of-type, &:nth-of-type(2) {
-			flex-basis: 100%;
-			min-height: 70upx;
-			flex-direction: row;
-			&>view:first-of-type {
-				text-align: center;
-				min-width: calc(25% - 4upx);
-			}
-		}
+		flex-basis: calc(20% - 4upx);
+		// &:first-of-type, &:nth-of-type(2) {
+		// 	flex-basis: 100%;
+		// 	min-height: 70upx;
+		// 	flex-direction: row;
+		// 	&>view:first-of-type {
+		// 		text-align: center;
+		// 		min-width: calc(20% - 4upx);
+		// 	}
+		// }
 		>view:first-of-type {
 			margin-bottom: 4upx;
 		}
