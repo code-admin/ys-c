@@ -4,9 +4,65 @@
 			<block slot="backText">返回</block>
 			<block slot="content">账单</block>
 		</cu-custom>
-		<uni-calendar ref="calendar" lunar :range="true" @confirm="confirmDate" />
-		<view class="report-calender bg-white text-center fixed text-lg padding-sm text-grey cuIcon-calendar" @tap="openCalender" :style="[{top:(CustomBar) + 'px'}]">
+		<view class="report-calender bg-white text-center nav fixed text-lg padding-sm text-grey cuIcon-calendar" @tap="openCalender" :style="[{top:(CustomBar) + 'px'}]">
 			<text class="padding-left-xs">{{filter.startTime}} ~ {{filter.endTime}}</text>
+		</view>
+		<uni-calendar ref="calendar" lunar :range="true" @confirm="confirmDate" />
+		<view class="bg-white padding solid-top">
+			<!-- 销售金额、已结款、余款
+				个数、重量、单价、金额、
+				退筒个数、退筒重量、退筒金额、其它款、 -->
+			<view class="text-lg flex justify-start margin-top-xs">
+				<view class="flex align-center justify-center flex-sub flex-direction main-block">
+					<view class="text-grey text-sm">销售金额</view>
+					<view class="text-red text-bold">{{totalReportData.totalAmount || 0}}</view>
+				</view>
+				<view class="flex align-center justify-center flex-sub flex-direction main-block">
+					<view class="text-grey text-sm">已结款</view>
+					<view class="text-red text-bold text-cyan">{{totalReportData.paidAmount || 0}}</view>
+				</view>
+				<view class="flex align-center justify-center flex-sub flex-direction main-block">
+					<view class="text-grey text-sm">余款</view>
+					<view class="text-red text-bold text-orange text-price">{{totalReportData.balanceAmount || 0}}</view>
+				</view>
+			</view>
+			
+			<view class="text-lg flex justify-start margin-top-xs other-line padding-xs">
+				<view class="flex flex-sub align-center flex-direction">
+					<view class="text-red text-olive">{{totalReportData.goodsNumber || 0}}</view>
+					<view class="text-grey text-xs">个数</view>
+				</view>
+				<view class="flex flex-sub align-center flex-direction">
+					<view class="text-red">{{totalReportData.totalWeight || 0}}</view>
+					<view class="text-grey text-xs">重量</view>
+				</view>
+				<view class="flex flex-sub align-center flex-direction">
+					<view class="text-red text-price">{{totalReportData.price || 0}}</view>
+					<view class="text-grey text-xs">单价</view>
+				</view>
+				<view class="flex flex-sub align-center flex-direction">
+					<view class="text-red text-price">{{totalReportData.totalAmount || 0}}</view>
+					<view class="text-grey text-xs">金额</view>
+				</view>
+			</view>
+			<view class="text-lg flex justify-start margin-top-xs other-line padding-xs">
+				<view class="flex flex-sub align-center flex-direction">
+					<view class="text-red">{{totalReportData.returnNumber || 0}}</view>
+					<view class="text-grey text-xs">退筒个数</view>
+				</view>
+				<view class="flex flex-sub align-center flex-direction">
+					<view class="text-red">{{totalReportData.returnWeight || 0}}</view>
+					<view class="text-grey text-xs">退筒重量</view>
+				</view>
+				<view class="flex flex-sub align-center flex-direction">
+					<view class="text-red text-price">{{totalReportData.returnAmount || 0}}</view>
+					<view class="text-grey text-xs">退筒金额</view>
+				</view>
+				<view class="flex flex-sub align-center flex-direction">
+					<view class="text-red text-price">{{totalReportData.otherAmount || 0}}</view>
+					<view class="text-grey text-xs">其它款</view>
+				</view>
+			</view>
 		</view>
 		<bill-card v-for="(bill,index) in dataList" :key="index" :bill="bill"></bill-card>
 		<view class="empty-data" v-if="!isLoading && dataList.length == 0">暂无数据</view>
@@ -37,6 +93,7 @@
 				showLoadMore: false,
 				loadMoreText: "加载中...",
 				dataList: [],
+				totalReportData: {}
 			}
 		},
 		onLoad() {
@@ -49,6 +106,7 @@
 			this.filter.startTime = [currentDate.getFullYear(), monthStr, "01"].join("-");
 			console.log(this.filter);
 			this.initData();
+			this.getTotalReportData();
 		},
 		onUnload() {
 			this.total = 0,
@@ -94,6 +152,14 @@
 					uni.stopPullDownRefresh();
 				})
 			},
+			getTotalReportData() {
+				this.$request.post({
+					data: this.filter,
+					url:'/report/getBillTotalReport',
+				}).then(res => {
+					this.totalReportData = res.data;
+				})
+			},
 			openCalender(){
 				this.$refs.calendar.open();
 			},
@@ -103,6 +169,7 @@
 					this.filter.startTime = e.range.begin;
 					this.filter.endTime = e.range.end;
 					this.initData();
+					this.getTotalReportData();
 				} else {
 					uni.showToast({
 						icon: "none",
@@ -115,6 +182,23 @@
 	}
 </script>
 
-<style>
-
+<style lang="scss">
+page {
+	padding-top: 45px;
+}
+.main-block {
+	margin: 4upx;
+	padding: 8upx 0;
+	min-height: 100upx;
+	border-radius: 10upx;
+	border-bottom: 2upx solid #fad0d1;
+	.text-bold {
+		font-size: 55upx;
+	}
+}
+ .other-line {
+	 margin-bottom: 15upx;
+	 border-radius: 12upx;
+	 background-color: #f1f7fe;
+ }
 </style>
