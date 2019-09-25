@@ -105,6 +105,7 @@
 						data:{formId:e.detail.formId, orderId: this.orderId , orderExpressId: this.expressId }
 					}).then(res =>{
 						this.express.status= 2;
+						this.$emit('updateData')
 						uni.showToast({
 							duration: 3000,
 							title: res.message,

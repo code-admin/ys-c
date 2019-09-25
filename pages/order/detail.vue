@@ -63,7 +63,8 @@
 				<express v-for="express in orderInfo.orderExpressList" :key ="express.id" 
 				:express="express" 
 				:orderType="orderInfo.orderType" 
-				:orderId="orderInfo.id" ></express>
+				:orderId="orderInfo.id" 
+				@updateData="updateData"></express>
 			</view>
 			
 			<view class="bg-white">
@@ -89,7 +90,7 @@
 		</view>
 		
 		<view class="padding flex flex-direction btn-position">
-			<button v-if="orderInfo.status === 3 && orderInfo.oneKeySign" class="cu-btn bg-blue lg" @tap="showConfirm=true">一键签收</button>
+			<button v-if="orderInfo.status === 3 && orderInfo.oneKeySign"  class="cu-btn bg-blue lg" @tap="showConfirm=true">一键签收</button>
 		</view>
 		
 		<view class="padding flex flex-direction btn-position">
@@ -205,6 +206,9 @@
 					})
 				})
 				this.showConfirm = !this.showConfirm;
+			},
+			updateData(){
+				this.getOrderInfoById(this.orderInfo.id)
 			},
 			finish(e){
 				this.$request.post({
