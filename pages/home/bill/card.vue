@@ -122,7 +122,7 @@
 							</view>
 							<view class="flex align-center flex-sub">
 								<view class="text-grey text-sm">备注</view>
-								<view class="text-grey text-sm">{{bill.remark || '先空着吧，后面二期估计这一块需要改动的'}}</view>
+								<view class="text-grey text-sm">{{bill.remark || '--'}}</view>
 							</view>
 						</view>
 					</view> 
