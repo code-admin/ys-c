@@ -99,7 +99,7 @@
 					</view> -->
 					
 					<view class="more-information">
-						<view class="other-line text-lg flex flex-wrap justify-start margin-top-xs padding-xs">
+						<view class="other-line text-lg flex flex-wrap justify-start margin-top-xs padding-top-xs">
 							<view class="flex align-center flex-direction">
 								<view class="text-grey text-xs">长度</view>
 								<view class="text-red">{{bill.productLength}}</view>
@@ -120,16 +120,16 @@
 								<view class="text-grey text-xs">金额</view>
 								<view class="text-red text-price">{{bill.returnAmount}}</view>
 							</view>
-							<!-- <view class="flex align-center flex-direction">
-								<view class="text-grey text-xs">备注</view>
-								<view class="text-red text-price">{{bill.otherAmount}}</view>
-							</view> -->
+							<view class="flex align-center flex-sub">
+								<view class="text-grey text-sm">备注</view>
+								<view class="text-grey text-sm">{{bill.remark || '先空着吧，后面二期估计这一块需要改动的'}}</view>
+							</view>
 						</view>
 					</view> 
 					
 					<view class="more-information">
-						<text :class="['text-center block padding-top-xs text-bold text-xxl', opend ? 'cuIcon-fold':'cuIcon-unfold']" @tap="showDetail"></text>
-						<view class="other-line text-lg flex flex-wrap justify-start margin-top-xs padding-xs" v-show="opend">
+						<text :class="['text-center block text-bold text-xl', opend ? 'cuIcon-fold':'cuIcon-unfold']" @tap="showDetail"></text>
+						<view class="other-line details text-lg flex justify-start margin-top-xs padding-xs" v-show="opend">
 							<view class="flex align-center flex-direction">
 								<view class="text-grey text-xs">退筒个数</view>
 								<view class="text-red">{{bill.returnNumber}}</view>
@@ -140,11 +140,11 @@
 							</view>
 							<view class="flex align-center flex-direction">
 								<view class="text-grey text-xs">退筒金额</view>
-								<view class="text-red text-price">{{bill.returnAmount}}</view>
+								<view class="text-red">{{bill.returnAmount}}</view>
 							</view>
 							<view class="flex align-center flex-direction">
 								<view class="text-grey text-xs">其它款</view>
-								<view class="text-red text-price">{{bill.otherAmount}}</view>
+								<view class="text-red">{{bill.otherAmount}}</view>
 							</view>
 							
 							<view class="flex align-center flex-direction">
@@ -153,11 +153,11 @@
 							</view>
 							<view class="flex align-center flex-direction">
 								<view class="text-grey text-xs">已结款</view>
-								<view class="text-red text-price">{{bill.paidAmount}}</view>
+								<view class="text-red">{{bill.paidAmount}}</view>
 							</view>
 							<view class="flex align-center flex-direction">
 								<view class="text-grey text-xs">余款</view>
-								<view class="text-red text-price">{{bill.balanceAmount}}</view>
+								<view class="text-red">{{bill.balanceAmount}}</view>
 							</view>
 						</view>
 					</view>
@@ -219,27 +219,30 @@
 	transition: all .3s;
 }
 .other-line {
-	margin-top: 15upx;
+	margin-top: 4upx;
 	transition: all .3s;
 	border-radius: 16upx;
-	background-color: #f0f4ff;
-	background-image: linear-gradient(180deg, #fafaff 0%, #ffffff 90%);
+	background-color: #fafaff;
+	// background-image: linear-gradient(180deg, #fafaff 0%, #ffffff 90%);
 	&>view {
 		margin: 1upx;
 		padding: 4upx;
 		flex-basis: calc(20% - 4upx);
-		// &:first-of-type, &:nth-of-type(2) {
-		// 	flex-basis: 100%;
-		// 	min-height: 70upx;
-		// 	flex-direction: row;
-		// 	&>view:first-of-type {
-		// 		text-align: center;
-		// 		min-width: calc(20% - 4upx);
-		// 	}
-		// }
+		&:last-of-type.flex-sub {
+			flex-basis: 100%;
+			min-height: 65upx;
+			flex-direction: row;
+			&>view:first-of-type {
+				text-align: center;
+				min-width: calc(20% - 4upx);
+			}
+		}
 		>view:first-of-type {
 			margin-bottom: 4upx;
 		}
 	}
  }
+.other-line.details>view{
+	flex-basis: calc(16% - 4upx);
+}
 </style>
