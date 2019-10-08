@@ -21,6 +21,10 @@
             "path" : "pages/home/report/report",
             "style" : {}
         }
+		,{
+		    "path" : "pages/home/report/details",
+		    "style" : {}
+		}
         ,{
             "path" : "pages/home/bill/bill",
             "style" : {}

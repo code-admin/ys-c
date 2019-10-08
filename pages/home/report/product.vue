@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<navigator :url="`/pages/home/report/details?productNo=${reportData.productNo}&d1=${d1}&d2=${d2}`" hover-class="navigator-hover">
 		<view class="cu-card case no-card margin-top-sm">
 			<view class="cu-item shadow">
 				<view class="cu-bar bg-white solid-bottom">
@@ -49,6 +50,7 @@
 			</view>
 			
 		</view>
+		</navigator>
 	</view>
 </template>
 
@@ -60,7 +62,7 @@
 
 			};
 		},
-		props: ['reportData']
+		props: ['reportData', 'd1', 'd2']
 	}
 </script>
 

@@ -50,7 +50,7 @@
 					</view>
 				</view>
 			</view>
-			<product-card v-for="(data,index) in dataList" :key="index" :reportData="data"></product-card>
+			<product-card v-for="(data,index) in dataList" :key="index" :reportData="data" :d1="queryParams.beginDate" :d2="queryParams.beginDate"></product-card>
 		</block>
 		<block v-else>
 			<month-card v-for="(data,index) in dataList" :key="index" :reportData="data"></month-card>
