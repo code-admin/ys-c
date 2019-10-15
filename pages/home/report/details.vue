@@ -8,69 +8,85 @@
 		<view class="de-content margin-bottom-xl">
 			<view class="cu-bar bg-white solid-bottom margin-top-sm">
 				<view class="action">
-					<text class="cuIcon-titles text-orange"></text> {{itemdata.productName || "产品信息" }}
+					<text class="cuIcon-titles text-orange"></text> {{itemdata[0].productName || "产品详情" }}
+					<text class="text-grey text-sm">（{{queryParams.productNo}}）</text>
 				</view>
 				<view class="margin-right text-sm text-gray">
-					{{beginDate}} ~ {{endDate}}
+					{{queryParams.startTime}} ~ {{queryParams.endTime}}
 				</view>
 			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">要&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;求：</view>
-				<view class="padding-sm">{{itemdata.requirement || ''}}</view>
+			
+			<view class="cu-card case no-card margin-top-sm" v-for="(item, index) in itemdata" :key="index">
+				<view class="cu-item shadow">
+					<view class="padding solid-bottom">
+						
+						<view class="month-line">
+							
+							<view style="flex-basis: 100%;">
+								<view class="text-grey text-df">要求</view>
+								<view class="text-mauve text-df">{{item.requirement }}</view>
+							</view>
+							<view>
+								<view class="text-grey text-sm">宽度（cm）</view>
+								<view class="text-red">{{item.productWidth }}</view>
+							</view>
+							<view>
+								<view class="text-grey text-sm">克重（g）</view>
+								<view class="text-red">{{item.productWeight }}</view>
+							</view>
+							<view>
+								<view class="text-grey text-sm">个数</view>
+								<view class="text-red">{{item.goodsNumber }}</view>
+							</view>
+							<view class="cu-item flex">
+								<view class="text-grey text-sm">重量</view>
+								<view class="text-red">{{item.totalWeight}}</view>
+							</view>
+							<view>
+								<view class="text-grey text-sm">退筒个数</view>
+								<view class="text-red">{{item.returnNumber }}</view>
+							</view>
+							<view>
+								<view class="text-grey text-sm">退筒重量</view>
+								<view class="text-red">{{item.returnWeight }}</view>
+							</view>
+							<view>
+								<view class="text-grey text-sm">退筒金额</view>
+								<view class="text-red text-price">{{item.returnAmount }}</view>
+							</view>
+							<view>
+								<view class="text-grey text-sm">其它款</view>
+								<view class="text-red text-price">{{item.otherAmount }}</view>
+							</view>
+							
+							<view class="cu-item flex">
+								<view class="title text-grey text-sm">单价</view>
+								<view class="text-red text-price">{{item.price }}</view>
+							</view>
+							<view class="cu-item flex">
+								<view class="title text-grey text-sm">金额</view>
+								<view class="text-red text-price">{{item.totalAmount}}</view>
+							</view>
+							<view class="cu-item flex">
+								<view class="title text-grey text-sm">已结款</view>
+								<view class="text-red text-price">{{item.paidAmount}}</view>
+							</view>
+							<view class="cu-item flex">
+								<view class="title text-grey text-sm">余款</view>
+								<view class="text-red text-price">{{item.balanceAmount}}</view>
+							</view>
+							
+						</view>
+						
+					</view>
+				</view>
+				
 			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">宽&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度：</view>
-				<view class="padding-sm">{{itemdata.productWidth|| ''}} (cm)</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">克&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重：</view>
-				<view class="padding-sm">{{itemdata.productWeight || ''}} (g)</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">长&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度：</view>
-				<view class="padding-sm">{{itemdata.productLength|| ''}} (cm)</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">个&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数：</view>
-				<view class="padding-sm">{{itemdata.goodsNumber || ''}}</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">退筒个数：</view>
-				<view class="padding-sm">{{itemdata.returnNumber|| ''}}</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">退筒重量：</view>
-				<view class="padding-sm">{{itemdata.weight|| ''}}</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">退筒金额：</view>
-				<view class="padding-sm">{{itemdata.returnAmount|| ''}}</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">其&nbsp;它&nbsp;&nbsp;款：</view>
-				<view class="padding-sm">{{itemdata.otherAmount|| ''}}</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">重&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量：</view>
-				<view class="padding-sm">{{itemdata.totalWeight|| ''}}</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价：</view>
-				<view class="padding-sm">{{itemdata.price|| ''}}</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额：</view>
-				<view class="padding-sm">{{itemdata.totalAmount|| ''}}</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">已&nbsp;结&nbsp;&nbsp;款：</view>
-				<view class="padding-sm">{{itemdata.paidAmount|| ''}}</view>
-			</view>
-			<view class="cu-item flex">
-				<view class="title text-grey padding-sm">余&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;款：</view>
-				<view class="padding-sm">{{itemdata.balanceAmount|| ''}}</view>
-			</view>
+			
 		</view>
+		
+		<view class="empty-data" v-if="!isLoading && itemdata && itemdata.length == 0">暂无数据</view>
+		<view class="text-center text-gray padding" v-if="showLoadMore">{{loadMoreText}}</view>
 		
 	</view>
 </template>
@@ -79,29 +95,59 @@
 export default {
 	data(){
 		return {
-			itemdata: {},
-			productNo: null,
-			beginDate: null,
-			endDate: null
+			itemdata: [],
+			total: 0,
+			loadedNumber: 0,
+			isLoading: false,
+			showLoadMore: false,
+			loadMoreText: "加载中...",
+			queryParams: {
+				startTime: null,
+				endTime: null,
+				productNo: null,
+				pageIndex: 1,
+				pageSize: 5
+			}
 		}
 	},
 	onLoad(options) {
-		this.productNo = options.productNo;
-		this.beginDate = options.d1;
-		this.endDate = options.d2;
-		this.queryOrderReport();
+		console.log(options)
+		this.queryParams.productNo = options.productNo;
+		this.queryParams.startTime = options.d1;
+		this.queryParams.endTime = options.d2;
+		this.initData();
+	},
+	onReachBottom() {
+		console.log("onReachBottom", this.loadedNumber);
+		if (this.loadedNumber >= this.total) {
+			this.loadMoreText = "没有更多数据了!"
+			return;
+		}
+		this.showLoadMore = true;
+		setTimeout(() => {
+			this.queryParams.pageIndex ++;
+			this.queryOrderReport();
+		}, 300);
 	},
 	methods: {
-		queryOrderReport(){
+		initData() {
+			this.itemdata = [];
+			this.loadedNumber = 0;
+			this.queryParams.pageIndex = 1;
+			this.loadMoreText = "加载更多...";
+			this.showLoadMore = false;
+			this.queryOrderReport();
+		},
+		queryOrderReport() {
 			this.$request.post({
 				url: "/report/getOrderReport",
-				data: {
-					productNo: this.productNo,
-					startTime: this.beginDate,
-					endTime: this.endDate
-				}
-			}).then(res =>{
-				this.itemdata = res.data
+				data: this.queryParams
+			}).then(res => {
+				this.isLoading = false;
+				this.total = res.total;
+				this.loadedNumber += this.queryParams.pageSize;
+				this.itemdata = this.itemdata.concat(res.data);
+				uni.stopPullDownRefresh();
 			});
 		}
 	}
@@ -123,6 +169,30 @@ export default {
 			}
 		}
 	}
-
+	.month-line{
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		&>view {
+			display: flex;
+			flex-basis: 49%;
+			align-items: space-around;
+			background-color: #fafaff;
+			margin: 2upx 2upx;
+			overflow: hidden;
+			padding: 6upx 12upx;
+			justify-content: space-between;
+			&>view{
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+				align-content: space-around;
+				align-items: space-around;
+				&:last-of-type {
+					padding-right: 5upx;
+				}
+			}
+		}
+	}
 </style>
 
