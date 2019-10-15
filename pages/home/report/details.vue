@@ -21,10 +21,13 @@
 					<view class="padding solid-bottom">
 						
 						<view class="month-line">
-							
+							<view style="flex-basis: 100%;">
+								<view class="text-grey text-df">订单号</view>
+								<view class="text-df">{{item.orderNo }}</view>
+							</view>
 							<view style="flex-basis: 100%;">
 								<view class="text-grey text-df">要求</view>
-								<view class="text-mauve text-df">{{item.requirement }}</view>
+								<view class="text-df">{{item.requirement }}</view>
 							</view>
 							<view>
 								<view class="text-grey text-sm">宽度（cm）</view>
