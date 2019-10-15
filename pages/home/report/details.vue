@@ -39,7 +39,7 @@
 								<view class="text-red">{{item.goodsNumber }}</view>
 							</view>
 							<view class="cu-item flex">
-								<view class="text-grey text-sm">重量</view>
+								<view class="text-grey text-sm">重量（kg）</view>
 								<view class="text-red">{{item.totalWeight}}</view>
 							</view>
 							<view>
