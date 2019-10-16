@@ -118,6 +118,7 @@
 </template>
 
 <script>
+	let progress = [];
 	export default {
 		data() {
 			return {
@@ -202,50 +203,68 @@
 				
 				this.submitting = true;
 				this.question.formId = formId;
-				this.serverFile = [], this.question.files = [];
 				let imgCount = this.imgList.length;
+				this.serverFile = [], this.question.files = [];
+				// 有图片上传就先上传文件后，再提交表单数据 
 				if(imgCount > 0){
 					this.showUploadProgress = true;
-					let baseUrl = this.$request.config.baseUrl;
-					let progress = new Array(imgCount).fill(0);
+					progress = new Array(imgCount).fill(0);
+					// 微信上传文件不能批量只能一个一个文件上传，所以循环执行上传文件的异步请求
+					let promiseMethod = new Array(imgCount);
 					for(let i = 0; i < imgCount; i++) {
-						let uploadTask = uni.uploadFile({
-							name: 'file',
-							filePath: this.imgList[i],
-							url: baseUrl + '/common/uploadImage',
-							success: res => {
-								console.log(this.serverFile);
-								if(res.statusCode === 200){
-									let result  = JSON.parse(res.data);
-									this.serverFile[i] = result.data.url;
-									if(this.serverFile.filter(f => true).length == imgCount){
-										this.question.files = this.serverFile;
-										this.showUploadProgress = false;
-										this.formSubmit();
-									}
-								} else {
-									uploadTask.abort();
-									this.submitting = false;
-									this.showUploadProgress = false;
-									let msg = res.statusCode === 413 ? "图片过大" : res.errMsg;
-									uni.showToast({ icon: "none", title: msg });
-								}
-							},
-							fail: (res) => {
-								this.showUploadProgress = false;
-								this.submitting = false;
-							}
-						});
-						uploadTask.onProgressUpdate(res => {
-							progress[i] = res.progress;
-							let sum  = progress.reduce((x,y)=> x+y);
-							this.percent = parseInt(sum / imgCount);
-							
-						})
+						promiseMethod[i] = this.uploadOnceFile(i);
 					}
+					Promise.all([...promiseMethod]).then(() => {
+						console.log("all done..", this.serverFile);
+						this.question.files = this.serverFile;
+						this.showUploadProgress = false;
+						this.formSubmit();
+					}).catch((err) => {
+						this.submitting = false;
+						this.showUploadProgress = false;
+						uni.showToast({ icon: 'none' ,title: err });
+						console.error("[[err]]", err)
+					});
 				} else {
 					this.formSubmit();
 				}
+			},
+			async uploadOnceFile(i) {
+				let imgCount = this.imgList.length;
+				let baseUrl = this.$request.config.baseUrl
+				return await new Promise((resolve, reject) => {
+					let uploadTask = uni.uploadFile({
+						name: 'file',
+						filePath: this.imgList[i],
+						url: baseUrl + '/common/uploadImage',
+						success: res => {
+							console.log("["+i+"] done ", this.serverFile);
+							if(res.statusCode === 200){
+								let result  = JSON.parse(res.data);
+								this.serverFile[i] = result.data.url;
+								resolve(result.data.url);
+							} else {
+								uploadTask.abort();
+								this.submitting = false;
+								this.showUploadProgress = false;
+								let msg = res.statusCode === 413 ? "图片过大" : res.errMsg;
+								uni.showToast({ icon: "none", title: msg });
+								// reject(res);
+							}
+						},
+						fail: (res) => {
+							this.showUploadProgress = false;
+							this.submitting = false;
+							reject(res)
+						}
+					});
+					uploadTask.onProgressUpdate(res => {
+						// 更新上传的进度状态（百分比）
+						progress[i] = res.progress;
+						let sum  = progress.reduce((x,y)=> x+y);
+						this.percent = parseInt(sum / imgCount);
+					})
+				});
 			},
 			formSubmit(){
 				if(this.submitting && this.showUploadProgress) return;
