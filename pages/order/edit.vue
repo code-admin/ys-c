@@ -129,7 +129,11 @@
 							
 							<view class="cu-form-group ">
 								<view class="title text-grey">单价(元)</view>
-								<input class="text-left" name="price" type="number" disabled placeholder="单价(元)" v-model="goods.price"></input>
+								<input class="text-left" name="price" type="number"  placeholder="单价(元)" v-model="goods.price"></input>
+							</view>
+							<view class="cu-form-group ">
+								<view class="title text-grey">备注</view>
+								<input class="text-left" name="price" type="remark" placeholder="备注" v-model="goods.remark"></input>
 							</view>
 					</view>
 				</form>
@@ -171,6 +175,7 @@
 					goodsLength:null , // 长度
 					goodsNumber:0 , // 下单数量/条数
 					price:null , // 单价
+					remark:null, // 备注
 				},
 				productName:'请选择产品',
 				productList:[],
@@ -217,6 +222,7 @@
 					goodsLength: 1, // 长度
 					goodsNumber:1 , // 下单数量/条数
 					price:product.price ||  null, // 单价
+					remark:product.price || null, // 备注
 				};
 			},
 			// 选择订单类型
