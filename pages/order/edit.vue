@@ -1,106 +1,114 @@
 <template>
-	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">编辑订单</block>
-		</cu-custom>
-		
-		<form @submit="saveOrSubmmit" report-submit class="block padding-bottom-xl">
-			<view class="cu-bar bg-white solid-bottom margin-top-sm">
-				<view class="action">
-					<text class="cuIcon-titles text-blue"></text> 基本信息
-				</view>
-			</view>
-			<view class="cu-form-group ">
-				<view class="title text-grey">下单人</view>
-				<input name="orderUser" type="text" disabled v-model="orderInfo.userName"></input>
-			</view>
-			<view class="cu-form-group ">
-				<view class="title text-grey">订单类型</view>
-				<picker name="orderType" placeholder="请输选择订单类型" @change="changeOrderType" :range="orderTypeList" range-key="name">
-					<view class="picker">{{orderTypeName}}</view>
-				</picker>
-			</view>
+	<view class="bg-gradual-blue">
+		<scroll-view scroll-y class="DrawerPage" :class="modalName=='viewModal'?'show':''">
+			<cu-custom bgColor="bg-gradual-blue" :isBack="true">
+				<block slot="backText">返回</block>
+				<block slot="content">编辑订单</block>
+			</cu-custom>
 			
-			
-			<view class="cu-bar bg-white solid-bottom margin-top-sm">
-				<view class="action">
-					<text class="cuIcon-titles text-blue"></text> 产品信息
-				</view>
-				<view class="action">
-					<form class="h45" @submit="showAddProductModal" report-submit >
-						<button class="cu-btn round sm bg-blue shadow" form-type="submit">添加产品</button>
-					</form>
-				</view>
-			</view>
-			
-			<view v-if="!!orderInfo.orderExts">
-				<product-item v-for="(goods,index) in orderInfo.orderExts"  :key="index"  :product="goods"  :orderType="orderInfo.orderType" @remove="removeGoods(index)" ></product-item>
-			</view>
-			
-			<view v-if="orderInfo.orderExts.length ===0">
-				<view class="cu-card">
-					<view class="cu-item shadow text-center padding text-sm text-gray">
-						您还没有添加产品哦～
+			<form @submit="saveOrSubmmit" report-submit class="block padding-bottom-xl">
+				<view class="cu-bar bg-white solid-bottom margin-top-sm">
+					<view class="action">
+						<text class="cuIcon-titles text-blue"></text> 基本信息
 					</view>
 				</view>
-			</view>
-			
-			<view class="cu-bar bg-white solid-bottom margin-top-sm">
-				<view class="action">
-					<text class="cuIcon-titles text-blue"></text> 收货信息
+				<view class="cu-form-group ">
+					<view class="title text-grey">下单人</view>
+					<input name="orderUser" type="text" disabled v-model="orderInfo.userName"></input>
 				</view>
-			</view>
-			<view class="cu-form-group ">
-				<view class="title text-grey">发货方式</view>
-				<input name="deliveryName" type="text" placeholder="请输入收货方式"  v-model="orderInfo.deliveryName"></input>
-			</view>
-			<view class="cu-form-group ">
-				<view class="title text-grey">收货地址</view>
-				<input name="address" type="text" placeholder="请输入收货地址" v-model="orderInfo.address"></input>
-				<text class='cuIcon-locationfill text-orange' @tap="getLocation"></text>
-			</view>
-			<view class="cu-form-group ">
-				<view class="title text-grey">收货人</view>
-				<input name="customerName" type="text" placeholder="请输入收货人" v-model="orderInfo.customerName"></input>
-			</view>
-			<view class="cu-form-group ">
-				<view class="title text-grey">收货人电话</view>
-				<input name="phone" type="number" placeholder="请输入收货人电话" v-model="orderInfo.phone"></input>
-			</view>
-			<view class="cu-form-group">
-				<view class="title text-grey">备注</view>
-				<input name="remark" type="text" placeholder="请输入备注" v-model="orderInfo.remark"></input>
-				<!-- <textarea name="remark" v-model="orderInfo.remark" :rows="2" placeholder="请输入备注" maxlength="-1" auto-height></textarea> -->
-			</view>
-			<view class="flex">
-				<view class="flex-sub ">
-					<button class="cu-btn margin-sm block shadow bg-blue lg" :disabled="submitting" @tap="saveOrderInfo">
-						<text v-if="submitting" class="cuIcon-loading2 cuIconfont-spin"></text>保存
-					</button>
+				<view class="cu-form-group ">
+					<view class="title text-grey">订单类型</view>
+					<picker name="orderType" placeholder="请输选择订单类型" @change="changeOrderType" :range="orderTypeList" range-key="name">
+						<view class="picker">{{orderTypeName}}</view>
+					</picker>
 				</view>
-				<view class="flex-sub ">
-					<button class="cu-btn margin-sm block shadow bg-blue lg" form-type="submit" :disabled="submitting">
-						<text v-if="submitting" class="cuIcon-loading2 cuIconfont-spin"></text>保存并提交
-					</button>
-				</view>
-			</view>
-		</form>
-		
-		<view class="cu-modal bottom-modal" :class="showBottomModal ? 'show':''">
-			<view class="cu-dialog">
-				<form @submit="pushGoods" report-submit >
-					<view class="cu-bar bg-white">
-						<view class="action text-grey" @tap="showBottomModal=!showBottomModal">取消</view>
-						<button class="cu-btn block bg-white text-blue mb0" form-type="submit"> 确定 </button>
+				
+				
+				<view class="cu-bar bg-white solid-bottom margin-top-sm">
+					<view class="action">
+						<text class="cuIcon-titles text-blue"></text> 产品信息
 					</view>
-					
-					<view class="padding">
+					<view class="action">
+						<form class="h45" @submit="showAddProductModal" report-submit >
+							<button class="cu-btn round sm bg-blue shadow" form-type="submit">添加产品</button>
+						</form>
+					</view>
+				</view>
+				
+				<view v-if="!!orderInfo.orderExts">
+					<product-item v-for="(goods,index) in orderInfo.orderExts"  :key="index"  :product="goods"  :orderType="orderInfo.orderType" @remove="removeGoods(index)" ></product-item>
+				</view>
+				
+				<view v-if="orderInfo.orderExts.length ===0">
+					<view class="cu-card">
+						<view class="cu-item shadow text-center padding text-sm text-gray">
+							您还没有添加产品哦～
+						</view>
+					</view>
+				</view>
+				
+				<view class="cu-bar bg-white solid-bottom margin-top-sm">
+					<view class="action">
+						<text class="cuIcon-titles text-blue"></text> 收货信息
+					</view>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title text-grey">发货方式</view>
+					<input name="deliveryName" type="text" placeholder="请输入收货方式"  v-model="orderInfo.deliveryName"></input>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title text-grey">收货地址</view>
+					<input name="address" type="text" placeholder="请输入收货地址" v-model="orderInfo.address"></input>
+					<text class='cuIcon-locationfill text-orange' @tap="getLocation"></text>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title text-grey">收货人</view>
+					<input name="customerName" type="text" placeholder="请输入收货人" v-model="orderInfo.customerName"></input>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title text-grey">收货人电话</view>
+					<input name="phone" type="number" placeholder="请输入收货人电话" v-model="orderInfo.phone"></input>
+				</view>
+				<view class="cu-form-group">
+					<view class="title text-grey">备注</view>
+					<input name="remark" type="text" placeholder="请输入备注" v-model="orderInfo.remark"></input>
+					<!-- <textarea name="remark" v-model="orderInfo.remark" :rows="2" placeholder="请输入备注" maxlength="-1" auto-height></textarea> -->
+				</view>
+				<view class="flex">
+					<view class="flex-sub ">
+						<button class="cu-btn margin-sm block shadow bg-blue lg" :disabled="submitting" @tap="saveOrderInfo">
+							<text v-if="submitting" class="cuIcon-loading2 cuIconfont-spin"></text>保存
+						</button>
+					</view>
+					<view class="flex-sub ">
+						<button class="cu-btn margin-sm block shadow bg-blue lg" form-type="submit" :disabled="submitting">
+							<text v-if="submitting" class="cuIcon-loading2 cuIconfont-spin"></text>保存并提交
+						</button>
+					</view>
+				</view>
+			</form>
+			
+			<view class="cu-modal bottom-modal" :class="showBottomModal ? 'show':''">
+				<view class="cu-dialog">
+					<form @submit="pushGoods" report-submit >
+						<view class="cu-bar bg-white">
+							<view class="action text-grey" @tap="showBottomModal=!showBottomModal">取消</view>
+							<button class="cu-btn block bg-white text-blue mb0" form-type="submit"> 确定 </button>
+						</view>
+						
+						<view class="padding">
+							
 							<view class="cu-form-group ">
 								<view class="title text-grey">产品名称</view>
-								<picker name="orderType" placeholder="请输选择订单类型" @change="changeProduct" :range="productList" range-key="productDescription">
+								<!-- <picker name="orderType" placeholder="请输选择订单类型" @change="changeProduct" :range="productList" range-key="productDescription">
 									<view class="picker">{{productName}}</view>
-								</picker>
+								</picker> -->
+								<view>
+									<view class="content">
+										<text class="text-grey" @tap="showModal" data-target="viewModal">{{productName}}</text>
+									</view>
+								</view>
+								
 							</view>
 							<view class="cu-form-group ">
 								<view class="title text-grey">要求</view>
@@ -135,11 +143,40 @@
 								<view class="title text-grey">备注</view>
 								<input class="text-left" name="price" type="remark" placeholder="备注" v-model="goods.remark"></input>
 							</view>
-					</view>
-				</form>
+						</view>
+					</form>
+				</view>
 			</view>
+		</scroll-view>
+		<!-- 全屏抽屉开始 -->
+		<view class="DrawerClose" :class="modalName=='viewModal'?'show':''" @tap="hideModal">
+			<text class="cuIcon-pullleft"></text>
 		</view>
-		
+		<view class="DrawerWindow" :class="modalName=='viewModal'?'show':''">
+			<view class="cu-bar search" :style="[{marginTop:(StatusBar-20) + 'px'}]">
+				<view class="search-form round" style="margin-right: 100upx;">
+					<text class="cuIcon-search"></text>
+					<input type="text" placeholder="输入搜索的关键字" confirm-type="search" @input="filterProduct"></input>
+				</view>
+				<!-- <view class="action" style="margin-right: 100upx;">
+					<button class="cu-btn bg-gradual-green shadow-blur round">搜索</button>
+				</view> -->
+			</view>
+			<scroll-view scroll-y style="height: 85vh;">
+				<view class="productslist cu-list menu card-menu margin-top-xs margin-bottom-xl shadow-lg">
+					<view class="cu-item arrow" v-for="(item,index) in filterProductList" :key="index" @tap="changeProduct" :data-index="index">
+						<view class="content">
+							<text class="cuIcon-news text-grey"></text>
+							<text class="text-grey">{{item.productDescription}}</text>
+						</view>
+					</view>
+				</view>
+				<view v-if="filterProductList.length ===0" class="empty-data" style="color:white;padding-top: 240upx;">
+					暂无产品数据
+				</view>
+			</scroll-view>
+		</view>
+		<!-- 全屏抽屉结束 -->
 	</view>
 </template>
 
@@ -152,6 +189,8 @@
 		data() {
 			const user = uni.getStorageSync("user")
 			return {
+				modalName:null,
+				StatusBar: this.StatusBar,
 				showBottomModal:false,
 				submitting: false,
 				orderInfo:{
@@ -179,6 +218,7 @@
 				},
 				productName:'请选择产品',
 				productList:[],
+				filterProductList: []
 			}
 		},
 		onLoad(options) {
@@ -204,12 +244,18 @@
 			// 获取可用产品列表
 			getProductList(){
 				this.$request.post({url:'/product/getValidateProducts'}).then(res => {
-					this.productList = res.data
+					this.productList = res.data;
+					this.filterProductList = this.productList;
 				})
+			},
+			filterProduct(e){
+				let input = e.detail.value;
+				this.filterProductList = this.productList.filter(p => p.productDescription.indexOf(input) !== -1);
 			},
 			// 选择产品
 			changeProduct(e){
-				const product = this.productList[e.detail.value]
+				let index  = e.currentTarget.dataset.index;
+				const product = this.filterProductList[index]
 				this.productName = `${product.productDescription}`;
 				this.goods = {
 					productName: product.name  || null, // 产品名称
@@ -224,6 +270,7 @@
 					price:product.price ||  null, // 单价
 					remark:product.price || null, // 备注
 				};
+				this.hideModal();
 			},
 			// 选择订单类型
 			changeOrderType(e){
@@ -233,10 +280,20 @@
 			},
 			// 显示添加产品的modal
 			showAddProductModal(e){
-				this.createFormId(e.detail.formId)
+				// this.createFormId(e.detail.formId)
 				this.productName = '请选择产品';
 				this.goods = {};
 				this.showBottomModal = !this.showBottomModal;
+			},
+			showModal(e) {
+				this.modalName = e.currentTarget.dataset.target
+			},
+			hideModal(e) {
+				this.modalName = null
+			},
+			tabSelect(e) {
+				this.TabCur = e.currentTarget.dataset.id;
+				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 			},
 			// 将产品追加到产品列表里面去
 			pushGoods(e){
@@ -374,6 +431,13 @@
 	}
 </script>
 
+<style>
+	page {
+		background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
+		width: 100vw;
+		overflow: hidden;
+	}
+</style>
 <style lang="scss" scoped>
 	
 	textarea{
@@ -400,5 +464,100 @@
 	}
 	.mb0{
 		margin-bottom: 0upx!important;
+	}
+	
+	
+	.cu-bar.search {
+		box-shadow: none;
+	}
+	.productslist.cu-list.menu>.cu-item {
+		min-height: 75upx;
+	}
+	.DrawerPage {
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		left: 0vw;
+		background-color: #f1f1f1;
+		transition: all 0.4s;
+	}
+	.DrawerPage.show {
+		transform: scale(0.9, 0.9);
+		left: 85vw;
+		box-shadow: 0 0 60upx rgba(0, 0, 0, 0.2);
+		transform-origin: 0;
+	}
+	.DrawerWindow {
+		position: absolute;
+		width: 85vw;
+		height: 100vh;
+		left: 0;
+		top: 0;
+		transform: scale(0.9, 0.9) translateX(-100%);
+		opacity: 0;
+		pointer-events: none;
+		transition: all 0.4s;
+		padding: 35upx 0;
+	}
+	.DrawerWindow.show {
+		transform: scale(1, 1) translateX(0%);
+		opacity: 1;
+		pointer-events: all;
+	}
+	.DrawerClose {
+		position: absolute;
+		width: 40vw;
+		height: 100vh;
+		right: 0;
+		top: 0;
+		color: transparent;
+		padding-bottom: 30upx;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.7));
+		letter-spacing: 5px;
+		font-size: 50upx;
+		opacity: 0;
+		pointer-events: none;
+		transition: all 0.4s;
+	}
+	.DrawerClose.show {
+		opacity: 1;
+		pointer-events: all;
+		width: 15vw;
+		color: #fff;
+	}
+	.DrawerPage .cu-bar.tabbar .action button.cuIcon {
+		width: 64upx;
+		height: 64upx;
+		line-height: 64upx;
+		margin: 0;
+		display: inline-block;
+	}
+	.DrawerPage .cu-bar.tabbar .action .cu-avatar {
+		margin: 0;
+	}
+	.DrawerPage .nav {
+		flex: 1;
+	}
+	.DrawerPage .nav .cu-item.cur {
+		border-bottom: 0;
+		position: relative;
+	}
+	.DrawerPage .nav .cu-item.cur::after {
+		content: "";
+		width: 10upx;
+		height: 10upx;
+		background-color: currentColor;
+		position: absolute;
+		bottom: 10upx;
+		border-radius: 10upx;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+	.DrawerPage .cu-bar.tabbar .action {
+		flex: initial;
 	}
 </style>
