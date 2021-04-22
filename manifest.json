@@ -1,9 +1,9 @@
 {
-    "name" : "易销助手",
+    "name" : "亚设塑销售",
     "appid" : "__UNI__8658D6F",
-    "description" : "",
-    "versionName" : "ysyx_c_V1.0.00",
-    "versionCode" : 0,
+    "description" : "浙江亚设塑销平台小程序解决塑编行业，从生产定制加工，到销售账单以及实时行情价格等全链路等解决方案。",
+    "versionName" : "agabus_C_V1.0.00",
+    "versionCode" : 1,
     "transformPx" : false,
     "app-plus" : {
         /* 5+App特有相关 */
@@ -80,9 +80,9 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "wx597ea283da1328db",
+        "appid" : "wx4c424410135ee0d7",
         "setting" : {
-            "urlCheck" : false,
+            "urlCheck" : true,
             "es6" : true
         },
         "permission" : {
@@ -92,7 +92,7 @@
         }
     },
     "h5" : {
-        "title" : "ColorUi for UniApp",
+        "title" : "Asher-UniApp",
         "domain" : "demo.color-ui.com"
     }
 }

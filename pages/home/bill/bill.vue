@@ -143,7 +143,7 @@
 				this.$request.post({
 					data:this.filter,
 					loadingTip: '加载中...',
-					url:'/report/getBillReport',
+					url:'/report/getV2BillReport',
 				}).then(res => {
 					this.isLoading = false
 					this.total = res.total;
@@ -193,7 +193,7 @@ page {
 	border-radius: 10upx;
 	border-bottom: 2upx solid #fad0d1;
 	.text-bold {
-		font-size: 55upx;
+		font-size: 42upx;
 	}
 }
  .other-line {

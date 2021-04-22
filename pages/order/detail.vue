@@ -64,6 +64,7 @@
 				:express="express" 
 				:orderType="orderInfo.orderType" 
 				:orderId="orderInfo.id" 
+				:orderStatus="orderInfo.status"
 				@updateData="updateData"></express>
 			</view>
 			

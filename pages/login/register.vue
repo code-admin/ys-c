@@ -50,10 +50,11 @@
 		},
 		methods: {
 			fillMobile(e){
-				var appId = 'wx597ea283da1328db';
+				var appId = 'wx4c424410135ee0d7';
 				let {encryptedData, iv} = e.detail;
 				if(encryptedData) {
 					let sessionKey = uni.getStorageSync('sessionKey');
+					console.log('sessionKey',sessionKey)
 					var pc = new WXBizDataCrypt(appId, sessionKey);
 					var data = pc.decryptData(encryptedData , iv);
 					console.log('DataCrypt content: ', data);

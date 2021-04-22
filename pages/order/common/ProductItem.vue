@@ -17,7 +17,7 @@
 					<view class="text-grey">克重:</view>
 					<view class="margin-right padding-left-xs text-red"> {{product.weight}}</view>
 					<view class="text-grey">米数:</view>
-					<view class="margin-right  padding-left-xs text-red"> {{product.length}}</view>
+					<view class="margin-right  padding-left-xs text-red"> {{product.length ? product.length : '--'}}</view>
 					<view class="text-grey">个数:</view>
 					<view class="margin-right padding-left-xs text-red"> {{product.goodsNumber}}</view>
 				</view>

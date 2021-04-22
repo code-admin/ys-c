@@ -16,7 +16,7 @@
 			<view class="h80"></view>
 		</view>
 
-		<view class="cu-bar bg-white solid-bottom margin-top">
+		<view class="cu-bar bg-white solid-bottom margin-top margin-bottom-xl">
 			<view class="action">
 				<text class="cuIcon-title text-orange"></text> 基本信息
 			</view>
@@ -57,6 +57,12 @@
 				</view>
 			</view>
 		</view>
+		
+		
+		<view class="padding flex flex-direction btn-position">
+			<button class="cu-btn bg-gradual-orange lg" @tap="unbind">解除绑定</button>
+		</view>
+		
 	</view>
 </template>
 
@@ -94,6 +100,26 @@
 						icon: res.code === 10000 ? "" : "none"
 					})
 				})
+			},
+			unbind(e){
+				this.$request.post({
+					url: '/user/unbindMiniSessionKey',
+					}).then(res => {
+						uni.showToast({
+							title: res.message,
+							icon: res.code === 10000 ?  "success": "none",
+							success:() => {
+								uni.setStorageSync('registerFlag', false);
+								setTimeout(() =>{
+									if(res.code === 10000){
+										uni.reLaunch({
+											url: '/pages/index/index',
+										})
+									}
+								}, 1000);
+							}
+						})
+					})
 			}
 		},
 		computed: {
@@ -126,5 +152,11 @@
 	}
 	.modifyNav {
 		border-radius: 5px;
+	}
+	.btn-position{
+		width: 100%;
+		position: fixed;
+		bottom: 65upx;
+		z-index: 10;
 	}
 </style>

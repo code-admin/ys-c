@@ -4,7 +4,7 @@
 			<block slot="backText">返回</block>
 			<block slot="content">
 				<view @tap="switchMakingType">
-					{{ queryParams.makingType === 1 ? '订购单': '退筒单'}} 
+					{{ queryParams.makingType === 1 ? '订购单': '退货单'}} 
 					<text class="cuIcon-unfold margin-left-xs"></text>
 				</view>
 			</block>
@@ -16,9 +16,9 @@
 				{{tabs[index]}}
 			</view>
 		</scroll-view>
-		<navigator class="nav-position cu-btn shadow bg-gradual-blue radius text-sl" url="/pages/order/edit">
+		<!-- <navigator class="nav-position cu-btn shadow bg-gradual-blue radius text-sl" url="/pages/order/edit">
 			<text class="cuIcon-add"></text>
-		</navigator>
+		</navigator> -->
 		<view v-if="queryParams.makingType === 1">
 			<order-card v-for="(item,index) in orderList" :key="index" :card="item"></order-card>
 		</view>

@@ -134,7 +134,7 @@
 				const url = e.currentTarget.dataset.cur
 				if (!url) {
 					uni.makePhoneCall({
-						phoneNumber: '10086' //仅为示例
+						phoneNumber: '18868270138' //仅为示例
 					});
 				} else {
 					if(uni.getStorageSync("registerFlag")){

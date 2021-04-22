@@ -81,7 +81,7 @@
 					确定完成该产品的签收吗？
 				</view>
 				<view v-if="orderInfo.makingType === 2" class="padding-xl">
-					确定当前退筒订单无误吗？
+					确定当前退货订单无误吗？
 				</view>
 				<view class="cu-bar bg-white justify-end">
 					<form @submit="finish" report-submit>
