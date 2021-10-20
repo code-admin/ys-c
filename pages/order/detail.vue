@@ -1,109 +1,130 @@
 <template>
 	<view>
+
 		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">订单详情</block>
 		</cu-custom>
 
-		<view v-if="loading">
-			<view class="bg-white padding-bottom-xs" v-if="orderInfo.status">
-				<view class="cu-steps">
-					<view class="cu-item" :class="index > orderInfo.status ? '':'text-blue'" v-for="(item,index) in numList" :key="index">
-						<text :class="orderInfo.status === index ? 'cuIcon-time' : 'num' " :data-index="index + 1"></text> {{item}}
+		<view class="map-box">
+			<map style="width:100vw;height:100vh;" 
+			v-if="showMap"
+			:latitude="lat" :longitude="lod" 
+			:markers="covers"
+			:polyline="polyline"
+			:show-location="true"></map>
+		</view>
+
+		<view class="page-body">
+			<view v-if="loading">
+				<view class="bg-white padding-bottom-xs" v-if="orderInfo.status">
+					<view class="cu-steps">
+						<view class="cu-item" :class="index > orderInfo.status ? '':'text-blue'"
+							v-for="(item,index) in numList" :key="index">
+							<text :class="orderInfo.status === index ? 'cuIcon-time' : 'num' "
+								:data-index="index + 1"></text> {{item}}
+						</view>
 					</view>
 				</view>
-			</view>
-			
-			<view class="bg-white">
-				<view class="cu-bar solid-bottom margin-top-sm">
-					<view class="action">
-						<text class="cuIcon-titles text-blue"></text>{{orderInfo.orderNo || ''}}
+
+				<view class="bg-white">
+					<view class="cu-bar solid-bottom margin-top-sm">
+						<view class="action">
+							<text class="cuIcon-titles text-blue"></text>{{orderInfo.orderNo || ''}}
+						</view>
+						<view class="action text-sm text-gray">{{orderInfo.orderTime}}</view>
 					</view>
-					<view class="action text-sm text-gray">{{orderInfo.orderTime}}</view>
-				</view>
-				<view class="solid-bottom flex">
-					<view class="title text-grey padding-sm">下单人：</view>
-					<view class="padding-sm">{{orderInfo.orderUserName || ''}}</view>
-				</view>
-				<view class="solid-bottom flex">
-					<view class="title text-grey padding-sm">发货方式：</view>
-					<view class="padding-sm">{{orderInfo.deliveryName || ''}}</view>
-				</view>
-				<view class="solid-bottom flex">
-					<view class="title text-grey padding-sm">收货人：</view>
-					<view class="padding-sm">{{orderInfo.customerName || ''}}</view>
-				</view>
-				<view class="solid-bottom flex">
-					<view class="title text-grey padding-sm">收货人电话：</view>
-					<view class="padding-sm">{{orderInfo.phone || ''}}</view>
-				</view>
-				<view class="solid-bottom flex">
-					<view class="title text-grey padding-sm">收货地址：</view>
-					<view class="padding-sm">{{orderInfo.address || ''}}</view>
-				</view>
-			</view>
-			
-			<view class="">
-				<view class="cu-bar bg-white solid-bottom margin-top-sm">
-					<view class="action">
-						<text class="cuIcon-titles text-blue"></text>订单类型: <view class="cu-tag light margin bg-cyan radius padding-sm">{{orderInfo.orderTypeName}}</view>
+					<view class="solid-bottom flex">
+						<view class="title text-grey padding-sm">下单人：</view>
+						<view class="padding-sm">{{orderInfo.orderUserName || ''}}</view>
+					</view>
+					<view class="solid-bottom flex">
+						<view class="title text-grey padding-sm">发货方式：</view>
+						<view class="padding-sm">{{orderInfo.deliveryName || ''}}</view>
+					</view>
+					<view class="solid-bottom flex">
+						<view class="title text-grey padding-sm">收货人：</view>
+						<view class="padding-sm">{{orderInfo.customerName || ''}}</view>
+					</view>
+					<view class="solid-bottom flex">
+						<view class="title text-grey padding-sm">收货人电话：</view>
+						<view class="padding-sm">{{orderInfo.phone || ''}}</view>
+					</view>
+					<view class="solid-bottom flex">
+						<view class="title text-grey padding-sm">收货地址：</view>
+						<view class="padding-sm">{{orderInfo.address || ''}}</view>
 					</view>
 				</view>
-				<view v-if="!!orderInfo.orderExts">
-					<product-item v-for="(goods,index) in orderInfo.orderExts"  :key="index"  :product="goods" :showDel="false" :orderType="orderInfo.orderType" @remove="removeGoods(index)" ></product-item>
-				</view>
-			</view>
-			
-			<view v-if="orderInfo.status > 1">
-				<view class="cu-bar bg-white solid-bottom margin-top-sm">
-					<view class="action">
-						<text class="cuIcon-titles text-blue"></text>出库记录
-					</view>
-				</view>
-				<express v-for="express in orderInfo.orderExpressList" :key ="express.id" 
-				:express="express" 
-				:orderType="orderInfo.orderType" 
-				:orderId="orderInfo.id" 
-				:orderStatus="orderInfo.status"
-				@updateData="updateData"></express>
-			</view>
-			
-			<view class="bg-white">
-				<view class="cu-bar bg-white solid-bottom margin-top-sm">
-					<view class="action">
-						<text class="cuIcon-titles text-blue"></text>订单流转记录
-					</view>
-				</view>
+
 				<view class="">
-					<view class="cu-timeline">
-						<view :class="{ 'cu-item': true, 'text-blue': index == 0 }" :key="index" v-for="(history, index) in orderInfo.orderHistoryList">
-							<view class="content">
-								<view class="cu-capsule radius">
-									<view :class="['cu-tag', index == 0 ? 'bg-cyan':'bg-grey']">{{history.updateBy}}</view>
-									<view :class="['cu-tag', index == 0 ? 'line-cyan':'line-grey']">{{history.updateTime}}</view>
+					<view class="cu-bar bg-white solid-bottom margin-top-sm">
+						<view class="action">
+							<text class="cuIcon-titles text-blue"></text>订单类型: <view
+								class="cu-tag light margin bg-cyan radius padding-sm">{{orderInfo.orderTypeName}}</view>
+						</view>
+					</view>
+					<view v-if="!!orderInfo.orderExts">
+						<product-item v-for="(goods,index) in orderInfo.orderExts" :key="index" :product="goods"
+							:showDel="false" :orderType="orderInfo.orderType" @remove="removeGoods(index)">
+						</product-item>
+					</view>
+				</view>
+
+				<view v-if="orderInfo.status > 1">
+					<view class="cu-bar bg-white solid-bottom margin-top-sm">
+						<view class="action">
+							<text class="cuIcon-titles text-blue"></text>出库记录
+						</view>
+					</view>
+					<express v-for="express in orderInfo.orderExpressList" :key="express.id" :express="express"
+						:orderType="orderInfo.orderType" :orderId="orderInfo.id" :orderStatus="orderInfo.status"
+						@updateData="updateData"></express>
+				</view>
+
+				<view class="bg-white">
+					<view class="cu-bar bg-white solid-bottom margin-top-sm">
+						<view class="action">
+							<text class="cuIcon-titles text-blue"></text>订单流转记录
+						</view>
+					</view>
+					<view class="">
+						<view class="cu-timeline">
+							<view :class="{ 'cu-item': true, 'text-blue': index == 0 }" :key="index"
+								v-for="(history, index) in orderInfo.orderHistoryList">
+								<view class="content">
+									<view class="cu-capsule radius">
+										<view :class="['cu-tag', index == 0 ? 'bg-cyan':'bg-grey']">{{history.updateBy}}
+										</view>
+										<view :class="['cu-tag', index == 0 ? 'line-cyan':'line-grey']">
+											{{history.updateTime}}
+										</view>
+									</view>
+									<view class="margin-top">{{history.remark}}</view>
 								</view>
-								<view class="margin-top">{{history.remark}}</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+
+			<view class="padding flex flex-direction btn-position">
+				<button v-if="orderInfo.status === 3 && orderInfo.oneKeySign" class="cu-btn bg-blue lg"
+					@tap="showConfirm=true">一键签收</button>
+			</view>
+
+			<view class="padding flex flex-direction btn-position">
+				<button v-if="orderInfo.status === 4 " class="cu-btn bg-blue lg" @tap="confirm=true">确认完成</button>
+			</view>
 		</view>
-		
-		<view class="padding flex flex-direction btn-position">
-			<button v-if="orderInfo.status === 3 && orderInfo.oneKeySign"  class="cu-btn bg-blue lg" @tap="showConfirm=true">一键签收</button>
-		</view>
-		
-		<view class="padding flex flex-direction btn-position">
-			<button v-if="orderInfo.status === 4 " class="cu-btn bg-blue lg" @tap="confirm=true">确认完成</button>
-		</view>
-		
+
+
+
 		<view class="cu-modal" :class="showConfirm ?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<view class="content">提示</view>
 					<view class="action" @tap="showConfirm=false">
-						<text class="cuIcon-close text-red" ></text>
+						<text class="cuIcon-close text-red"></text>
 					</view>
 				</view>
 				<view class="padding-xl">
@@ -119,13 +140,13 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="cu-modal" :class="confirm ?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<view class="content">提示</view>
 					<view class="action" @tap="hideModal">
-						<text class="cuIcon-close text-red" ></text>
+						<text class="cuIcon-close text-red"></text>
 					</view>
 				</view>
 				<view class="padding-xl">
@@ -141,7 +162,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -149,33 +170,71 @@
 	import ProductItem from './common/ProductItem'
 	import Express from './common/Express'
 	export default {
-		components:{
+		components: {
 			ProductItem,
 			Express
 		},
 		data() {
 			return {
-				numList: ['创建','待审核', '待出库','待签收','待确认','完成'],
-				loading:true,
-				orderInfo:{},
-				confirm:false,
+				numList: ['创建', '待审核', '待出库', '待签收', '待确认', '完成'],
+				// lat: 31.223762,
+				// lod: 120.773926,
+				showMap:false,
+				lat: '',
+				lod: '',
+				covers: [{
+					latitude: 31.223762,
+					longitude: 120.773926,
+				}, {
+					latitude: 31.356319,
+					longitude: 120.546346,
+				}],
+				polyline: [],
+				loading: true,
+				orderInfo: {},
+				confirm: false,
 				showConfirm: false
 			}
 		},
 		onLoad(options) {
+			this.showMap = false
 			options.orderId && this.getOrderInfoById(options.orderId);
 		},
 		methods: {
 			// 获取订单详情
-			getOrderInfoById(orderId){
+			getOrderInfoById(orderId) {
 				this.loading = !this.loading
+				this.showMap = true
 				this.$request.post({
 					url: `/order/getOrderById/${orderId}`,
 					loadingTip: '正在加载订单数据...',
 				}).then(res => {
 					this.loading = !this.loading
 					this.orderInfo = res.data;
-				}).catch(err =>{
+					this.covers = [{
+
+							label: {
+								content: '亚迦布科技（起点）',
+								color: '#F40F40'
+							},
+							latitude: "31.223762",
+							longitude: "120.773926",
+							iconPath:'https://manage.agabus.shop/static/img/agabus.338c13a6.png'
+						},
+						{
+							label: {
+								content: '客户收货（终点）',
+								color: '#F40F40'
+							},
+							latitude: res.data.latitude,
+							longitude: res.data.longitude,
+						},
+					],
+					this.lat = res.data.latitude
+					this.lod = res.data.longitude
+					console.log('正在规划路线中……！')
+					this.getDrivingRoute(`120.773926,31.223762`,`${res.data.longitude},${res.data.latitude}` )
+				}).catch(err => {
 					this.loading = !this.loading
 					uni.showToast({
 						duration: 3000,
@@ -184,22 +243,61 @@
 					})
 				})
 			},
-			hideModal(){
+			/**
+			 * 获取路线规划
+			 * @param {Object} origin
+			 * @param {Object} destination
+			 */
+			getDrivingRoute(origin, destination) {
+				let that = this;
+				that.$amapwx.getDrivingRoute({
+					origin: origin,
+					destination: destination,
+					success: function(data) {
+						var points = [];
+						if (data.paths && data.paths[0] && data.paths[0].steps) {
+							var steps = data.paths[0].steps;
+							for (var i = 0; i < steps.length; i++) {
+								var poLen = steps[i].polyline.split(';');
+								for (var j = 0; j < poLen.length; j++) {
+									points.push({
+										longitude: parseFloat(poLen[j].split(',')[0]),
+										latitude: parseFloat(poLen[j].split(',')[1])
+									})
+								}
+							}
+						}
+						that.polyline = [{
+							points: points,
+							color: "#0091ff",
+							arrowLine: true,
+							width: 6
+						}]
+					},
+					fail: function(err) {
+						console.log(err)
+					}
+				})
+			},
+			hideModal() {
 				this.confirm = !this.confirm
 			},
-			Signing(e){
+			Signing(e) {
 				this.$request.post({
-					url:'/order/signOrder',
-					loadingTip:'正在提交数据...',
-					data:{formId:e.detail.formId, orderId: this.orderInfo.id }
-				}).then(res =>{
+					url: '/order/signOrder',
+					loadingTip: '正在提交数据...',
+					data: {
+						formId: e.detail.formId,
+						orderId: this.orderInfo.id
+					}
+				}).then(res => {
 					uni.showToast({
 						duration: 3000,
 						title: res.message,
 						icon: "success",
 					})
 					this.getOrderInfoById(this.orderInfo.id)
-				}).catch(err =>{
+				}).catch(err => {
 					uni.showToast({
 						duration: 3000,
 						title: err.message,
@@ -208,14 +306,17 @@
 				})
 				this.showConfirm = !this.showConfirm;
 			},
-			updateData(){
+			updateData() {
 				this.getOrderInfoById(this.orderInfo.id)
 			},
-			finish(e){
+			finish(e) {
 				this.$request.post({
-					url:'/order/confirmByCustomer',
-					loadingTip:'正在提交数据...',
-					data:{ formId:e.detail.formId, orderId:this.orderInfo.id }
+					url: '/order/confirmByCustomer',
+					loadingTip: '正在提交数据...',
+					data: {
+						formId: e.detail.formId,
+						orderId: this.orderInfo.id
+					}
 				}).then(res => {
 					this.getOrderInfoById(this.orderInfo.id)
 					uni.showToast({
@@ -223,7 +324,7 @@
 						title: res.message,
 						icon: "success",
 					})
-				}).catch(err =>{
+				}).catch(err => {
 					uni.showToast({
 						duration: 3000,
 						title: err.message,
@@ -237,10 +338,15 @@
 </script>
 
 <style lang="scss" scoped>
-.btn-position{
-	width: 100%;
-	position: fixed;
-	bottom: 65upx;
-	z-index: 10;
-}
+	.page-body {
+		z-index: 1000;
+		margin-top: 30vh;
+	}
+
+	.btn-position {
+		width: 100%;
+		position: fixed;
+		bottom: 65upx;
+		z-index: 10;
+	}
 </style>

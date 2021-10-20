@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App'
 
+import amapFile from './lib/amap/amap-wx.130.js'
 import request from './lib/j-request/request.js'
-var baseUrl = 'https://mini.api.melender.cn/yase-miniprogram/'
+var baseUrl = 'https://wx.api.agabus.shop/yase-miniprogram/'
+
 // #ifdef H5
 baseUrl = '/yase-miniprogram/'
 // #endif
@@ -10,6 +12,9 @@ request.setConfig({
 	baseUrl: baseUrl,
 	debug: false,
 })
+
+var amapwx = new amapFile.AMapWX({key:'66dd2d5e3b90d0c625b88159f895b447'});
+
 // 请求拦截
 request.interceptor.request = (config => {
     // 给data添加全局请求参数uid    
@@ -69,6 +74,7 @@ Vue.component('cu-custom',cuCustom)
 * @param {Request} $request - The request object.
 */
 Vue.prototype.$request = request
+Vue.prototype.$amapwx = amapwx
 Vue.config.productionTip = false
 
 App.mpType = 'app'

@@ -80,15 +80,19 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "wx4c424410135ee0d7",
+        "appid" : "wx5b47a6cda3d36d55",
         "setting" : {
             "urlCheck" : true,
-            "es6" : true
+            "es6" : true,
+            "minified" : false
         },
         "permission" : {
             "scope.userLocation" : {
                 "desc" : "你的位置信息将用于小程序收货地址"
             }
+        },
+        "uniStatistics" : {
+            "enable" : true
         }
     },
     "h5" : {

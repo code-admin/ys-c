@@ -7,14 +7,16 @@
 			</cu-custom>
 
 			<view class="h200 margin-xl flex justify-center logo">
-				<image src="http://6776615.s21i.faiusr.com/4/ABUIABAEGAAgqMGPxQUozqiK3gUwsQ84rQ8.png" class="png" mode="widthFix"></image>
+				<image src="http://6776615.s21i.faiusr.com/4/ABUIABAEGAAgqMGPxQUozqiK3gUwsQ84rQ8.png" class="png"
+					mode="widthFix"></image>
 			</view>
-			
+
 			<view class="login">
 				<view class="margin padding-sm solid line-green round flex justify-start align-center">
 					<text class="lg text-grey cuIcon-mobile padding-right margin-right solid-right"></text>
 					<input type="text" placeholder="请输入手机号码" maxlength="30" v-model="user.phone" />
-					<button class="cu-btn bg-green" open-type="getPhoneNumber" @getphonenumber="fillMobile">获取手机号</button>
+					<button class="cu-btn bg-green more-information" open-type="getPhoneNumber"
+						@getphonenumber="fillMobile">获取手机号</button>
 				</view>
 				<view class="margin padding-sm solid line-green round flex justify-start align-center">
 					<text class="lg text-grey cuIcon-lock padding-right margin-right solid-right"></text>
@@ -23,7 +25,8 @@
 				</view>
 
 				<view class="margin-sm padding-sm">
-					<button :disabled="loding" class="cu-btn block bg-gradual-green margin-tb-sm lg round" @click="doRegister">
+					<button :disabled="loding" class="cu-btn block bg-gradual-green margin-tb-sm lg round"
+						@click="doRegister">
 						<text v-if="loding" class="cuIcon-loading2 cuIconfont-spin"></text>注 册
 					</button>
 				</view>
@@ -39,24 +42,26 @@
 		data() {
 			return {
 				countdown: countdownSeconds,
-				smsCodeText:'发送验证码',
+				smsCodeText: '发送验证码',
 				user: {
-					openId:uni.getStorageSync('openId'),
-					phone:null,
-					smsCode:null,
+					openId: uni.getStorageSync('openId'),
+					phone: null,
+					smsCode: null,
 				},
 				loding: false
 			}
 		},
 		methods: {
-			fillMobile(e){
-				var appId = 'wx4c424410135ee0d7';
-				let {encryptedData, iv} = e.detail;
-				if(encryptedData) {
+			fillMobile(e) {
+				var appId = 'wx5b47a6cda3d36d55';
+				let {
+					encryptedData,
+					iv
+				} = e.detail;
+				if (encryptedData) {
 					let sessionKey = uni.getStorageSync('sessionKey');
-					console.log('sessionKey',sessionKey)
 					var pc = new WXBizDataCrypt(appId, sessionKey);
-					var data = pc.decryptData(encryptedData , iv);
+					var data = pc.decryptData(encryptedData, iv);
 					console.log('DataCrypt content: ', data);
 					if (data) {
 						this.user.phone = data.phoneNumber;
@@ -64,52 +69,58 @@
 				}
 			},
 			sendSms() {
-				if(this.user.phone == null){
-					return uni.showToast({ icon: "none", title: "请输入手机号码" });
+				if (this.user.phone == null) {
+					return uni.showToast({
+						icon: "none",
+						title: "请输入手机号码"
+					});
 				}
 				this.settingCodeText();
 				this.$request.post({
 					url: '/login/sendMessage',
-					data:{
+					data: {
 						appId: 'YS_562614a2053a4b9f9d3946c1e4632636',
-						secretKey:	'YS_e5f543dd8365489c9f3426d9f715a8ca',
-						phone:	this.user.phone
+						secretKey: 'YS_e5f543dd8365489c9f3426d9f715a8ca',
+						phone: this.user.phone
 					}
 				}).then(res => {
 					console.log(res);
 					uni.showToast({
-						icon: res.code === 10000 ? "success": "none",
+						icon: res.code === 10000 ? "success" : "none",
 						title: res.message
 					})
 				})
 			},
-			settingCodeText(){
+			settingCodeText() {
 				this.countdown--
-				if(this.countdown > 0){
-					setTimeout(this.settingCodeText,1000);
+				if (this.countdown > 0) {
+					setTimeout(this.settingCodeText, 1000);
 				} else {
 					this.countdown = countdownSeconds;
 				}
 				this.smsCodeText = this.countdown == countdownSeconds ? "发送验证码" : this.countdown + " 秒后可用"
 			},
 			doRegister() {
-				if(this.user.phone == null || this.user.smsCode == null) {
-					return uni.showToast({ icon: "none", title: "请填写完整信息" });
+				if (this.user.phone == null || this.user.smsCode == null) {
+					return uni.showToast({
+						icon: "none",
+						title: "请填写完整信息"
+					});
 				}
 				this.loding = !this.loding
 				this.$request.post({
-					url:'/login/bindUser',
+					url: '/login/bindUser',
 					data: this.user
 				}).then(res => {
 					this.loding = !this.loding;
 					uni.showToast({
-						duration: 3000, 
+						duration: 3000,
 						title: res.message,
-						icon: res.code === 10000 ? "success": "none",
-						success: ()=> {
+						icon: res.code === 10000 ? "success" : "none",
+						success: () => {
 							uni.setStorageSync('registerFlag', true);
-							setTimeout(() =>{
-								if(res.code === 10000){
+							setTimeout(() => {
+								if (res.code === 10000) {
 									uni.navigateTo({
 										url: '/pages/index/index',
 									})
@@ -122,7 +133,7 @@
 					uni.showToast({
 						duration: 3000,
 						title: err.message,
-						icon:"none",
+						icon: "none",
 					})
 				})
 			}
