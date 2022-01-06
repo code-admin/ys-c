@@ -5,10 +5,11 @@
 				<view class="flex solid-bottom padding justify-between align-center">
 					<view class="text-black text-bold text-grey">{{express.product.name + '/' + express.product.productNo }}</view>
 					<view v-if="orderStatus === 2 ">
-						<button v-if="makingType === 1 && express.signStatus === 0" class="cu-btn round sm text-cyan shadow" @tap="showConfirm(express.id)">待签收</button>
+						<button v-if="makingType === 1 && express.signStatus === 0 && express.orderDeliver.status" class="cu-btn round sm text-cyan shadow" @tap="showConfirm(express.id)">签收</button>
 						<view v-if="makingType === 1 && express.signStatus === 1" class="cu-tag light round bg-gray sm">已签收</view>
 					</view>
 					<view v-if="orderStatus === 3 " class="cu-tag light round bg-gray sm">已库待审核</view>
+					
 				</view>
 
 				<view class="padding solid-bottom">
@@ -39,8 +40,13 @@
 						<view v-if="makingType === 2" class="text-grey">个数:</view>
 						<view class="margin-right padding-left-xs text-red"> {{express.number}}</view>
 						<view v-if="makingType === 1" class="text-grey">司机/电话:</view>
-						<view v-if="makingType === 1" class="margin-right padding-left-xs text-blue"> {{express.driverName}} /
-							{{express.driverPhone}}</view>
+						<view v-if="makingType === 1" class="margin-right padding-left-xs text-blue"> {{express.driverName && express.driverPhone ? `${express.driverName}/${express.driverPhone}`: ''}} </view>
+					</view>
+					<view v-if="express.orderDeliver && express.orderDeliver.status !==2" class="flex align-center margin-top-xs">
+						<view class="text-grey">距离:</view>
+						<view class="margin-right padding-left-xs text-red"> {{(express.orderDeliver.distance / 1000).toFixed(2)}}公里</view>
+						<view class="text-grey">大约需要:</view>
+						<view class="margin-right padding-left-xs text-red "> {{(express.orderDeliver.requireTime).toFixed(2)}}小时</view>
 					</view>
 				</view>
 
@@ -51,6 +57,9 @@
 
 			</view>
 		</view>
+		
+		
+		
 
 		<view class="cu-modal" :class="confirm ?'show':''">
 			<view class="cu-dialog">
