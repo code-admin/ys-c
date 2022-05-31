@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="bg-white">
-			<cu-custom bgImage="https://image.weilanwl.com/color2.0/index.jpg" :isBack="true">
+			<cu-custom bgColor="bg-olive" :isBack="true">
 				<block slot="backText">返回</block>
 				<block slot="content">修改个人信息</block>
 			</cu-custom>

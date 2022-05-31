@@ -1,5 +1,5 @@
 {
-    "name" : "亚迦布塑销售",
+    "name" : "亚迦布塑销",
     "appid" : "__UNI__8658D6F",
     "description" : "浙江亚设塑销平台小程序解决塑编行业，从生产定制加工，到销售账单以及实时行情价格等全链路等解决方案。",
     "versionName" : "agabus_C_V1.0.00",
@@ -79,7 +79,6 @@
     "quickapp" : {},
     /* 快应用特有相关 */
     "mp-weixin" : {
-        /* 小程序特有相关 */
         "appid" : "wx5b47a6cda3d36d55",
         "setting" : {
             "urlCheck" : true,

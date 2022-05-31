@@ -67,13 +67,22 @@
             "path" : "pages/user/info/info",
             "style" : {}
         }
-        ,{
-            "path" : "pages/user/info/modify",
-            "style" : {}
-        }
+        // ,{
+        //     "path" : "pages/user/info/modify",
+        //     "style" : {}
+        // }
         ,{
             "path" : "pages/order/edit",
             "style" : {}
+        }
+        ,{
+            "path" : "pages/order/DeliveryInfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
         }
     ],
 	"globalStyle": {

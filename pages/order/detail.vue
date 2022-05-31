@@ -7,11 +7,10 @@
 		</cu-custom>
 
 		<!-- <view class="bg-map"> -->
-			<map class="bg-map" v-if="showMap" id="map1" ref="map1" :polyline="polyline"
+			<!-- <map class="bg-map" v-if="showMap" id="map1" ref="map1" :polyline="polyline"
 				:latitude="latitude" :longitude="longitude" :markers="markers" :show-location="true">
-			</map>
+			</map> -->
 		<!-- </view> -->
-
 
 
 		<view v-if="loading" class="page-body" >
@@ -38,7 +37,7 @@
 				</view>
 				<view class="solid-bottom flex">
 					<view class="title text-grey padding-sm">发货方式：</view>
-					<view class="padding-sm">{{orderInfo.deliveryName || ''}}</view>
+					<view class="padding-sm">{{orderInfo.deliveryName || '配送'}}</view>
 				</view>
 				<view class="solid-bottom flex">
 					<view class="title text-grey padding-sm">收货人：</view>
@@ -78,7 +77,7 @@
 					:orderType="orderInfo.orderType" :orderId="orderInfo.id" :orderStatus="orderInfo.status"
 					@updateData="updateData"></express>
 			</view>
-
+			
 			<view class="bg-white">
 				<view class="cu-bar bg-white solid-bottom margin-top-sm">
 					<view class="action">
@@ -168,10 +167,13 @@
 <script>
 	import ProductItem from './common/ProductItem'
 	import Express from './common/Express'
+	import DeliveryItem from './common/DeliveryItem'
+	
 	export default {
 		components: {
 			ProductItem,
-			Express
+			Express,
+			DeliveryItem
 		},
 		data() {
 			return {
@@ -182,15 +184,16 @@
 				markers: [],
 				polyline: [],
 				loading: true,
-
 				orderInfo: {},
 				confirm: false,
 				showConfirm: false
 			}
 		},
+		
 		onLoad(options) {
 			options.orderId && this.getOrderInfoById(options.orderId);
 		},
+		
 		methods: {
 			// 获取订单详情
 			getOrderInfoById(orderId) {
@@ -203,7 +206,7 @@
 					this.orderInfo = res.data;
 					this.markers = [{
 						label: {
-							content: `${this.orderInfo.shippingAddress}（发货地）`,
+							content: `${this.orderInfo.shippingAddress ? this.orderInfo.shippingAddress : this.orderInfo.address}（发货地）`,
 							color: '#F40F40'
 						},
 						latitude: this.orderInfo.shippingLatitude,
@@ -219,11 +222,12 @@
 						latitude: this.orderInfo.latitude,
 						longitude: this.orderInfo.longitude,
 					}]
-					this.latitude = this.orderInfo.latitude
-					this.longitude = this.orderInfo.longitude
-					console.log('正在规划路线中……！')
-					this.getDrivingRoute(`${this.orderInfo.shippingLongitude},${this.orderInfo.shippingLatitude}`,
-						`${this.orderInfo.longitude},${this.orderInfo.latitude}`)
+					uni.setStorageSync('markers',this.markers); // 缓存收获地址 
+					// this.latitude = this.orderInfo.latitude
+					// this.longitude = this.orderInfo.longitude
+					// console.log('正在规划路线中……！')
+					// this.getDrivingRoute(`${this.orderInfo.shippingLongitude},${this.orderInfo.shippingLatitude}`,
+					// 	`${this.orderInfo.longitude},${this.orderInfo.latitude}`)
 				}).catch(err => {
 					this.loading = !this.loading
 					uni.showToast({
@@ -342,8 +346,8 @@
 		}
 
 		.page-body {
-			position:relative;
-			top: 50vh;
+			// position:relative;
+			// top: 50vh;
 			overflow-y: scroll;
 			z-index: 100 ;
 		}

@@ -1,18 +1,18 @@
 <template>
 	<view>
 		<view class="bg-white">
-			<cu-custom bgImage="https://image.weilanwl.com/color2.0/index.jpg" :isBack="true">
+			<cu-custom bgColor="bg-olive" :isBack="true">
 				<block slot="backText">返回</block>
 				<block slot="content">个人信息</block>
 			</cu-custom>
 			<view class="margin-xl flex justify-center">
 				<view class="cu-avatar xl round margin-left" v-if="userInfo == null || userInfo.avatar == null" 
-				style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg);"></view>
+				style="background-image:url(http://yase.cn-sh2.ufileos.com/index2.jpg);"></view>
 				<view class="cu-avatar xl round margin-left" v-else :style="'background-image:url('+userInfo.avatar+');'"></view>
 			</view>
 			<view class="flex justify-center text-xl text-bold">{{userInfo.userName}}</view>
 			<view class="flex justify-center margin-top">{{userInfo.phone}}</view>
-			<button class="flex margin-top syncinfo cu-btn shadow bg-olive" open-type="getUserInfo" @getuserinfo="getUserInfo">获取个人信息</button>
+			<!-- <button class="flex margin-top syncinfo cu-btn shadow bg-olive" open-type="getUserInfo" @getuserinfo="getUserInfo">获取个人信息</button> -->
 			<view class="h80"></view>
 		</view>
 
@@ -20,9 +20,9 @@
 			<view class="action">
 				<text class="cuIcon-title text-orange"></text> 基本信息
 			</view>
-			<view class="action">
+			<!-- <view class="action">
 				<navigator class="cu-btn bg-green shadow modifyNav" url="/pages/user/info/modify">修改</navigator>
-			</view>
+			</view> -->
 		</view>
 
 		<view class="cu-list menu card-menu margin-top margin-bottom-xl shadow-lg radius">

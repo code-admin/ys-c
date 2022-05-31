@@ -3,13 +3,17 @@
 		<view class="cu-card case">
 			<view class="cu-item shadow">
 				<view class="flex solid-bottom padding justify-between align-center">
-					<view class="text-black text-bold text-grey">{{express.product.name + '/' + express.product.productNo }}</view>
-					<view v-if="orderStatus === 2 ">
-						<button v-if="makingType === 1 && express.signStatus === 0 && express.orderDeliver.status" class="cu-btn round sm text-cyan shadow" @tap="showConfirm(express.id)">签收</button>
-						<view v-if="makingType === 1 && express.signStatus === 1" class="cu-tag light round bg-gray sm">已签收</view>
+					<view class="text-black text-bold text-grey">
+						{{express.product.name + '/' + express.product.productNo }}
 					</view>
-					<view v-if="orderStatus === 3 " class="cu-tag light round bg-gray sm">已库待审核</view>
-					
+
+					<view v-if="orderStatus === 2 ">
+						<button v-if="makingType === 1 && express.signStatus === 0 && express.deliverStatus === 2"
+							class="cu-btn round sm text-cyan shadow" @tap="showConfirm(express.id)">签收</button>
+						<view v-if="makingType === 1 && express.signStatus === 1" class="cu-tag light round bg-gray sm">
+							已签收</view>
+					</view>
+					<!-- <view v-if="orderStatus === 3 " class="cu-tag light round bg-gray sm">已库待审核</view> -->
 				</view>
 
 				<view class="padding solid-bottom">
@@ -40,26 +44,37 @@
 						<view v-if="makingType === 2" class="text-grey">个数:</view>
 						<view class="margin-right padding-left-xs text-red"> {{express.number}}</view>
 						<view v-if="makingType === 1" class="text-grey">司机/电话:</view>
-						<view v-if="makingType === 1" class="margin-right padding-left-xs text-blue"> {{express.driverName && express.driverPhone ? `${express.driverName}/${express.driverPhone}`: ''}} </view>
+						<view v-if="makingType === 1" class="margin-right padding-left-xs text-blue">
+							{{express.driverName && express.driverPhone ? `${express.driverName}/${express.driverPhone}`: ''}}
+						</view>
 					</view>
-					<view v-if="express.orderDeliver && express.orderDeliver.status !==2" class="flex align-center margin-top-xs">
+					<view v-if="express.deliverStatus ===1" class="flex align-center margin-top-xs">
 						<view class="text-grey">距离:</view>
-						<view class="margin-right padding-left-xs text-red"> {{(express.orderDeliver.distance / 1000).toFixed(2)}}公里</view>
+						<view class="margin-right padding-left-xs text-red">
+							{{(express.orderDeliver.distance / 1000).toFixed(2)}}公里
+						</view>
 						<view class="text-grey">大约需要:</view>
-						<view class="margin-right padding-left-xs text-red "> {{(express.orderDeliver.requireTime).toFixed(2)}}小时</view>
+						<view class="margin-right padding-left-xs text-red ">
+							{{(express.orderDeliver.duration/3600).toFixed(2)}}小时
+						</view>
 					</view>
 				</view>
 
-				<view class="flex padding align-center">
-					<view class=" light sm text-gray"><text class="cuIcon-time text-sm text-gray padding-right"></text>
-						{{express.createTime}}</view>
+				<view class="flex padding justify-between align-center">
+					<view class=" light sm text-gray">
+						<text class="cuIcon-time text-sm text-gray padding-right"></text>
+						{{express.createTime}}
+					</view>
+					<button v-if="express.deliverStatus ===1" class="cu-btn round sm text-orange shadow"
+						@tap="getDeliveryDetail()">查看配送信息</button>
+						<text v-if="express.deliverStatus ===2" class="text-sm text-blue padding-right">已送达</text>
 				</view>
 
 			</view>
 		</view>
-		
-		
-		
+
+
+
 
 		<view class="cu-modal" :class="confirm ?'show':''">
 			<view class="cu-dialog">
@@ -142,6 +157,15 @@
 					})
 				}
 				this.confirm = !this.confirm
+			},
+
+			// 查看配送信息
+			getDeliveryDetail() {
+				this.express.orderDeliver.deliverUserPhone = this.express.driverPhone
+				const delivery = JSON.stringify(this.express.orderDeliver)
+				uni.navigateTo({
+					url: `/pages/order/DeliveryInfo?delivery=${delivery}`
+				});
 			}
 		}
 	}

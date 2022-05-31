@@ -4,6 +4,7 @@ import App from './App'
 import amapFile from './lib/amap/amap-wx.130.js'
 import request from './lib/j-request/request.js'
 var baseUrl = 'https://wx.api.agabus.shop/yase-miniprogram/'
+// var baseUrl = 'https://test.agabus.shop/yase-miniprogram/'
 
 // #ifdef H5
 baseUrl = '/yase-miniprogram/'
